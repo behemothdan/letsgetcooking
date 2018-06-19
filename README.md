@@ -27,4 +27,4 @@ cd ./ui && npm start
 ![](api/img/graphql-playground-with-recipes.png)
 
 ## [`/ui`](./ui)
-![](ui/img/default-app.png)
+![](ui/img/default-app-with-recipes.png)
