@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import './style/App.css';
-import UserList from './components/UserList';
-import RecipeList from './components/UserList';
+import RecipeList from './components/RecipeList';
 
 class App extends Component {
   render() {
