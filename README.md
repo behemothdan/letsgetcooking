@@ -1,4 +1,4 @@
-# GRANDstack Starter
+# RecipeSnapp - Based off the GRANDstack Starter
 
 This project is a starter for building a [GRANDstack](https://grandstack.io) (GraphQL, React, Apollo, Neo4j Database) application. There are two components to the starter, the UI application (a React app) and the API app (GraphQL server).
 

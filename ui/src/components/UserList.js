@@ -1,9 +1,9 @@
 import React from "react";
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
-import '../style/UserList.css';
+import '../style/RecipeList.css';
 
-const UserList = () => (
+const RecipeList = () => (
   <Query
     query={gql`
       {
@@ -13,6 +13,7 @@ const UserList = () => (
           instructions
           ingredients {
             name
+            quantity
           }
           mealtype {
             type
@@ -29,18 +30,24 @@ const UserList = () => (
       if (error) return <p>Error</p>;
 
       return (
-        <div className="UserList">
-          <h1>Recipes:</h1>
-          
-          <ul>          
-            {data.recipes.map(({name}, i) => (
-              <li key={i}>{name} -</li>		  
-            ))}
-          </ul>
+        <div className="RecipeList">
+          <h1>Recipes:</h1>                             
+            {data.recipes.map(recipe => (
+              <div>
+                <h3>{recipe.name}</h3>
+                <ul>
+                  <li>{recipe.instructions}</li>
+                  <li>{recipe.ingredients[0].name}</li>
+                  <li>{recipe.time}</li>
+                  <li>{recipe.mealtype.type}</li>
+                  <li>{recipe.difficulty.value}</li>
+                </ul>
+              </div>
+            ))}          
         </div>
       );
     }}
   </Query>
 );
 
-export default UserList;
+export default RecipeList;
