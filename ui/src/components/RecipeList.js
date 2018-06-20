@@ -33,14 +33,16 @@ const RecipeList = () => (
         <div className="RecipeList">
           <h1>Recipes:</h1>                             
             {data.recipes.map(recipe => (
-              <div>
+              <div key={recipe.name}>
                 <h3>{recipe.name}</h3>
                 <ul>
                   <li>{recipe.instructions}</li>
-                  <li>{recipe.ingredients[0].name}</li>
-                  <li>{recipe.time}</li>
-                  <li>{recipe.mealtype.type}</li>
-                  <li>{recipe.difficulty.value}</li>
+                  return {[...Array(recipe.ingredients)].map((ingredient,index) => {
+                    return <li key={index}>{ingredient[index].quantity} {ingredient[index].name}</li>
+                  })}                                                                     
+                  <li>Time: {recipe.time}</li>
+                  <li>Dish Type: {recipe.mealtype.type}</li>
+                  <li>Difficulty: {recipe.difficulty.value}</li>
                 </ul>
               </div>
             ))}          
