@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import './style/App.css';
 import RecipeList from './components/RecipeList';
+//import Search from './components/Search';
+import RecipeList2 from './components/RecipeList2';
 
 class App extends Component {
   render() {
@@ -11,7 +13,8 @@ class App extends Component {
           <h1 className="App-title">Welcome to GRANDstack</h1>
         </header>
         
-        <RecipeList />              
+        <RecipeList />  
+        <RecipeList2 queryString="baked" />       
       </div>
     );
   }
