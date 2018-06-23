@@ -13,7 +13,7 @@ class App extends Component {
           <h1 className="App-title">Welcome to GRANDstack</h1>
         </header>
                 
-        <RecipeList2 queryString="penne with shrimp and herbed cream sauce" />       
+        <RecipeList2 searchQuery="ed" />       
       </div>
     );
   }

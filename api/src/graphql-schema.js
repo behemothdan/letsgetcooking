@@ -16,7 +16,7 @@ type Ingredient {
 }
 
 type MealType {
-  type: String  
+  type: String
 }
 
 type Difficulty {
@@ -24,27 +24,32 @@ type Difficulty {
 }
 
 type Query {
-    recipes(
-      name: String, 
-      time: String, 
-      instructions: [String],   
-      ingredients: [String],      
-      mealtype: String,
-      difficulty: String
-    ): [Recipe]    
-    mealtype(
-      type: String      
-    ): [MealType]
-    ingredients(
-      name: String      
-    ): [Ingredient]
+  recipes(
+    name: String, 
+    time: String, 
+    instructions: [String],   
+    ingredients: [String],      
+    mealtype: String,
+    difficulty: String
+  ): [Recipe]
+
+  recipesBySubstring(searchQuery: String): [Recipe] @cypher(statement: "MATCH (r:Recipe) WHERE toLower(r.name) CONTAINS toLower($searchQuery) RETURN r" )
+
+  mealtype(
+    type: String      
+  ): [MealType]    
+
+  ingredients(
+    name: String      
+  ): [Ingredient] 
 }
 `;
 
 export const resolvers = {
   Query: {
     recipes: neo4jgraphql,
+    recipesBySubstring: neo4jgraphql,
     mealtype: neo4jgraphql,
-    ingredients: neo4jgraphql
+    ingredients: neo4jgraphql    
   }
 };

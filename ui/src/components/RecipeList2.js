@@ -4,9 +4,9 @@ import gql from "graphql-tag";
 import '../style/RecipeList.css';
 
 const RECIPE_QUERY = gql`
-    query recipeQuery($queryString: String = "baked spaghetti")
+    query($searchQuery: String)
     {
-        recipes(name: $queryString) {
+        recipesBySubstring(searchQuery: $searchQuery) {
             name
             time
             instructions
@@ -23,8 +23,8 @@ const RECIPE_QUERY = gql`
         }
     }`;
 
-const RecipeList2 = ({queryString}) => (
-    <Query query={RECIPE_QUERY} variables={{queryString}}>
+const RecipeList2 = ({searchQuery}) => (
+    <Query query={RECIPE_QUERY} variables={{searchQuery}}>
         {({ loading, error, data }) => {
             if (loading) return <p>Loading...</p>;
             if (error) return <p>Error</p>;
@@ -32,7 +32,7 @@ const RecipeList2 = ({queryString}) => (
             return (
             <div className="RecipeList">
                 <h1>Recipes:</h1>
-                {data.recipes.map(recipe => (
+                {data.recipesBySubstring.map(recipe => (
                     <div key={recipe.name}>
                     <h3>{recipe.name}</h3>
                     <ul>
