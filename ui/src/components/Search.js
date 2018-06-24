@@ -1,43 +1,31 @@
 import React from 'react';
-import { Query } from "react-apollo";
-import gql from "graphql-tag";
 import '../style/RecipeList.css';
+import RecipeList2 from './RecipeList2';
 
 class Search extends React.Component {
-    state = {
-        query: '',
+    constructor(props) {
+        super(props);
+        this.state = {searchquery: null};
+
+        this.handleChange = (event) => {
+            this.setState({ searchquery: event.target.searchquery })
+        };
     }
 
     render() {
-        return (
-            <form>
-                <input 
-                    placeholder="Search for..."
-                    ref={input => this.search = input}
-                    onChange={this.handleInputChange}
-                />
-                <p>{this.state.query}</p>
-            </form>
+        return (   
+            <div>
+                <form>
+                    <input 
+                        type="text"
+                        placeholder="Let's get cooking..."
+                        value={this.state.searchquery}
+                        onChange={this.handleChange}
+                    />                
+                </form>
+            </div>
         )
     } 
 }
-
-const RECIPE_QUERY = gql`
-    query recipes($query: String!) {
-        name
-        time
-        instructions
-        ingredients {
-          name
-          quantity
-        }
-        mealtype {
-          type
-        }
-        difficulty {
-          value
-        }
-      }
-`;
 
 export default Search

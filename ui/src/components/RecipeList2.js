@@ -4,7 +4,7 @@ import gql from "graphql-tag";
 import '../style/RecipeList.css';
 
 const RECIPE_QUERY = gql`
-    query($searchQuery: String)
+    query($searchQuery: String = "ed")
     {
         recipesBySubstring(searchQuery: $searchQuery) {
             name
