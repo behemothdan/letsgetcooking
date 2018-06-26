@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import './style/App.css';
-//import RecipeList from './components/RecipeList';
-import Search from './components/Search';
-import RecipeList2 from './components/RecipeList2';
+import RecipeSearch from './components/RecipeSearch';
 
 class App extends Component {
   constructor(props) {
@@ -15,9 +13,8 @@ class App extends Component {
           <img src={process.env.PUBLIC_URL + '/img/grandstack.png'} className="App-logo" alt="logo" />
           <h1 className="App-title">Welcome to GRANDstack</h1>
         </header>
-
-        <Search />                
-        <RecipeList2 searchQuery="ed" />
+                   
+        <RecipeSearch />
       </div>
     );
   }
