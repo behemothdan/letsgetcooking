@@ -7,16 +7,19 @@ import RecipeGraphQuery from "./RecipeGraphQuery";
 class RecipeSearch extends Component {
     constructor(props) {
         super(props);
-        this.state = {searchquery: ''};       
+        this.state = {searchquery: ''};
+        this.handleChange = this.handleChange.bind(this)
     }
 
-    render() {
-        const searchquery = this.state.searchquery;
+    handleChange(searchQueryValue) {        
+        this.setState({searchquery: searchQueryValue});
+    }
 
+    render() {       
         return (
             <div>
-                <SearchInput onSearchQueryChange={this.searchquery} />
-                <RecipeGraphQuery searchquery={searchquery} />
+                <SearchInput handleSearchQueryChange={this.handleChange} />
+                <RecipeGraphQuery searchQuery={this.state.searchquery} />
             </div>
         )
     }

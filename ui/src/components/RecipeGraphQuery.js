@@ -5,7 +5,7 @@ import '../style/RecipeList.css';
 
 // I will want to limit the results returned as well and implment pagination. Baby steps.
 const RECIPE_QUERY = gql`
-    query($searchQuery: String = "a")
+    query($searchQuery: String = null)
     {
         recipesBySubstring(searchQuery: $searchQuery) {
             name
@@ -26,13 +26,17 @@ const RECIPE_QUERY = gql`
 
 // Eventually I probably want to move out all the display parts to a separate search results component 
 // so I can just leave this portion for actuall retrieving search results and deal with it as needed
-const RecipeGraphQuery = ({searchquery}) => (
-    <Query query={RECIPE_QUERY} variables={{searchquery}}>    
-        {({ loading, error, data }) => {
-            if (loading) return <p>Loading...</p>;
-            if (error) return <p>Error</p>;    
-            return (
-                <div className="RecipeList">
+const RecipeGraphQuery = ({searchQuery}) => (    
+    <Query query={RECIPE_QUERY} variables={{searchQuery}}>    
+        {({ loading, error, data }) => {            
+            if (loading) return( 
+                <p>Loading...</p>
+            );
+            if (error) return (
+                <p>Error</p>
+            );
+            return (                
+                <div className="RecipeList">                    
                     <h1>Recipes:</h1>
                     {data.recipesBySubstring.map(recipe => (
                         <div key={recipe.name}>
