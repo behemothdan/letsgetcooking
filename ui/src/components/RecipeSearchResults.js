@@ -1,13 +1,13 @@
 import React from "react";
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
-import '../style/RecipeList.css';
 
-// I will want to limit the results returned as well and implment pagination. Baby steps.
-const RECIPE_QUERY = gql`
-    query($searchQuery: String = "null")
+// This is an attempt to load the search results from the apollo-link-state which is kind
+// of a replacement for using React state.
+const GET_LAST_SEARCH_RESULTS = gql`        
+    query
     {
-        recipesBySubstring(searchQuery: $searchQuery) {
+        recipesInCache @client {
             name
             time
             instructions
@@ -21,24 +21,21 @@ const RECIPE_QUERY = gql`
             difficulty {
                 value
             }
-        }
+        }        
     }`;
 
-// Eventually I probably want to move out all the display parts to a separate search results component 
-// so I can just leave this portion for actuall retrieving search results and deal with it as needed
-const RecipeGraphQuery = ({searchQuery}) => (    
-    <Query query={RECIPE_QUERY} variables={{searchQuery}}>    
-        {({ loading, error, data, client }) => {            
+const RecipeSearchResults = () => (
+    <Query query={GET_LAST_SEARCH_RESULTS}>    
+        {({ loading, error, data }) => {
             if (loading) return( 
                 <p>Finding deliciousness...</p>
             );
             if (error) return (
-                <p>Error</p>
-            );
-            // This part is successfully saving recipes on initial load to the local apollo link state
-            client.writeData({ data: {recipesInCache: data.recipesBySubstring}})
-            return (                                          
-                <div className="RecipeList">                    
+                <p>{error.toString()}</p>
+            );            
+            return (      
+                <div>{data}</div>                                    
+                /*<div className="RecipeList">                    
                     <h1>Recipes:</h1>
                     {data.recipesBySubstring.map(recipe => (
                         <div key={recipe.name}>
@@ -58,10 +55,10 @@ const RecipeGraphQuery = ({searchQuery}) => (
                             </ul>
                         </div>
                     ))}          
-                </div>
+                </div>*/
             );
         }}
     </Query>
-);
+)
 
-export default RecipeGraphQuery;
+export default RecipeSearchResults

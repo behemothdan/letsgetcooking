@@ -1,10 +1,9 @@
 import React, {Component} from 'react';
-import '../style/RecipeList.css';
 
 class SearchInput extends Component {
     constructor(props) {
         super(props);
-        this.state = {searchquery: ''};
+        this.state = {searchquery: '', searchresults: null};
         this.handleChange = this.handleChange.bind(this);   
     }
 
