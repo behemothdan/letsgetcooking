@@ -2,7 +2,7 @@ import React from 'react';
 import './style/App.css';
 import RecipeSearch from './components/RecipeSearch';
 
-const Header = () => (  
+const Header = () => (
   <header className="App-header">
     <img src={process.env.PUBLIC_URL + '/img/grandstack.png'} className="App-logo" alt="logo" />
     <h1 className="App-title">Welcome to GRANDstack</h1>
@@ -11,7 +11,7 @@ const Header = () => (
 
 const App = () => (
   <div className="App">
-    <Header />                    
+    <Header />
     <RecipeSearch />
   </div>
 )

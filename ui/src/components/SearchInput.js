@@ -3,31 +3,31 @@ import React, {Component} from 'react';
 class SearchInput extends Component {
     constructor(props) {
         super(props);
-        this.state = {searchquery: '', searchresults: null};
-        this.handleChange = this.handleChange.bind(this);   
-    }
+        this.state = {searchquery: ''};
+        this.handleChange = this.handleChange.bind(this);
+    };
 
-    handleChange(event){        
+    handleChange(event){
         this.setState({searchquery: event.target.value}, () => {
-            this.props.handleSearchQueryChange(this.state.searchquery);            
-        });                        
-    };    
+            this.props.handleSearchQueryChange(this.state.searchquery);
+        });
+    };
 
-    render() {        
-        return (   
+    render() {
+        return (
             <div>
                 <form>
-                    <input 
+                    <input
                         name="searchInput"
                         type="text"
                         placeholder="Let's get cooking..."
                         value={this.state.searchquery}
                         onChange={this.handleChange}
-                    />    
+                    />
                 </form>
             </div>
         );
-    } 
+    }
 }
 
 export default SearchInput

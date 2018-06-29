@@ -6,17 +6,20 @@ import registerServiceWorker from './registerServiceWorker';
 import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from 'react-apollo';
 
-const initialSate = {
-    recipesInCache: {
+const initialState = {
+    recipesBySubstring: {
+        // Eventually fill this with a complete recipe?
+        __typename: "Recipe",
         name: "Test Recipe",
         time: "Forever"
-    }
+    },
+    searchQueryInCache: ""
 }
 
 const client = new ApolloClient({
     uri: process.env.REACT_APP_GRAPHQL_URI,
-    clientState: {        
-        defaults: initialSate
+    clientState: {
+        defaults: initialState
     }
 })
 
