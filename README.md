@@ -32,9 +32,9 @@ cd ./ui && npm start
 # Useful Neo4j Queries
 
 *Creating a new recipe*
-
+```
 CREATE (re:Recipe {name:toLower("Baked Spaghetti"), instructions:["Preheat the over to 350 degrees F.", "Grease a 9-by-13-by-2-inch baking dish with cooking spray","In a skillet, cook the bacon until slightly crisp.", "Saute the garlic, onion, and bell pepper in bacon drippings until tender.", "Add tomatows, olives, oregano, bacon, and the cooked ground beef and simmer uncovered for 10 minutes.", "Place half of the spaghetti in the prepared baking dish; top with half of the vegetable-beef mixture; and sprinkle with 1 cup of the cheddar.", "Repeat the layers.", "In a bowl, stir together the cream of mushroom soup and 1/4 cup water until smooth, and pour this over the casserole. Sprinkle with the Parmesan and bake, uncovered, for 30 to 35 minutes, or until heated through."], time: "1 hour 20 minutes"})
-
+```
 *Create new ingredient*
 ```
 CREATE (i:Ingredient {name: toLower("Garlic")})
