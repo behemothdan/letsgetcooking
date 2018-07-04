@@ -4,7 +4,7 @@ export const typeDefs = `
 type Recipe {
 	name: String
 	time: String
-  instructions: [String]  
+  instructions: [String]
   ingredients: [Ingredient] @relation(name: "Contains", direction: "OUT")
   mealtype: MealType @relation(name: "Type_Of", direction:"OUT")
   difficulty: Difficulty @relation(name: "Skill_Level", direction: "OUT")
@@ -25,31 +25,31 @@ type Difficulty {
 
 type Query {
   recipes(
-    name: String, 
-    time: String, 
-    instructions: [String],   
-    ingredients: [String],      
+    name: String,
+    time: String,
+    instructions: [String],
+    ingredients: [String],
     mealtype: String,
     difficulty: String
   ): [Recipe]
 
-  recipesBySubstring(searchQuery: String): [Recipe] @cypher(statement: "MATCH (r:Recipe) WHERE toLower(r.name) CONTAINS toLower($searchQuery) OR toLower(r.time) CONTAINS toLower($searchQuery) RETURN r" )
+  RecipesBySubstring(searchQuery: String): [Recipe] @cypher(statement: "MATCH (r:Recipe) WHERE toLower(r.name) CONTAINS toLower($searchQuery) OR toLower(r.time) CONTAINS toLower($searchQuery) RETURN r" )
 
   mealtype(
-    type: String      
-  ): [MealType]    
+    type: String
+  ): [MealType]
 
   ingredients(
-    name: String      
-  ): [Ingredient] 
+    name: String
+  ): [Ingredient]
 }
 `;
 
 export const resolvers = {
   Query: {
     recipes: neo4jgraphql,
-    recipesBySubstring: neo4jgraphql,
+    RecipesBySubstring: neo4jgraphql,
     mealtype: neo4jgraphql,
-    ingredients: neo4jgraphql    
+    ingredients: neo4jgraphql
   }
 };

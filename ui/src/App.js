@@ -1,18 +1,14 @@
 import React from 'react';
 import './style/App.css';
-import RecipeSearch from './components/RecipeSearch';
-
-const Header = () => (
-  <header className="App-header">
-    <img src={process.env.PUBLIC_URL + '/img/grandstack.png'} className="App-logo" alt="logo" />
-    <h1 className="App-title">Let's get cooking...</h1>
-  </header>
-)
+import Header from './components/Header/Header';
+import RecipeSearch from './components/RecipeSearch/RecipeSearch';
+import CreateIngredient from './components/CreateIngredient/CreateIngredient';
 
 const App = () => (
   <div className="App">
     <Header />
     <RecipeSearch />
+    <CreateIngredient />
   </div>
 )
 
