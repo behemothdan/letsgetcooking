@@ -8,9 +8,11 @@
 
 .App-header {
   background-color: #222;
-  height: 150px;
+  height: 250px;
   padding: 20px;
   color: white;
+  background-image:url('/img/letsgetcooking-header.jpg');
+  background-size: cover;
 }
 
 .App-title {

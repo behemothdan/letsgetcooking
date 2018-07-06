@@ -4,7 +4,6 @@ import "./DisplaySearchResults.css";
 const DisplaySearchResults = ({searchResults}) => {
     return (
         <div className="RecipeList">
-            <h1>Recipes:</h1>
             {searchResults.map(recipe => (
                 <div key={recipe.name}>
                     <h3>{recipe.name}</h3>
