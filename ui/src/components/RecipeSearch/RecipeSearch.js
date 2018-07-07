@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import { debounce } from "lodash";
 import SearchInput from "../SearchInput/SearchInput";
 import FetchRecipeQuery from "../FetchRecipeQuery/FetchRecipeQuery";
+import "./RecipeSearch.css";
 
 class RecipeSearch extends Component {
     constructor(props) {

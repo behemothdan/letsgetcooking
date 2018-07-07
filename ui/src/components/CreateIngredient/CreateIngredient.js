@@ -2,7 +2,7 @@ import React from "react";
 import gql from "graphql-tag";
 import { Mutation } from "react-apollo";
 import "./CreateIngredient.css";
-import Button from '../Button/Button';
+import Button from "../FormComponents/Button/Button";
 
 const CREATE_INGREDIENT = gql`
     mutation Ingredient($name: String!) {
@@ -39,9 +39,7 @@ const CreateIngredient = () => {
                             }}
                         >
                             <input type="text"
-                                ref={node => {
-                                    input = node;
-                                }}
+                                ref={node => input = node}
                             />
                             <Button buttonType="submit" buttonValue="Add the flavor!" />
                         </form>
