@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import { debounce } from "lodash";
-import SearchInput from "../SearchInput/SearchInput";
-import FetchRecipeQuery from "../FetchRecipeQuery/FetchRecipeQuery";
+import RecipeSearchInput from "../RecipeSearchInput/RecipeSearchInput";
+import RecipeSearchQuery from "../RecipeSearchQuery/RecipeSearchQuery";
 import "./RecipeSearch.css";
 
 class RecipeSearch extends Component {
@@ -18,8 +18,8 @@ class RecipeSearch extends Component {
     render() {
         return (
             <div>
-                <SearchInput handleSearchQueryChange={this.handleChange} />
-                <FetchRecipeQuery searchQuery={this.state.searchquery} />
+                <RecipeSearchInput handleSearchQueryChange={this.handleChange} />
+                <RecipeSearchQuery searchQuery={this.state.searchquery} />
             </div>
         )
     }

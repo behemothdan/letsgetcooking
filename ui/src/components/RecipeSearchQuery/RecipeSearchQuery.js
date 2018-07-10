@@ -1,7 +1,7 @@
 import React from "react";
 import gql from "graphql-tag";
 import { Query } from "react-apollo";
-import DisplaySearchResults from "../DisplaySearchResults/DisplaySearchResults";
+import RecipeSearchResults from "../RecipeSearchResults/RecipeSearchResults";
 
 // I will want to limit the results returned as well and implment pagination. Baby steps.
 const RECIPE_QUERY = gql`
@@ -24,7 +24,7 @@ const RECIPE_QUERY = gql`
         }
     }`;
 
-const RecipeGraphQuery = ({searchQuery}) => (
+const RecipeSearchQuery = ({searchQuery}) => (
     <Query query={RECIPE_QUERY} variables={{searchQuery}}>
         {({loading, error, data}) => {
             if (loading) return(
@@ -35,10 +35,10 @@ const RecipeGraphQuery = ({searchQuery}) => (
             );
 
             return (
-                <DisplaySearchResults searchResults={data.RecipesBySubstring} />
+                <RecipeSearchResults searchResults={data.RecipesBySubstring} />
             );
         }}
     </Query>
 );
 
-export default RecipeGraphQuery;
+export default RecipeSearchQuery;

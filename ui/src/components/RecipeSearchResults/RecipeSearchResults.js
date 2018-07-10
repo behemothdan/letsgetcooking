@@ -1,7 +1,7 @@
 import React from "react";
-import "./DisplaySearchResults.css";
+import "./RecipeSearchResults.css";
 
-const DisplaySearchResults = ({searchResults}) => {
+const RecipeSearchResults = ({searchResults}) => {
     return (
         <div className="RecipeList">
             {searchResults.map(recipe => (
@@ -26,4 +26,4 @@ const DisplaySearchResults = ({searchResults}) => {
     );
 }
 
-export default DisplaySearchResults
+export default RecipeSearchResults

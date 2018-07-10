@@ -23,7 +23,7 @@ const GetMealTypes = () => (
             return (
                 <select name="mealTypes">
                     {data.mealtype.map(mealtype => (
-                        <option key={mealtype.type} value={mealtype.type}>{mealtype.type}</option>
+                        <option key={mealtype.type} value={mealtype.value}>{mealtype.type}</option>
                     ))}
                 </select>
             );

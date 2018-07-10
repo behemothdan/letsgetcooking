@@ -1,60 +1,97 @@
-import React from "react";
+import React, {Component} from "react";
 import gql from "graphql-tag";
 import { Mutation } from "react-apollo";
-import Input from "../FormComponents/Input/Input";
+import { debounce } from "lodash";
+import GetDifficulty from "../GetDifficulty/GetDifficulty";
 import GetMealTypes from "../GetMealTypes/GetMealTypes";
+
+import Button from "../FormComponents/Button/Button";
+import Input from "../FormComponents/Input/Input";
 
 const ADD_RECIPE = gql`
     mutation Recipe (
-        $name: String!,
+        $recipeName: String!,
         $time: String,
         $instructions: [String!],
         $ingredients: [Ingredient!],
         $mealtype: MealType!,
         $difficulty: Difficulty!
     ) {
-        CreateRecipe(name: $name) {
+        CreateRecipe(name: $recipeName, time: $time) {
             name
+            time
         }
-    }`;
+}`;
 
-const AddRecipe = () => {
-    let recipeName;
+class AddRecipe extends Component {
+    constructor(props) {
+        super(props);
 
-    return (
-        <Mutation mutation={ADD_RECIPE} errorPolicy="none">
-            {(AddRecipe, {loading, error, data}) =>  {
-                if(loading) return (
-                    <span>Adding that delicious flavor... </span>
-                );
-                if(error) return (
-                    // We'll add the input here eventually.
-                    // Maybe we abstract the input farther into another component to make it more DRY.
-                    <pre>Bad: {error.graphQLErrors.map(({ message }, i) => (
-                        <span key={i}>{message}</span>
-                    ))}
-                    </pre>
-                );
+        this.state = {
+            name: '',
+            time: '',
+            instructions: {},
+            ingredients: {},
+            mealtype: '',
+            difficulty: ''
+        }
+        //this.handleChange = debounce(this.handleChange.bind(this), 500);
+        this.handleChange = this.handleChange.bind(this);
+    };
 
-                return (
-                    <div>
-                        <h2>Add a new recipe!</h2>
-                        <form
-                            onSubmit={e => {
-                                e.preventDefault();
-                                AddRecipe({variables: {name: recipeName.value}});
-                                recipeName.value = "";
-                            }}
-                        >
-                            <Input name="recipeName" labelValue="Recipe Name" required="required" />
-                            <Input name="time" labelValue="Time" />
-                            <GetMealTypes />
-                        </form>
-                    </div>
-                )
-            }}
-        </Mutation>
-    )
+    handleChange(e){
+        console.log(e.target.name);
+        let name = e.target.name;
+        let value = e.target.value;
+        this.setState({[name]: value}, () => {
+            this.props.handleChange([value]);
+        });
+    };
+
+
+    render() {
+        return (
+            <Mutation mutation={ADD_RECIPE} errorPolicy="none">
+                {(AddRecipe, {loading, error, data}) =>  {
+                    if(loading) return (
+                        <span>Adding that delicious flavor... </span>
+                    );
+                    if(error) return (
+                        <pre>Bad: {error.graphQLErrors.map(({ message }, i) => (
+                            <span key={i}>{message}</span>
+                        ))}
+                        </pre>
+                    );
+
+                    return (
+                        <div>
+                            <h2>Add a new recipe!</h2>
+                            <form>
+                                <Input
+                                    name={'recipeName'}
+                                    labelValue={'Recipe Name'}
+                                    required={'required'}
+                                    placeholder={'Recipe Name'}
+                                    value={this.state.name}
+                                    handleChange={this.handleChange}
+                                />
+                                <Input
+                                    name={'time'}
+                                    labelValue={'Time'}
+                                    value={this.state.time}
+                                    placeholder={'How long till eating?'}
+                                    handleChange={this.handleChange}
+                                />
+                                <GetMealTypes />
+                                <GetDifficulty />
+                                <Button buttonType="submit" buttonValue="Add that delicious recipe!" />
+                            </form>
+                        </div>
+                    )
+                }}
+            </Mutation>
+        )
+    }
 }
 
 export default AddRecipe

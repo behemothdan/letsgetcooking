@@ -39,6 +39,10 @@ type Query {
     type: String
   ): [MealType]
 
+  difficulty(
+    value: String
+  ): [Difficulty]
+
   ingredients(
     name: String
   ): [Ingredient]
@@ -49,6 +53,7 @@ export const resolvers = {
   Query: {
     recipes: neo4jgraphql,
     RecipesBySubstring: neo4jgraphql,
+    difficulty: neo4jgraphql,
     mealtype: neo4jgraphql,
     ingredients: neo4jgraphql
   }

@@ -1,12 +1,19 @@
 import React from "react";
 import "./Input.css";
 
-/* Required is an optional parameter */
-const Input = ({name, labelValue, required = ""}) => {
+/* Props list */
+const Input = ({name, labelValue = "", required = "", placeholder = "", value = "", onChange = null, className = ""}) => {
     return (
-        <span>
+        <span className={className}>
             <label htmlFor={name}>{labelValue}</label>
-            <input type="text" name={name} required={required} />
+            <input
+                name={name}
+                type="text"
+                required={required}
+                placeholder={placeholder}
+                handleChange={onChange}
+                value={value}
+            />
         </span>
     )
 }

@@ -1,7 +1,7 @@
 import React from "react";
 import gql from "graphql-tag";
 import { Mutation } from "react-apollo";
-import "./CreateIngredient.css";
+import "./AddIngredient.css";
 import Button from "../FormComponents/Button/Button";
 
 const CREATE_INGREDIENT = gql`
@@ -21,8 +21,7 @@ const CreateIngredient = () => {
                     <span>Adding that delicious flavor... </span>
                 );
                 if(error) return (
-                    // We'll add the input here eventually. Maybe we abstract the input farther into another component to make it more DRY.
-                    // There might be a way to reuse what's below.
+                    // We need to add much more robust, user-friendly error handling.
                     <pre>Bad: {error.graphQLErrors.map(({ message }, i) => (
                         <span key={i}>{message}</span>
                     ))}
@@ -35,7 +34,6 @@ const CreateIngredient = () => {
                             onSubmit={e => {
                                 e.preventDefault();
                                 CreateIngredient({variables: {name: input.value}});
-                                input.value = "";
                             }}
                         >
                             <input type="text"
