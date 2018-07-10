@@ -35,8 +35,7 @@ class AddRecipe extends Component {
             mealtype: '',
             difficulty: ''
         }
-        //this.handleChange = debounce(this.handleChange.bind(this), 500);
-        this.handleChange = this.handleChange.bind(this);
+        this.handleChange = debounce(this.handleChange.bind(this), 500);
     };
 
     handleChange(e){
@@ -73,14 +72,13 @@ class AddRecipe extends Component {
                                     required={'required'}
                                     placeholder={'Recipe Name'}
                                     value={this.state.name}
-                                    handleChange={this.handleChange}
                                 />
                                 <Input
                                     name={'time'}
                                     labelValue={'Time'}
-                                    value={this.state.time}
+                                    required={''}
                                     placeholder={'How long till eating?'}
-                                    handleChange={this.handleChange}
+                                    value={this.state.time}
                                 />
                                 <GetMealTypes />
                                 <GetDifficulty />

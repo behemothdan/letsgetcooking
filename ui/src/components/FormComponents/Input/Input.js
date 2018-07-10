@@ -2,7 +2,7 @@ import React from "react";
 import "./Input.css";
 
 /* Props list */
-const Input = ({name, labelValue = "", required = "", placeholder = "", value = "", onChange = null, className = ""}) => {
+const Input = ({name, labelValue = "", required = "", placeholder = "", value = "", className = ""}) => {
     return (
         <span className={className}>
             <label htmlFor={name}>{labelValue}</label>
@@ -11,7 +11,6 @@ const Input = ({name, labelValue = "", required = "", placeholder = "", value = 
                 type="text"
                 required={required}
                 placeholder={placeholder}
-                handleChange={onChange}
                 value={value}
             />
         </span>
