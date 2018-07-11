@@ -1,7 +1,6 @@
 import React, {Component} from "react";
 import gql from "graphql-tag";
 import { Mutation } from "react-apollo";
-import { debounce } from "lodash";
 import GetDifficulty from "../GetDifficulty/GetDifficulty";
 import GetMealTypes from "../GetMealTypes/GetMealTypes";
 
@@ -35,15 +34,21 @@ class AddRecipe extends Component {
             mealtype: '',
             difficulty: ''
         }
-        this.handleChange = debounce(this.handleChange.bind(this), 500);
+        this.onInputChange = this.onInputChange.bind(this);
     };
 
-    handleChange(e){
-        console.log(e.target.name);
-        let name = e.target.name;
-        let value = e.target.value;
-        this.setState({[name]: value}, () => {
-            this.props.handleChange([value]);
+    onInputChange(event){
+        // As long as the name of the input component matches the name of the state property
+        // this will add them to the appropriate keys.
+        const stateName = event.target.name;
+        const value = event.target.value;
+        this.setState(s => ({[stateName]: value}), () => {
+            // In other components this calls back to the parent
+            // See: RecipeSearchInput
+            // We can probably use this for something else like some kind of validation
+            // since it is called after the setState is finished or simplify it:
+            // this.setState(s => ({[stateName]: value}))
+            console.log(value);
         });
     };
 
@@ -67,18 +72,20 @@ class AddRecipe extends Component {
                             <h2>Add a new recipe!</h2>
                             <form>
                                 <Input
-                                    name={'recipeName'}
-                                    labelValue={'Recipe Name'}
-                                    required={'required'}
-                                    placeholder={'Recipe Name'}
+                                    name="name"
+                                    labelValue="Recipe Name"
+                                    required="true"
+                                    placeholder="Recipe Name"
                                     value={this.state.name}
+                                    onChange={this.onInputChange}
                                 />
                                 <Input
-                                    name={'time'}
-                                    labelValue={'Time'}
-                                    required={''}
-                                    placeholder={'How long till eating?'}
+                                    name="time"
+                                    labelValue="Time"
+                                    required="false"
+                                    placeholder="How long till eating?"
                                     value={this.state.time}
+                                    onChange={this.onInputChange}
                                 />
                                 <GetMealTypes />
                                 <GetDifficulty />
