@@ -10,20 +10,21 @@ const GET_MEALTYPES = gql`
         }
     }`;
 
-const GetMealTypes = () => (
+const GetMealTypes = ({onChange}) => (
     <Query query={GET_MEALTYPES}>
         {({loading, error, data}) => {
             if (loading) return(
                 <p>So many times to eat...</p>
             );
             if (error) return (
-                <p>Oops! We had a problem finding all the times Hobbits like to eat!</p>
+                <p>Oops! We had a problem finding all the things Hobbits like to eat!</p>
             );
 
             return (
-                <select name="mealTypes">
+                <select name="mealtype" onChange={onChange}>
+                        <option key="no-mealtype" value="">What kind of food is this?</option>
                     {data.mealtype.map(mealtype => (
-                        <option key={mealtype.type} value={mealtype.value}>{mealtype.type}</option>
+                        <option key={mealtype.type} value={mealtype.type}>{mealtype.type}</option>
                     ))}
                 </select>
             );

@@ -10,7 +10,7 @@ const GET_DIFFICULTY = gql`
         }
     }`;
 
-const GetDifficulty = () => (
+const GetDifficulty = ({onChange}) => (
     <Query query={GET_DIFFICULTY}>
         {({loading, error, data}) => {
             if (loading) return(
@@ -21,7 +21,8 @@ const GetDifficulty = () => (
             );
 
             return (
-                <select name="difficulties">
+                <select name="difficulties" onChange={onChange}>
+                        <option key="no-difficulty" value="">Select a difficulty</option>
                     {data.difficulty.map(difficulty => (
                         <option key={difficulty.value} value={difficulty.value}>{difficulty.value}</option>
                     ))}

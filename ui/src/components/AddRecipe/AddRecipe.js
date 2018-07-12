@@ -35,7 +35,7 @@ class AddRecipe extends Component {
             difficulty: ''
         }
         this.onInputChange = this.onInputChange.bind(this);
-    };
+    }
 
     onInputChange(event){
         // As long as the name of the input component matches the name of the state property
@@ -48,15 +48,14 @@ class AddRecipe extends Component {
             // We can probably use this for something else like some kind of validation
             // since it is called after the setState is finished or simplify it:
             // this.setState(s => ({[stateName]: value}))
-            console.log(value);
+            //console.log(value);
         });
-    };
-
+    }
 
     render() {
         return (
             <Mutation mutation={ADD_RECIPE} errorPolicy="none">
-                {(AddRecipe, {loading, error, data}) =>  {
+                {(AddRecipe, {loading, error}) =>  {
                     if(loading) return (
                         <span>Adding that delicious flavor... </span>
                     );
@@ -87,8 +86,14 @@ class AddRecipe extends Component {
                                     value={this.state.time}
                                     onChange={this.onInputChange}
                                 />
-                                <GetMealTypes />
-                                <GetDifficulty />
+                                <GetMealTypes
+                                    value={this.state.mealtype}
+                                    onChange={this.onInputChange}
+                                />
+                                <GetDifficulty
+                                    value={this.state.difficulty}
+                                    onChange={this.onInputChange}
+                                />
                                 <Button buttonType="submit" buttonValue="Add that delicious recipe!" />
                             </form>
                         </div>

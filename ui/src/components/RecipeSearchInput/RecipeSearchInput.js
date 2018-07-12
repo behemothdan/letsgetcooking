@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import "./RecipeSearchInput.css";
+import Input from "../FormComponents/Input/Input";
 
 class SearchInput extends Component {
     constructor(props) {
@@ -18,14 +19,12 @@ class SearchInput extends Component {
         return (
             <div>
                 <form>
-                    {/* I can probably get this to use the FormComponents/Input if I work on passing the state or using Redux */}
-                    <input
+                    <Input
                         name="searchInput"
-                        type="text"
                         placeholder="Let's get cooking!"
                         value={this.state.searchquery}
                         onChange={this.handleChange}
-                        />
+                    />
                 </form>
             </div>
         );
