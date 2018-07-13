@@ -2,6 +2,7 @@ import React from "react";
 import gql from "graphql-tag";
 import { Query } from "react-apollo";
 import RecipeSearchResults from "../RecipeSearchResults/RecipeSearchResults";
+import PropTypes from "prop-types";
 
 // I will want to limit the results returned as well and implment pagination. Baby steps.
 const RECIPE_QUERY = gql`
@@ -40,5 +41,9 @@ const RecipeSearchQuery = ({searchQuery}) => (
         }}
     </Query>
 );
+
+RecipeSearchQuery.propTypes = {
+    searchQuery: PropTypes.string.isRequired
+}
 
 export default RecipeSearchQuery;

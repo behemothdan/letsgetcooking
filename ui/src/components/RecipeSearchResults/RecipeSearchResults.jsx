@@ -1,5 +1,6 @@
 import React from "react";
 import "./RecipeSearchResults.css";
+import PropTypes from "prop-types";
 
 const RecipeSearchResults = ({searchResults}) => {
     return (
@@ -24,6 +25,10 @@ const RecipeSearchResults = ({searchResults}) => {
             ))}
         </div>
     );
+}
+
+RecipeSearchResults.propTypes = {
+    searchResults: PropTypes.array
 }
 
 export default RecipeSearchResults

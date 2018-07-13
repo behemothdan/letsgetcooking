@@ -1,5 +1,7 @@
 import React from "react";
 import "./Input.css";
+import PropTypes from "prop-types";
+
 
 const Input = ({name, labelValue = "", required = "", placeholder = "", value = "", className = "", onChange = () => {}}) => {
     return (
@@ -16,4 +18,19 @@ const Input = ({name, labelValue = "", required = "", placeholder = "", value = 
         </span>
     )
 }
+
+Input.propTypes = {
+    name: PropTypes.string.isRequired,
+    labelValue: PropTypes.string.isRequired,
+    required: PropTypes.oneOf(['true', 'false']),
+    placeholder: PropTypes.string,
+    value: PropTypes.string,
+    className: PropTypes.string,
+    onChange: PropTypes.func
+};
+
+Input.defaultProps = {
+    required: "false"
+};
+
 export default Input

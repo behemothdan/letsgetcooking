@@ -21,6 +21,8 @@ class SearchInput extends Component {
                 <form>
                     <Input
                         name="searchInput"
+                        labelValue="What are we searching for?"
+                        required="true"
                         placeholder="Let's get cooking!"
                         value={this.state.searchquery}
                         onChange={this.handleChange}
