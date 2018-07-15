@@ -2,6 +2,7 @@ import React from "react";
 import gql from "graphql-tag";
 import { Query } from "react-apollo";
 import Select from "../FormComponents/Select/Select";
+import PropTypes from "prop-types";
 
 const GET_MEALTYPES = gql`
     query
@@ -23,17 +24,15 @@ const GetMealTypes = ({onChange}) => (
 
             return (
                 <div>
-                {/*<select name="mealtype" onChange={onChange}>
-                        <option key="no-mealtype" value="">What kind of food is this?</option>
-                    {data.mealtype.map(mealtype => (
-                        <option key={mealtype.type} value={mealtype.type}>{mealtype.type}</option>
-                    ))}
-                </select>*/}
                     <Select name="mealtype" onChange={onChange} defaultText="What kind of food is it?" optionItems={data.mealtype} />
                 </div>
             );
         }}
     </Query>
 );
+
+GetMealTypes.propTypes = {
+    onChange: PropTypes.func.isRequired
+}
 
 export default GetMealTypes

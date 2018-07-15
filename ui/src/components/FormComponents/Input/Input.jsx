@@ -3,7 +3,7 @@ import "./Input.css";
 import PropTypes from "prop-types";
 
 
-const Input = ({name, labelValue = "", required = "", placeholder = "", value = "", className = "", onChange = () => {}}) => {
+const Input = ({name, labelValue, required, placeholder, value, className, onChange = () => {}}) => {
     return (
         <span className={className}>
             <label htmlFor={name}>{labelValue}</label>
@@ -30,7 +30,11 @@ Input.propTypes = {
 };
 
 Input.defaultProps = {
-    required: "false"
+    labelValue: "",
+    required: "false",
+    placeholder: "",
+    value: "",
+    className: ""
 };
 
 export default Input

@@ -36,7 +36,7 @@ const CreateIngredient = () => {
                                 CreateIngredient({variables: {name: input.value}});
                             }}
                         >
-                            <input type="text"
+                            <input type="text" required="true"
                                 ref={node => input = node}
                             />
                             <Button buttonType="submit" buttonValue="Add the flavor!" />
