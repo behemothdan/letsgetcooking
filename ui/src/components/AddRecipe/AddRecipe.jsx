@@ -38,6 +38,7 @@ class AddRecipe extends Component {
         }
         this.onInputChange = this.onInputChange.bind(this);
         this.addIngredient = this.addIngredient.bind(this);
+        this.removeIngredient = this.removeIngredient.bind(this);
     }
 
     onInputChange(event){
@@ -59,9 +60,25 @@ class AddRecipe extends Component {
     }
 
     addIngredient = () => {
-        this.setState((prevState) => ({
-            ingredients: [...prevState.ingredients, {name:"", quantity: ""}],
+        this.setState((state) => ({
+            ingredients: [...state.ingredients, {name:"", quantity: ""}],
         }));
+    }
+
+    removeIngredient(name,quantity) {
+        this.setState(state => {
+            return {
+                ingredients: state.ingredients.map(ingredient => {
+                    if(ingredient.name !== name || ingredient.quantity !== quantity){
+                        return ingredient;
+                    } else {
+                        return {
+                            ...ingredient, deleted: true
+                        }
+                    }
+                })
+            }
+        })
     }
 
     render() {
@@ -116,6 +133,7 @@ class AddRecipe extends Component {
                                             <div key={idx}>
                                                 <Input
                                                     name={ingredientId}
+                                                    value={ingredients[idx].name}
                                                     labelValue={`Ingredient #${idx + 1}`}
                                                     required="true"
                                                     className="ingredient"
@@ -123,6 +141,7 @@ class AddRecipe extends Component {
                                                 />
                                                 <Input
                                                     name={quantityId}
+                                                    value={ingredients[idx].quantity}
                                                     labelValue="Quantity"
                                                     required="true"
                                                     className="quantity"
@@ -132,7 +151,6 @@ class AddRecipe extends Component {
                                         )
                                     })
                                 }
-
                                 <Button buttonType="submit" buttonValue="Add that delicious recipe!" />
                             </form>
                         </div>
