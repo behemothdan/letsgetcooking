@@ -23,7 +23,7 @@ const CreateIngredient = () => {
                 if(error) return (
                     // We need to add much more robust, user-friendly error handling.
                     <pre>Bad: {error.graphQLErrors.map(({ message }, i) => (
-                        <span key={i}>{message}</span>
+                        <span key={i}>{message} - {data}</span>
                     ))}
                     </pre>
                 );

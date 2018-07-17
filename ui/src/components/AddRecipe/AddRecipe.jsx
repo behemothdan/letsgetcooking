@@ -32,6 +32,8 @@ class AddRecipe extends Component {
             name: '',
             time: '',
             instructions: {},
+            ingredient: '', // This is only used to temporarily hold the ingredient until it is added to the array below
+            quantity: '', // The same is true for this as it is for the item above
             ingredients: [{name:"", quantity:""}],
             mealtype: '',
             difficulty: ''
@@ -46,7 +48,7 @@ class AddRecipe extends Component {
         // this will add them to the appropriate keys.
         const stateName = event.target.name;
         const value = event.target.value;
-        this.setState(s => ({[stateName]: value}), () => {
+        this.setState(({[stateName]: value}), () => {
             // In other components this calls back to the parent
             // We can probably use this for something else like some kind of validation
             // since it is called after the setState is finished or simplify it:
@@ -55,14 +57,18 @@ class AddRecipe extends Component {
         });
     }
 
-    onIngredientInputChange = (e) => {
-
-    }
-
     addIngredient = () => {
+        const newIngredient = {
+            name: this.state.ingredient,
+            quantity: this.state.quantity
+        }
         this.setState((state) => ({
-            ingredients: [...state.ingredients, {name:"", quantity: ""}],
-        }));
+            ingredients: [...state.ingredients, newIngredient],
+            ingredient: '',
+            quantity: ''
+        }), () => {
+            //console.log(this.state.ingredients);
+        });
     }
 
     removeIngredient(name,quantity) {
@@ -82,7 +88,6 @@ class AddRecipe extends Component {
     }
 
     render() {
-        let {ingredients} = this.state
         return (
             <Mutation mutation={ADD_RECIPE} errorPolicy="none">
                 {(AddRecipe, {loading, error}) =>  {
@@ -126,31 +131,25 @@ class AddRecipe extends Component {
                                 />
 
                                 <Button buttonType="button" buttonValue="Add Ingredient" buttonClick={this.addIngredient} />
-                                {
-                                    ingredients.map((val, idx) => {
-                                        let ingredientId = `ingredient-${idx}`, quantityId = `quantity-${idx}`
-                                        return (
-                                            <div key={idx}>
-                                                <Input
-                                                    name={ingredientId}
-                                                    value={ingredients[idx].name}
-                                                    labelValue={`Ingredient #${idx + 1}`}
-                                                    required="true"
-                                                    className="ingredient"
-                                                    onChange={this.onIngredientInputChange}
-                                                />
-                                                <Input
-                                                    name={quantityId}
-                                                    value={ingredients[idx].quantity}
-                                                    labelValue="Quantity"
-                                                    required="true"
-                                                    className="quantity"
-                                                    onChange={this.onIngredientInputChange}
-                                                />
-                                            </div>
-                                        )
-                                    })
-                                }
+
+                                <div>
+                                    <Input
+                                        name="ingredient"
+                                        value={this.state.ingredient}
+                                        labelValue="Ingredient"
+                                        required="true"
+                                        className="ingredient"
+                                        onChange={this.onInputChange}
+                                    />
+                                    <Input
+                                        name="quantity"
+                                        value={this.state.quantity}
+                                        labelValue="Quantity"
+                                        required="true"
+                                        className="quantity"
+                                        onChange={this.onInputChange}
+                                    />
+                                </div>
                                 <Button buttonType="submit" buttonValue="Add that delicious recipe!" />
                             </form>
                         </div>

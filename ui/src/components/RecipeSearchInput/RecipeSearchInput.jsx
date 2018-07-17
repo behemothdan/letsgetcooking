@@ -7,13 +7,13 @@ class SearchInput extends Component {
         super(props);
         this.state = {searchquery: ''};
         this.handleChange = this.handleChange.bind(this);
-    };
+    }
 
     handleChange(event){
         this.setState({searchquery: event.target.value}, () => {
             this.props.handleSearchQueryChange(this.state.searchquery);
         });
-    };
+    }
 
     render() {
         return (
