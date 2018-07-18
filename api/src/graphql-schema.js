@@ -33,7 +33,8 @@ type Query {
     difficulty: String
   ): [Recipe]
 
-  RecipesBySubstring(searchQuery: String): [Recipe] @cypher(statement: "MATCH (r:Recipe) WHERE toLower(r.name) CONTAINS toLower($searchQuery) OR toLower(r.time) CONTAINS toLower($searchQuery) RETURN r" )
+  RecipesBySubstring(searchQuery: String): [Recipe] @cypher(statement:
+    "MATCH (r:Recipe) WHERE toLower(r.name) CONTAINS toLower($searchQuery) OR toLower(r.time) CONTAINS toLower($searchQuery) RETURN r" )
 
   mealtype(
     type: String

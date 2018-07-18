@@ -29,10 +29,10 @@ const RecipeSearchQuery = ({searchQuery}) => (
     <Query query={RECIPE_QUERY} variables={{searchQuery}}>
         {({loading, error, data}) => {
             if (loading) return(
-                <p>Finding deliciousness...</p>
+                <p>Finding something delicious...</p>
             );
             if (error) return (
-                <p>Error</p>
+                <p>Ah man! There was nothing to eat.</p>
             );
 
             return (
