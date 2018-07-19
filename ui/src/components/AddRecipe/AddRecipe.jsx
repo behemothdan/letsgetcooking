@@ -1,13 +1,12 @@
 import React, {Component} from "react";
 import gql from "graphql-tag";
 import { Mutation } from "react-apollo";
+
 import GetDifficulty from "../GetDifficulty/GetDifficulty";
 import GetMealTypes from "../GetMealTypes/GetMealTypes";
-
 import Button from "../FormComponents/Button/Button";
 import Input from "../FormComponents/Input/Input";
 import Textbox from "../FormComponents/Textbox/Textbox";
-import List from "../List/List";
 
 const ADD_RECIPE = gql`
     mutation Recipe (
@@ -36,14 +35,16 @@ class AddRecipe extends Component {
             instruction: '', // Same as above
             name: '',
             time: '',
-            instructions: {},
-            ingredients: [{name:"", quantity:""}],
+            instructions: [],
+            ingredients: [],
             mealtype: '',
             difficulty: ''
         }
         this.onInputChange = this.onInputChange.bind(this);
         this.addIngredient = this.addIngredient.bind(this);
         this.removeIngredient = this.removeIngredient.bind(this);
+        this.addInstruction = this.addInstruction.bind(this);
+        this.removeInstruction = this.removeInstruction.bind(this);
     }
 
     onInputChange(event){
@@ -63,41 +64,85 @@ class AddRecipe extends Component {
     addIngredient = () => {
         const newIngredient = {
             name: this.state.ingredient,
-            quantity: this.state.quantity
+            quantity: this.state.quantity,
+            id: this.guid()
         }
         this.setState((state) => ({
             ingredients: [...state.ingredients, newIngredient],
             ingredient: '',
             quantity: ''
         }), () => {
+            // Refer to onInputChange for thoughts on this section
             //console.log(this.state.ingredients);
         });
     }
 
-    addInstruction = () => {
-        const newInstruction = this.state.instruction;
-        this.setState((state) => ({
-            instructions: [...state.instructions, newInstruction],
-            instruction: ''
-        }), () => {
-            //console.log(this.state.instructions);
-        })
-    }
-
-    removeIngredient(name,quantity) {
+    // I am sure there is going to be a nice easy way to combine removeIngredient and removeInstruction but for now they are separate
+    removeIngredient(id) {
         this.setState(state => {
             return {
                 ingredients: state.ingredients.map(ingredient => {
-                    if(ingredient.name !== name || ingredient.quantity !== quantity){
-                        return ingredient;
+                    if(ingredient.id !== id){
+                        return ingredient
                     } else {
                         return {
-                            ...ingredient, deleted: true
+                            ...ingredient
                         }
                     }
                 })
             }
         })
+        setTimeout(() => {
+            this.setState(state => {
+                return {
+                    ingredients: state.ingredients.filter(i => i.id !== id)
+                }
+            })
+        }, 1000)
+    }
+
+    removeInstruction(id) {
+        this.setState(state => {
+            return {
+                instructions: state.instructions.map(instruction => {
+                    if(instruction.id !== id) {
+                        return instruction;
+                    } else {
+                        return {
+                            ...instruction
+                        }
+                    }
+                })
+            }
+        })
+        setTimeout(() => {
+            this.setState(state => {
+                return {
+                    instructions: state.instructions.filter(i => i.id !== id)
+                }
+            })
+        }, 1000)
+    }
+
+    addInstruction = () => {
+        const newInstruction = {
+            value: this.state.instruction,
+            id: this.guid()
+        }
+        this.setState((state) => ({
+            instructions: [...state.instructions, newInstruction],
+            instruction: ''
+        }), () => {
+            // Refer to onInputChange for thoughts on this section
+            //console.log(this.state.instructions);
+        })
+    }
+
+    // Probably move this to an external file for reuse? We should find the best practice for naming dynamic element keys
+    guid(){
+        return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+            ((c ^ crypto.getRandomValues(new Uint8Array(1))[0]) & (15 >> c / 4)).toString(16)
+        )
     }
 
     render() {
@@ -142,6 +187,15 @@ class AddRecipe extends Component {
                                     value={this.state.difficulty}
                                     onChange={this.onInputChange}
                                 />
+
+                                <ul key={"ingredients-" + this.guid()}>
+                                    {this.state.ingredients.map(ingredient => {
+                                        return <li key={ingredient.id}>
+                                                    {ingredient.quantity} {ingredient.name}
+                                                    <Button className="remove" buttonClick={() => this.removeIngredient(ingredient.id)} value="x" type="button" />
+                                                </li>
+                                    })}
+                                </ul>
                                 <Input
                                     name="ingredient"
                                     value={this.state.ingredient}
@@ -150,7 +204,6 @@ class AddRecipe extends Component {
                                     className="ingredientinput"
                                     onChange={this.onInputChange}
                                 />
-                                {this.state.ingredients.map(t => <List key={t.name + t.quantity} {...t} />)}
                                 <Input
                                     name="quantity"
                                     value={this.state.quantity}
@@ -159,7 +212,17 @@ class AddRecipe extends Component {
                                     className="quantityinput"
                                     onChange={this.onInputChange}
                                 />
-                                <Button buttonType="button" buttonValue="Add Ingredient" buttonClick={this.addIngredient} />
+                                <Button type="button" value="Add Ingredient" buttonClick={this.addIngredient} />
+
+                                <ul key={"instructions-" + this.guid()}>
+                                    {this.state.instructions.map(instruction => {
+                                        return <li key={instruction.id}>
+                                                    {instruction.value}
+                                                    <Button className="remove" buttonClick={() => this.removeInstruction(instruction.id)} value="x" type="button" />
+                                                </li>
+                                    })}
+                                </ul>
+
                                 <Textbox
                                     name="instruction"
                                     value={this.state.instruction}
@@ -169,9 +232,9 @@ class AddRecipe extends Component {
                                     row="4"
                                     onChange={this.onInputChange}
                                 />
-                                <Button buttonType="button" buttonValue="Add Step" buttonClick={this.addInstruction} />
+                                <Button type="button" value="Add Step" buttonClick={this.addInstruction} />
 
-                                <Button buttonType="submit" buttonValue="Add that delicious recipe!" />
+                                <Button type="submit" value="Add that delicious recipe!" />
                             </form>
                         </div>
                     )

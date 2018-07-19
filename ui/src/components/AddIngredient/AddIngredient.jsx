@@ -39,7 +39,7 @@ const CreateIngredient = () => {
                             <input type="text" required="true"
                                 ref={node => input = node}
                             />
-                            <Button buttonType="submit" buttonValue="Add the flavor!" />
+                            <Button type="submit" value="Add the flavor!" />
                         </form>
                     </div>
                 )

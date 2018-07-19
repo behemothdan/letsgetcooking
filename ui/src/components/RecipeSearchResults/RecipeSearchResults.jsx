@@ -9,13 +9,13 @@ const RecipeSearchResults = ({searchResults}) => {
                 <div key={recipe.name}>
                     <h3>{recipe.name}</h3>
                     <ul>
-                        {recipe.instructions.map(y => {
-                        return <li key={y}>{y}</li>
+                        {recipe.instructions.map(instruction => {
+                            return <li key={instruction}>{instruction}</li>
                         })}
                     </ul>
                     <ul key={recipe.ingredients}>
                         {recipe.ingredients.map(i => {
-                            return <li key={recipe.name + i.name}>{i.quantity} {i.name}</li>
+                            return <li key={recipe.name + "-" + i.name}>{i.quantity} {i.name}</li>
                         })}
                     </ul>
                     <ul>

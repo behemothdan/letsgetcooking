@@ -2,16 +2,17 @@ import React from "react";
 import "./Button.css";
 import PropTypes from "prop-types";
 
-const Button = ({buttonType, buttonValue, buttonClick}) => {
+const Button = ({type, value, buttonClick, className}) => {
     return (
-        <button type={buttonType} onClick={buttonClick}>{buttonValue}</button>
+        <button className={className} type={type} onClick={buttonClick}>{value}</button>
     )
 }
 
 Button.propTypes = {
-    buttonType: PropTypes.string,
-    buttonValue: PropTypes.string,
-    buttonClick: PropTypes.func
+    type: PropTypes.oneOf(["submit", "button"]),
+    value: PropTypes.string,
+    buttonClick: PropTypes.func,
+    className: PropTypes.string
 }
 
 export default Button
