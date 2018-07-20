@@ -24,7 +24,7 @@ const Textbox = ({name, labelValue, required, placeholder, value, className, row
 Textbox.propTypes = {
     name: Proptypes.string.isRequired,
     labelValue: Proptypes.string.isRequired,
-    required: Proptypes.oneOf(['true', 'false']),
+    required: Proptypes.oneOf(['true']), // Don't pass in required prop if you don't want it to be required
     placeholder: Proptypes.string,
     value: Proptypes.string,
     className: Proptypes.string,
@@ -34,7 +34,6 @@ Textbox.propTypes = {
 
 Textbox.defaultProps = {
     labelValue: "",
-    required: "false",
     placeholder: "",
     value: "",
     className: "",

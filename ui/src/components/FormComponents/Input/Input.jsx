@@ -22,7 +22,7 @@ const Input = ({name, labelValue, required, placeholder, value, className, onCha
 Input.propTypes = {
     name: PropTypes.string.isRequired,
     labelValue: PropTypes.string.isRequired,
-    required: PropTypes.oneOf(['true', 'false']),
+    required: PropTypes.oneOf(['true']),
     placeholder: PropTypes.string,
     value: PropTypes.string,
     className: PropTypes.string,
@@ -31,7 +31,6 @@ Input.propTypes = {
 
 Input.defaultProps = {
     labelValue: "",
-    required: "false",
     placeholder: "",
     value: "",
     className: ""

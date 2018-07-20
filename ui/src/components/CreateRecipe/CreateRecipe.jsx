@@ -2,30 +2,27 @@ import React, {Component} from "react";
 import gql from "graphql-tag";
 import { Mutation } from "react-apollo";
 
+import Button from "../FormComponents/Button/Button";
 import GetDifficulty from "../GetDifficulty/GetDifficulty";
 import GetMealTypes from "../GetMealTypes/GetMealTypes";
-import Button from "../FormComponents/Button/Button";
 import Input from "../FormComponents/Input/Input";
 import Textbox from "../FormComponents/Textbox/Textbox";
 
-const ADD_RECIPE = gql`
+const CREATE_RECIPE = gql`
     mutation Recipe (
-        $recipeName: String!,
+        $name: String!,
         $time: String,
-        $instructions: [String!],
-        $ingredients: [Ingredient!],
-        $mealtype: MealType!,
-        $difficulty: Difficulty!
+        $instructions: [String]!,
     ) {
-        CreateRecipe(name: $recipeName, time: $time, mealtype: $mealtype, difficulty: $difficulty) {
+        CreateRecipe(name: $name, time: $time, instructions: $instructions) {
             name
             time
-            mealtype
-            difficulty
+            instructions
         }
-}`;
+    }
+`;
 
-class AddRecipe extends Component {
+class CreateRecipe extends Component {
     constructor(props) {
         super(props);
 
@@ -134,7 +131,6 @@ class AddRecipe extends Component {
             instruction: ''
         }), () => {
             // Refer to onInputChange for thoughts on this section
-            //console.log(this.state.instructions);
         })
     }
 
@@ -147,8 +143,8 @@ class AddRecipe extends Component {
 
     render() {
         return (
-            <Mutation mutation={ADD_RECIPE} errorPolicy="none">
-                {(AddRecipe, {loading, error}) =>  {
+            <Mutation mutation={CREATE_RECIPE} errorPolicy="none">
+                {(CreateRecipe, {loading, error}) =>  {
                     if(loading) return (
                         <span>Adding that delicious flavor... </span>
                     );
@@ -162,11 +158,20 @@ class AddRecipe extends Component {
                     return (
                         <div>
                             <h2>Add a new recipe!</h2>
-                            <form>
+                            <form
+                                onSubmit={e => {
+                                    e.preventDefault();
+                                    // This isn't working till instructions accepts an array :(
+                                    /*CreateRecipe({variables: {
+                                        name: this.state.name,
+                                        time: this.state.time,
+                                        instructions: this.state.instructions
+                                    }});*/
+                                }}
+                            >
                                 <Input
                                     name="name"
                                     labelValue="Recipe Name"
-                                    required="true"
                                     placeholder="Recipe Name"
                                     value={this.state.name}
                                     onChange={this.onInputChange}
@@ -174,7 +179,6 @@ class AddRecipe extends Component {
                                 <Input
                                     name="time"
                                     labelValue="Time"
-                                    required="false"
                                     placeholder="How long till eating?"
                                     value={this.state.time}
                                     onChange={this.onInputChange}
@@ -200,7 +204,6 @@ class AddRecipe extends Component {
                                     name="ingredient"
                                     value={this.state.ingredient}
                                     labelValue="Ingredient"
-                                    required="false"
                                     className="ingredientinput"
                                     onChange={this.onInputChange}
                                 />
@@ -208,7 +211,6 @@ class AddRecipe extends Component {
                                     name="quantity"
                                     value={this.state.quantity}
                                     labelValue="Quantity"
-                                    required="false"
                                     className="quantityinput"
                                     onChange={this.onInputChange}
                                 />
@@ -227,7 +229,6 @@ class AddRecipe extends Component {
                                     name="instruction"
                                     value={this.state.instruction}
                                     labelValue="Instruction"
-                                    required="false"
                                     className="instructionbox"
                                     row="4"
                                     onChange={this.onInputChange}
@@ -244,4 +245,4 @@ class AddRecipe extends Component {
     }
 }
 
-export default AddRecipe
+export default CreateRecipe

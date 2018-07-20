@@ -11,7 +11,7 @@ type Recipe {
 }
 
 type Ingredient {
-  name: String
+  name: String!
   quantity: String @cypher(statement:"MATCH (:Recipe)-[c:Contains]-(this) RETURN c.quantity")
 }
 
@@ -36,6 +36,9 @@ type Query {
   RecipesBySubstring(searchQuery: String): [Recipe] @cypher(statement:
     "MATCH (r:Recipe) WHERE toLower(r.name) CONTAINS toLower($searchQuery) OR toLower(r.time) CONTAINS toLower($searchQuery) RETURN r" )
 
+  IngredientsBySubstring(ingredientQuery: String): [Ingredient] @cypher(statement:
+    "MATCH (i:Ingredient) WHERE toLower(i.name) CONTAINS toLower($ingredientQuery) RETURN i" )
+
   mealtype(
     type: String
   ): [MealType]
@@ -52,10 +55,23 @@ type Query {
 
 export const resolvers = {
   Query: {
-    recipes: neo4jgraphql,
-    RecipesBySubstring: neo4jgraphql,
-    difficulty: neo4jgraphql,
-    mealtype: neo4jgraphql,
-    ingredients: neo4jgraphql
+    recipes(object, params, ctx, resolveInfo) {
+      return neo4jgraphql(object, params, ctx, resolveInfo, true);
+    },
+    RecipesBySubstring(object, params, ctx, resolveInfo) {
+      return neo4jgraphql(object, params, ctx, resolveInfo, true);
+    },
+    IngredientsBySubstring(object, params, ctx, resolveInfo) {
+      return neo4jgraphql(object, params, ctx, resolveInfo, true);
+    },
+    difficulty(object, params, ctx, resolveInfo) {
+      return neo4jgraphql(object, params, ctx, resolveInfo, true);
+    },
+    mealtype(object, params, ctx, resolveInfo) {
+      return neo4jgraphql(object, params, ctx, resolveInfo, true);
+    },
+    ingredients(object, params, ctx, resolveInfo) {
+      return neo4jgraphql(object, params, ctx, resolveInfo, true);
+    }
   }
 };

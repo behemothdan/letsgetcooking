@@ -1,14 +1,14 @@
 import React from 'react';
 import './style/App.css';
 import Header from './components/Header/Header';
-import RecipeSearch from './components/RecipeSearch/RecipeSearch';
+import Search from './components/Search/Search';
 import AddIngredient from './components/AddIngredient/AddIngredient';
-import AddRecipe from './components/AddRecipe/AddRecipe';
+import AddRecipe from './components/CreateRecipe/CreateRecipe';
 
 const App = () => (
   <div className="App">
     <Header />
-    <RecipeSearch />
+    <Search searchingFor="recipes" defaultSearchString="baked" />
     <AddIngredient />
     <AddRecipe />
   </div>
