@@ -8,7 +8,7 @@ import AddRecipe from './components/CreateRecipe/CreateRecipe';
 const App = () => (
   <div className="App">
     <Header />
-    <Search searchingFor="recipes" defaultSearchString="baked" />
+    <Search />
     <AddIngredient />
     <AddRecipe />
   </div>

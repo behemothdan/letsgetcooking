@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 class SearchInput extends Component {
     constructor(props) {
         super(props);
-        this.state = {...props};
+        this.state = {};
         this.handleChange = this.handleChange.bind(this);
     }
 
