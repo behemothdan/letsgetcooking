@@ -1,3 +1,39 @@
+@font-face {
+    font-family: 'AlegreyaSans';
+    src: url(../../fonts/AlegreyaSans-Regular.ttf);
+}
+
 .header {
-    display: flex;
+    height: 300px;
+    margin: 0;
+
+    .nav-container {
+        background-color: rgba(#000, .3);
+        border-bottom: solid 1px #ffffff55;
+        padding: 10px;
+        display: flex;
+        flex-wrap: nowrap;
+        justify-content: center;
+        align-items: flex-end;
+        div {
+            flex-grow: 1;
+            flex-basis: auto;
+            &.title {
+                flex-grow: 8;
+                text-align: center;
+                h1 {
+                    font-family: 'AlegreyaSans';
+                    font-size: 3.2em;
+                    color: #ffffff;
+                    margin:0;
+                    padding: 0;
+                }
+            }
+            &.headerlogo {
+                img {
+                    max-height: 40px;
+                }
+            }
+        }
+    }
 }

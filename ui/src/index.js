@@ -4,7 +4,7 @@ import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from 'react-apollo';
-import './style/index.css';
+import './style/Index.css';
 
 const client = new ApolloClient({
     uri: process.env.REACT_APP_GRAPHQL_URI,

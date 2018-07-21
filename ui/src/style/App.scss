@@ -1,0 +1,15 @@
+.container {
+    display: flex;
+    justify-content: center;
+
+    .content-area {
+        display: flex;
+        flex-wrap: wrap;
+        background-color:#ffffff;
+        width: 85vw;
+        padding: 20px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+        box-shadow: 2px 2px 81px 5px rgba(0,0,0,0.57);
+    }
+}
