@@ -1,6 +1,7 @@
 import React from "react";
 import gql from "graphql-tag";
 import { Query } from "react-apollo";
+import PropTypes from "prop-types";
 
 const GET_DIFFICULTY = gql`
     query
@@ -31,5 +32,9 @@ const GetDifficulty = ({onChange}) => (
         }}
     </Query>
 );
+
+GetDifficulty.propTypes = {
+    onChange: PropTypes.func
+}
 
 export default GetDifficulty

@@ -22,14 +22,14 @@ const CREATE_RECIPE = gql`
     }
 `;
 
-class CreateRecipe extends Component {
+export default class CreateRecipe extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            ingredient: '', // This is only used to temporarily hold the ingredient until it is added to the array below
-            quantity: '', // The same is true for this as it is for the item above
-            instruction: '', // Same as above
+            ingredient: '',     // This is only used to temporarily hold the ingredient until it is added to the array below
+            quantity: '',       // The same is true for this as it is for the item above
+            instruction: '',    // Same as above
             name: '',
             time: '',
             instructions: [],
@@ -45,8 +45,7 @@ class CreateRecipe extends Component {
     }
 
     onInputChange(event){
-        // As long as the name of the input component matches the name of the state property
-        // this will add them to the appropriate keys.
+        // As long as the name of the input component matches the name of the state property this will add them to the appropriate keys.
         const stateName = event.target.name;
         const value = event.target.value;
         this.setState(({[stateName]: value}), () => {
@@ -54,7 +53,6 @@ class CreateRecipe extends Component {
             // We can probably use this for something else like some kind of validation
             // since it is called after the setState is finished or simplify it:
             // this.setState(s => ({[stateName]: value}))
-            //console.log(value);
         });
     }
 
@@ -162,11 +160,11 @@ class CreateRecipe extends Component {
                                 onSubmit={e => {
                                     e.preventDefault();
                                     // This isn't working till instructions accepts an array :(
-                                    /*CreateRecipe({variables: {
+                                    CreateRecipe({variables: {
                                         name: this.state.name,
                                         time: this.state.time,
                                         instructions: this.state.instructions
-                                    }});*/
+                                    }});
                                 }}
                             >
                                 <Input
@@ -244,5 +242,3 @@ class CreateRecipe extends Component {
         )
     }
 }
-
-export default CreateRecipe

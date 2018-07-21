@@ -34,7 +34,7 @@ type Query {
   ): [Recipe]
 
   RecipesBySubstring(searchQuery: String): [Recipe] @cypher(statement:
-    "MATCH (r:Recipe) WHERE toLower(r.name) CONTAINS toLower($searchQuery) OR toLower(r.time) CONTAINS toLower($searchQuery) RETURN r" )
+    "MATCH (r:Recipe) WHERE toLower(r.name) CONTAINS toLower($searchQuery) OR toLower(r.time) CONTAINS toLower($searchQuery) RETURN r ORDER BY r.name ASC" )
 
   IngredientsBySubstring(ingredientQuery: String): [Ingredient] @cypher(statement:
     "MATCH (i:Ingredient) WHERE toLower(i.name) CONTAINS toLower($ingredientQuery) RETURN i" )

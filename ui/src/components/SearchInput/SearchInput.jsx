@@ -3,7 +3,7 @@ import "./SearchInput.css";
 import Input from "../FormComponents/Input/Input";
 import PropTypes from "prop-types";
 
-class SearchInput extends Component {
+export default class SearchInput extends Component {
     constructor(props) {
         super(props);
         this.state = {};
@@ -41,5 +41,3 @@ SearchInput.propTypes = {
     placeholder:PropTypes.string,
     handleSearchQueryChange: PropTypes.func.isRequired
 }
-
-export default SearchInput

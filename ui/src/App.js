@@ -1,5 +1,4 @@
 import React from 'react';
-import './style/App.css';
 import Header from './components/Header/Header';
 import Search from './components/Search/Search';
 import AddIngredient from './components/AddIngredient/AddIngredient';
