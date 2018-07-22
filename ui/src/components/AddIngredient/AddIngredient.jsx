@@ -1,15 +1,8 @@
 import React from "react";
-import gql from "graphql-tag";
 import { Mutation } from "react-apollo";
+import { CREATE_INGREDIENT} from '../../graphql';
 import "./AddIngredient.css";
 import Button from "../FormComponents/Button/Button";
-
-const CREATE_INGREDIENT = gql`
-    mutation Ingredient($name: String!) {
-        CreateIngredient(name: $name) {
-            name
-        }
-    }`;
 
 const CreateIngredient = () => {
     let input;
@@ -33,7 +26,7 @@ const CreateIngredient = () => {
                         <form
                             onSubmit={e => {
                                 e.preventDefault();
-                                CreateIngredient({variables: {name: input.value}});
+                                CreateIngredient({variables: {name: input.value.toLowerCase()}});
                             }}
                         >
                             <input type="text" required="true"

@@ -1,29 +1,8 @@
 import React from "react";
-import gql from "graphql-tag";
 import { Query } from "react-apollo";
+import { RECIPE_QUERY } from '../../graphql';
 import RecipeSearchResults from "../RecipeSearchResults/RecipeSearchResults";
 import PropTypes from "prop-types";
-
-// I will want to limit the results returned as well and implment pagination. Baby steps.
-const RECIPE_QUERY = gql`
-    query($searchQuery: String = "null")
-    {
-        RecipesBySubstring(searchQuery: $searchQuery) {
-            name
-            time
-            instructions
-            ingredients {
-                name
-                quantity
-            }
-            mealtype {
-                type
-            }
-            difficulty {
-                value
-            }
-        }
-    }`;
 
 const RecipeSearchQuery = ({searchQuery}) => (
     <Query query={RECIPE_QUERY} variables={{searchQuery}}>

@@ -1,16 +1,8 @@
 import React from "react";
-import gql from "graphql-tag";
 import { Query } from "react-apollo";
+import { GET_MEALTYPES } from '../../graphql';
 import Select from "../FormComponents/Select/Select";
 import PropTypes from "prop-types";
-
-const GET_MEALTYPES = gql`
-    query
-    {
-        mealtype {
-            type
-        }
-    }`;
 
 const GetMealTypes = ({onChange}) => (
     <Query query={GET_MEALTYPES}>

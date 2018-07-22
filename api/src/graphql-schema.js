@@ -1,4 +1,6 @@
 import { neo4jgraphql } from "neo4j-graphql-js";
+//import { ApolloServer, gql, makeExecutableSchema } from "apollo-server";
+//import { find, filter } from 'lodash';
 
 export const typeDefs = `
 type Recipe {
@@ -51,6 +53,25 @@ type Query {
     name: String
   ): [Ingredient]
 }
+
+type Mutation {
+  CreateIngredient (
+    name: String
+  ): Ingredient
+
+  CreateRecipe (
+    name: String
+    time: String
+    instructions: [String]
+  ): Recipe
+
+  CreateIngredientRelation (
+    name: String
+    recipeName: String
+    quantity: String
+  ): Ingredient @cypher(statement:
+    "MATCH (r:Recipe{name:$recipeName}), (i:Ingredient{name:$name}) CREATE (r)-[c:Contains{quantity:$quantity}]->(i) RETURN r,i,c")
+}
 `;
 
 export const resolvers = {
@@ -71,6 +92,17 @@ export const resolvers = {
       return neo4jgraphql(object, params, ctx, resolveInfo, true);
     },
     ingredients(object, params, ctx, resolveInfo) {
+      return neo4jgraphql(object, params, ctx, resolveInfo, true);
+    }
+  },
+  Mutation: {
+    CreateIngredient(object, params, ctx, resolveInfo) {
+      return neo4jgraphql(object, params, ctx, resolveInfo, true);
+    },
+    CreateRecipe(object, params, ctx, resolveInfo) {
+      return neo4jgraphql(object, params, ctx, resolveInfo, true);
+    },
+    CreateIngredientRelation(object, params, ctx, resolveInfo) {
       return neo4jgraphql(object, params, ctx, resolveInfo, true);
     }
   }

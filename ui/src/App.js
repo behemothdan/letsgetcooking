@@ -1,8 +1,11 @@
 import React from 'react';
-import Header from './components/Header/Header';
-import Search from './components/Search/Search';
+import { connect } from 'react-redux';
+
 import AddIngredient from './components/AddIngredient/AddIngredient';
 import AddRecipe from './components/CreateRecipe/CreateRecipe';
+import Header from './components/Header/Header';
+import Search from './components/Search/Search';
+
 import './style/App.css';
 
 const App = () => (
@@ -18,4 +21,4 @@ const App = () => (
   </div>
 )
 
-export default App;
+export default connect()(App);

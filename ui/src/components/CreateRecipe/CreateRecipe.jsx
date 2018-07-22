@@ -1,26 +1,12 @@
 import React, {Component} from "react";
-import gql from "graphql-tag";
 import { Mutation } from "react-apollo";
+import { CREATE_RECIPE } from '../../graphql';
 
 import Button from "../FormComponents/Button/Button";
 import GetDifficulty from "../GetDifficulty/GetDifficulty";
 import GetMealTypes from "../GetMealTypes/GetMealTypes";
 import Input from "../FormComponents/Input/Input";
 import Textbox from "../FormComponents/Textbox/Textbox";
-
-const CREATE_RECIPE = gql`
-    mutation Recipe (
-        $name: String!,
-        $time: String,
-        $instructions: [String]!,
-    ) {
-        CreateRecipe(name: $name, time: $time, instructions: $instructions) {
-            name
-            time
-            instructions
-        }
-    }
-`;
 
 export default class CreateRecipe extends Component {
     constructor(props) {
@@ -141,10 +127,10 @@ export default class CreateRecipe extends Component {
 
     render() {
         return (
-            <Mutation mutation={CREATE_RECIPE} errorPolicy="none">
+            <Mutation mutation={CREATE_RECIPE}>
                 {(CreateRecipe, {loading, error}) =>  {
                     if(loading) return (
-                        <span>Adding that delicious flavor... </span>
+                        <span>Adding that delicious recipe... </span>
                     );
                     if(error) return (
                         <pre>Bad: {error.graphQLErrors.map(({ message }, i) => (
@@ -159,12 +145,30 @@ export default class CreateRecipe extends Component {
                             <form
                                 onSubmit={e => {
                                     e.preventDefault();
-                                    // This isn't working till instructions accepts an array :(
+                                    var tempInstructions = [];
+                                    this.state.instructions.forEach(function(instruction) {
+                                        tempInstructions.push(instruction.value)
+                                    })
                                     CreateRecipe({variables: {
-                                        name: this.state.name,
+                                        name: this.state.name.toLowerCase(),
                                         time: this.state.time,
-                                        instructions: this.state.instructions
+                                        instructions: tempInstructions
                                     }});
+                                    {/*<Mutation mutation={CREATE_RECIPE_INGREDIENTS}>
+                                        {(CreateIngredientRelation, {loading, error}) => {
+                                            if(loading) return (
+                                                <span>Adding all that secret sauce...</span>
+                                            );
+                                            if(error) return (
+                                                <span>Aw man, we had trouble adding that secret sauce!</span>
+                                            );
+                                            CreateIngredientRelation({variables: {
+                                                name: this.state.ingredients[0].name,
+                                                recipeName: this.state.name,
+                                                quantity: this.state.ingredients[0].quantity
+                                            }})
+                                        }}
+                                    </Mutation>*/}
                                 }}
                             >
                                 <Input
