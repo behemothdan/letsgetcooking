@@ -1,24 +1,15 @@
 import React from 'react';
+import { BrowserRouter as Router, Route} from 'react-router-dom';
 import { connect } from 'react-redux';
-
-import AddIngredient from './components/AddIngredient/AddIngredient';
-import AddRecipe from './components/CreateRecipe/CreateRecipe';
-import Header from './components/Header/Header';
-import Search from './components/Search/Search';
-
+import Home from "./routes/Home";
 import './style/App.css';
 
 const App = () => (
-  <div>
-    <Header />
-    <div className="container">
-      <div className="content-area">
-        <Search />
-        <AddIngredient />
-        <AddRecipe />
-      </div>
+  <Router>
+    <div>
+      <Route path="/" component={Home} />
     </div>
-  </div>
+  </Router>
 )
 
 export default connect()(App);
