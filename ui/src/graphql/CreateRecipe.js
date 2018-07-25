@@ -1,12 +1,12 @@
 import gql from "graphql-tag";
 
-export const CREATE_RECIPE = gql`
+export const CREATE_NEW_RECIPE = gql`
     mutation Recipe (
         $name: String!,
         $time: String,
-        $instructions: [String]!,
+        $instructions: [String]!
     ) {
-        CreateRecipe(name: $name, time: $time, instructions: $instructions) {
+        CreateNewRecipe(name: $name, time: $time, instructions: $instructions) {
             name
             time
             instructions

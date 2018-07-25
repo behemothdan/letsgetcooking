@@ -1,5 +1,5 @@
 export {
-    CREATE_RECIPE, CREATE_RECIPE_INGREDIENTS
+    CREATE_NEW_RECIPE, CREATE_RECIPE_INGREDIENTS
 } from './CreateRecipe';
 
 export {
