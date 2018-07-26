@@ -1,6 +1,6 @@
 import React from 'react';
 import AddIngredient from '../components/AddIngredient/AddIngredient';
-import AddRecipe from '../components/CreateRecipe/CreateRecipe';
+import CreateRecipe from '../components/CreateRecipe/CreateRecipe';
 import Header from '../components/Header/Header';
 import Search from '../components/Search/Search';
 
@@ -12,7 +12,7 @@ const Home = () => {
             <div className="content-area">
                 <Search />
                 <AddIngredient />
-                <AddRecipe />
+                <CreateRecipe />
             </div>
             </div>
         </div>

@@ -1,6 +1,6 @@
 import React, {Component} from "react";
-import { Mutation } from "react-apollo";
-import { CREATE_RECIPE } from '../../graphql';
+import { graphql,compose } from "react-apollo";
+import { CREATE_NEW_RECIPE, CREATE_RECIPE_INGREDIENTS } from '../../graphql';
 
 import Button from "../FormComponents/Button/Button";
 import GetDifficulty from "../GetDifficulty/GetDifficulty";
@@ -8,7 +8,7 @@ import GetMealTypes from "../GetMealTypes/GetMealTypes";
 import Input from "../FormComponents/Input/Input";
 import Textbox from "../FormComponents/Textbox/Textbox";
 
-export default class CreateRecipe extends Component {
+class CreateRecipe extends Component {
     constructor(props) {
         super(props);
 
@@ -28,6 +28,8 @@ export default class CreateRecipe extends Component {
         this.removeIngredient = this.removeIngredient.bind(this);
         this.addInstruction = this.addInstruction.bind(this);
         this.removeInstruction = this.removeInstruction.bind(this);
+        this.handleCreateRecipe = this.handleCreateRecipe.bind(this);
+        this.handleCreateIngredientRelation = this.handleCreateIngredientRelation.bind(this);
     }
 
     onInputChange(event){
@@ -59,6 +61,7 @@ export default class CreateRecipe extends Component {
     }
 
     // I am sure there is going to be a nice easy way to combine removeIngredient and removeInstruction but for now they are separate
+    // This only removes the ingredient that was added to the list and added to the state.
     removeIngredient(id) {
         this.setState(state => {
             return {
@@ -82,6 +85,7 @@ export default class CreateRecipe extends Component {
         }, 1000)
     }
 
+    // Similar to above, this only removes the instruction from the state before submission.
     removeInstruction(id) {
         this.setState(state => {
             return {
@@ -105,6 +109,7 @@ export default class CreateRecipe extends Component {
         }, 1000)
     }
 
+    // Adds the instruction to the state that will be used later for addition to the database
     addInstruction = () => {
         const newInstruction = {
             value: this.state.instruction,
@@ -125,124 +130,115 @@ export default class CreateRecipe extends Component {
         )
     }
 
+    handleCreateRecipe = () => {
+        var tempInstructions = [];
+        this.state.instructions.forEach(function(instruction) {
+            tempInstructions.push(instruction.value)
+        })
+
+        this.props.CreateRecipe({variables: {
+            name: this.state.name.toLowerCase(),
+            time: this.state.time,
+            instructions: tempInstructions
+        }})
+        .then(({data}) => {
+            this.handleCreateIngredientRelation()
+        }).catch((error) => {
+            console.log("Error adding recipe", error)
+        })
+    }
+
+    handleCreateIngredientRelation = () => {
+        this.props.CreateIngredientRelation({variables: {
+            name: this.state.ingredients[0].name,
+            recipe: this.state.name,
+            quantity: this.state.ingredients[0].quantity
+        }})
+    }
+
     render() {
         return (
-            <Mutation mutation={CREATE_RECIPE}>
-                {(CreateRecipe, {loading, error}) =>  {
-                    if(loading) return (
-                        <span>Adding that delicious recipe... </span>
-                    );
-                    if(error) return (
-                        <pre>Bad: {error.graphQLErrors.map(({ message }, i) => (
-                            <span key={i}>{message}</span>
-                        ))}
-                        </pre>
-                    );
+            <div>
+                <h2>Add a new recipe!</h2>
+                <form
+                    onSubmit={e => {
+                        e.preventDefault();
+                        this.handleCreateRecipe()
+                    }}
+                >
+                    <Input
+                        name="name"
+                        labelValue="Recipe Name"
+                        placeholder="Recipe Name"
+                        value={this.state.name}
+                        onChange={this.onInputChange}
+                    />
+                    <Input
+                        name="time"
+                        labelValue="Time"
+                        placeholder="How long till eating?"
+                        value={this.state.time}
+                        onChange={this.onInputChange}
+                    />
+                    <ul key={"instructions-" + this.guid()}>
+                        {this.state.instructions.map(instruction => {
+                            return <li key={instruction.id}>
+                                        {instruction.value}
+                                        <Button className="remove" buttonClick={() => this.removeInstruction(instruction.id)} value="x" type="button" />
+                                    </li>
+                        })}
+                    </ul>
 
-                    return (
-                        <div>
-                            <h2>Add a new recipe!</h2>
-                            <form
-                                onSubmit={e => {
-                                    e.preventDefault();
-                                    var tempInstructions = [];
-                                    this.state.instructions.forEach(function(instruction) {
-                                        tempInstructions.push(instruction.value)
-                                    })
-                                    CreateRecipe({variables: {
-                                        name: this.state.name.toLowerCase(),
-                                        time: this.state.time,
-                                        instructions: tempInstructions
-                                    }});
-                                    {/*<Mutation mutation={CREATE_RECIPE_INGREDIENTS}>
-                                        {(CreateIngredientRelation, {loading, error}) => {
-                                            if(loading) return (
-                                                <span>Adding all that secret sauce...</span>
-                                            );
-                                            if(error) return (
-                                                <span>Aw man, we had trouble adding that secret sauce!</span>
-                                            );
-                                            CreateIngredientRelation({variables: {
-                                                name: this.state.ingredients[0].name,
-                                                recipeName: this.state.name,
-                                                quantity: this.state.ingredients[0].quantity
-                                            }})
-                                        }}
-                                    </Mutation>*/}
-                                }}
-                            >
-                                <Input
-                                    name="name"
-                                    labelValue="Recipe Name"
-                                    placeholder="Recipe Name"
-                                    value={this.state.name}
-                                    onChange={this.onInputChange}
-                                />
-                                <Input
-                                    name="time"
-                                    labelValue="Time"
-                                    placeholder="How long till eating?"
-                                    value={this.state.time}
-                                    onChange={this.onInputChange}
-                                />
-                                <GetMealTypes
-                                    value={this.state.mealtype}
-                                    onChange={this.onInputChange}
-                                />
-                                <GetDifficulty
-                                    value={this.state.difficulty}
-                                    onChange={this.onInputChange}
-                                />
+                    <Textbox
+                        name="instruction"
+                        value={this.state.instruction}
+                        labelValue="Instruction"
+                        className="instructionbox"
+                        row="4"
+                        onChange={this.onInputChange}
+                    />
+                    <Button type="button" value="Add Step" buttonClick={this.addInstruction} />
 
-                                <ul key={"ingredients-" + this.guid()}>
-                                    {this.state.ingredients.map(ingredient => {
-                                        return <li key={ingredient.id}>
-                                                    {ingredient.quantity} {ingredient.name}
-                                                    <Button className="remove" buttonClick={() => this.removeIngredient(ingredient.id)} value="x" type="button" />
-                                                </li>
-                                    })}
-                                </ul>
-                                <Input
-                                    name="ingredient"
-                                    value={this.state.ingredient}
-                                    labelValue="Ingredient"
-                                    className="ingredientinput"
-                                    onChange={this.onInputChange}
-                                />
-                                <Input
-                                    name="quantity"
-                                    value={this.state.quantity}
-                                    labelValue="Quantity"
-                                    className="quantityinput"
-                                    onChange={this.onInputChange}
-                                />
-                                <Button type="button" value="Add Ingredient" buttonClick={this.addIngredient} />
+                    <GetMealTypes
+                        value={this.state.mealtype}
+                        onChange={this.onInputChange}
+                    />
+                    <GetDifficulty
+                        value={this.state.difficulty}
+                        onChange={this.onInputChange}
+                    />
 
-                                <ul key={"instructions-" + this.guid()}>
-                                    {this.state.instructions.map(instruction => {
-                                        return <li key={instruction.id}>
-                                                    {instruction.value}
-                                                    <Button className="remove" buttonClick={() => this.removeInstruction(instruction.id)} value="x" type="button" />
-                                                </li>
-                                    })}
-                                </ul>
-
-                                <Textbox
-                                    name="instruction"
-                                    value={this.state.instruction}
-                                    labelValue="Instruction"
-                                    className="instructionbox"
-                                    row="4"
-                                    onChange={this.onInputChange}
-                                />
-                                <Button type="button" value="Add Step" buttonClick={this.addInstruction} />
-
-                                <Button type="submit" value="Add that delicious recipe!" />
-                            </form>
-                        </div>
-                    )
-                }}
-            </Mutation>
+                    <ul key={"ingredients-" + this.guid()}>
+                        {this.state.ingredients.map(ingredient => {
+                            return <li key={ingredient.id}>
+                                        {ingredient.quantity} {ingredient.name}
+                                        <Button className="remove" buttonClick={() => this.removeIngredient(ingredient.id)} value="x" type="button" />
+                                    </li>
+                        })}
+                    </ul>
+                    <Input
+                        name="ingredient"
+                        value={this.state.ingredient}
+                        labelValue="Ingredient"
+                        className="ingredientinput"
+                        onChange={this.onInputChange}
+                    />
+                    <Input
+                        name="quantity"
+                        value={this.state.quantity}
+                        labelValue="Quantity"
+                        className="quantityinput"
+                        onChange={this.onInputChange}
+                    />
+                    <Button type="button" value="Add Ingredient" buttonClick={this.addIngredient} />
+                    <Button type="submit" value="Add that delicious recipe!" />
+                </form>
+            </div>
         )
     }
 }
+
+const CreateRecipeWithMutations = compose(graphql(CREATE_NEW_RECIPE, {name: 'CreateRecipe'}),
+    graphql(CREATE_RECIPE_INGREDIENTS, {name: 'CreateIngredientRelation'}))(CreateRecipe)
+
+export default CreateRecipeWithMutations
