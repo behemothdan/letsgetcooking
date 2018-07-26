@@ -149,9 +149,6 @@ class CreateRecipe extends Component {
     }
 
     handleCreateIngredientRelation = () => {
-        console.log(this.state.ingredients[0].name)
-        console.log(this.state.ingredients[0].quantity)
-        console.log(this.state.name)
         this.props.CreateIngredientRelation({variables: {
             name: this.state.ingredients[0].name,
             recipe: this.state.name,
