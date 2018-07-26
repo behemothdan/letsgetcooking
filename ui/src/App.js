@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route} from 'react-router-dom';
 import { connect } from 'react-redux';
-import Home from "./routes/Home";
+import Home from "./views/Home";
 import './style/App.css';
 
 const App = () => (
