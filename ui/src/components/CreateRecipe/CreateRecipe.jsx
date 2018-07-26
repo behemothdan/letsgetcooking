@@ -1,7 +1,6 @@
 import React, {Component} from "react";
-import { graphql } from "react-apollo";
-import gql from "graphql-tag";
-//import { CREATE_NEW_RECIPE, CREATE_RECIPE_INGREDIENTS } from '../../graphql';
+import { graphql,compose } from "react-apollo";
+import { CREATE_NEW_RECIPE, CREATE_RECIPE_INGREDIENTS } from '../../graphql';
 
 import Button from "../FormComponents/Button/Button";
 import GetDifficulty from "../GetDifficulty/GetDifficulty";
@@ -29,6 +28,8 @@ class CreateRecipe extends Component {
         this.removeIngredient = this.removeIngredient.bind(this);
         this.addInstruction = this.addInstruction.bind(this);
         this.removeInstruction = this.removeInstruction.bind(this);
+        this.handleCreateRecipe = this.handleCreateRecipe.bind(this);
+        this.handleCreateIngredientRelation = this.handleCreateIngredientRelation.bind(this);
     }
 
     onInputChange(event){
@@ -129,6 +130,35 @@ class CreateRecipe extends Component {
         )
     }
 
+    handleCreateRecipe = () => {
+        var tempInstructions = [];
+        this.state.instructions.forEach(function(instruction) {
+            tempInstructions.push(instruction.value)
+        })
+
+        this.props.CreateRecipe({variables: {
+            name: this.state.name.toLowerCase(),
+            time: this.state.time,
+            instructions: tempInstructions
+        }})
+        .then(({data}) => {
+            this.handleCreateIngredientRelation()
+        }).catch((error) => {
+            console.log("Error adding recipe", error)
+        })
+    }
+
+    handleCreateIngredientRelation = () => {
+        console.log(this.state.ingredients[0].name)
+        console.log(this.state.ingredients[0].quantity)
+        console.log(this.state.name)
+        this.props.CreateIngredientRelation({variables: {
+            name: this.state.ingredients[0].name,
+            recipe: this.state.name,
+            quantity: this.state.ingredients[0].quantity
+        }})
+    }
+
     render() {
         return (
             <div>
@@ -136,7 +166,7 @@ class CreateRecipe extends Component {
                 <form
                     onSubmit={e => {
                         e.preventDefault();
-                        handleCreate(this.state);
+                        this.handleCreateRecipe()
                     }}
                 >
                     <Input
@@ -211,58 +241,7 @@ class CreateRecipe extends Component {
     }
 }
 
-export const CREATE_NEW_RECIPE = gql`
-    mutation Recipe (
-        $name: String!,
-        $time: String,
-        $instructions: [String]!
-    ) {
-        CreateNewRecipe(name: $name, time: $time, instructions: $instructions) {
-            name
-            time
-            instructions
-        }
-    }
-`;
-
-export const CREATE_RECIPE_INGREDIENTS = gql`
-    mutation (
-        $name: String!,
-        $recipeName: String!,
-        $quantity: String!,
-    ) {
-        CreateIngredientRelation(name: $name, recipeName: $recipeName, quantity: $quantity) {
-            name,
-            recipeName,
-            quantity
-        }
-    }
-`;
-
-const handleCreate = (state) => {
-    var tempInstructions = [];
-    state.instructions.forEach(function(instruction) {
-        tempInstructions.push(instruction.value)
-    })
-
-    this.props.CreateNewRecipe({variables: {
-        name: state.name.toLowerCase(),
-        time: state.time,
-        instructions: tempInstructions
-    }})
-    .then(handleCreateIngredientRelation)
-}
-
-const handleCreateIngredientRelation = () => {
-    this.props.CREATE_RECIPE_INGREDIENTS({variables: {
-        name: this.state.ingredients[0].name,
-        recipeName: this.state.name,
-        quantity: this.state.ingredients[0].quantity
-    }})
-}
-
-const CreateRecipeWithMutations = graphql(CREATE_NEW_RECIPE, {name: 'CreateNewRecipe'})(
-    graphql(CREATE_RECIPE_INGREDIENTS, {name: 'CreateIngredientRelation'})(CreateRecipe)
-)
+const CreateRecipeWithMutations = compose(graphql(CREATE_NEW_RECIPE, {name: 'CreateRecipe'}),
+    graphql(CREATE_RECIPE_INGREDIENTS, {name: 'CreateIngredientRelation'}))(CreateRecipe)
 
 export default CreateRecipeWithMutations
