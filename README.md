@@ -1,4 +1,4 @@
-# RecipeSnapp - Based off the GRANDstack Starter
+# Let's Get Cooking
 
 This project is a starter for building a [GRANDstack](https://grandstack.io) (GraphQL, React, Apollo, Neo4j Database) application. There are two components to the starter, the UI application (a React app) and the API app (GraphQL server).
 
@@ -70,4 +70,8 @@ call graphql.schema()
 MATCH (r:Recipe{name:"penne with shrimp and herbed cream sauce"}),(i:Ingredient{name:"parmesan"})
 CREATE (r)-[c:Contains{quantity:"1/2 cup, grated"}]->(i)
 RETURN r,i,c
+```
+*Searches with substrings*
+```
+MATCH (r:Recipe) WHERE r.name =~ '.*baked.*' RETURN r
 ```
