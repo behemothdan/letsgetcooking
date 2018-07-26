@@ -142,6 +142,7 @@ class CreateRecipe extends Component {
             instructions: tempInstructions
         }})
         .then(({data}) => {
+            // Do something with data? Or don't pass it in I guess.
             this.handleCreateIngredientRelation()
         }).catch((error) => {
             console.log("Error adding recipe", error)
