@@ -132,7 +132,7 @@ class CreateRecipe extends Component {
 
     handleCreateRecipe = () => {
         var tempInstructions = [];
-        this.state.instructions.forEach(function(instruction) {
+        this.state.instructions.forEach(instruction => {
             tempInstructions.push(instruction.value)
         })
 
@@ -142,31 +142,37 @@ class CreateRecipe extends Component {
             instructions: tempInstructions
         }})
         .then(({data}) => {
-            // Do something with data? Or don't pass it in I guess.
+            // Do something with data? Or don't pass it in I guess. Probably use it to change some styling to indicate success?
+            console.log(data);
             this.handleCreateIngredientRelation()
         }).catch((error) => {
-            console.log("Error adding recipe", error)
+            console.log("Error adding recipe", error);
         })
     }
 
     handleCreateIngredientRelation = () => {
-        this.props.CreateIngredientRelation({variables: {
-            name: this.state.ingredients[0].name,
-            recipe: this.state.name,
-            quantity: this.state.ingredients[0].quantity
-        }})
+        this.state.ingredients.forEach(ingredient => {
+            this.props.CreateIngredientRelation({variables: {
+                name: ingredient.name.toLowerCase(),
+                recipe: this.state.name.toLowerCase(),
+                quantity: ingredient.quantity
+            }})
+            .then(({data}) => {
+                // Do some kind of feedback on successful relationship creation?
+                //console.log("Added ingredient: " + data)
+            })
+            .catch(({error}) => {
+                // Create some more informative error messages
+                console.log("Error adding ingredient: " + error)
+            })
+        })
     }
 
     render() {
         return (
             <div>
                 <h2>Add a new recipe!</h2>
-                <form
-                    onSubmit={e => {
-                        e.preventDefault();
-                        this.handleCreateRecipe()
-                    }}
-                >
+                <form onSubmit={e => { e.preventDefault(); this.handleCreateRecipe() }}>
                     <Input
                         name="name"
                         labelValue="Recipe Name"

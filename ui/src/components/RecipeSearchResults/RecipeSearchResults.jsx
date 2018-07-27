@@ -20,8 +20,16 @@ const RecipeSearchResults = ({searchResults}) => {
                     </ul>
                     <ul>
                         <li>Time: {recipe.time}</li>
-                        <li>Dish Type: {recipe.mealtype.type}</li>
-                        <li>Difficulty: {recipe.difficulty.value}</li>
+                        <li>Dish Type:
+                            {
+                                recipe.mealtype === null || '' ? "None selected" : recipe.mealtype.type
+                            }
+                        </li>
+                        <li>Difficulty:
+                            {
+                                recipe.difficulty === null || '' ? "Difficulty not selected" : recipe.difficulty.value
+                            }
+                        </li>
                     </ul>
                 </div>
             ))}
