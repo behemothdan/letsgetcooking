@@ -70,6 +70,12 @@ type Mutation {
     quantity: String
   ): Ingredient @cypher(statement:
     "MATCH (r:Recipe{name:$recipe}), (i:Ingredient{name:$name}) CREATE (r)-[c:Contains{quantity:$quantity}]->(i) RETURN r,i,c")
+
+  CreateDifficultyRelation (
+      recipe: String
+      difficulty: String
+  ): Difficulty @cypher(statement:
+    "MATCH (r:Recipe{name:$recipe}),(i:Difficulty{value:$difficulty}) CREATE (r)-[c:Skill_Level]->(i) RETURN r,i,c")
 }
 `;
 
@@ -102,6 +108,9 @@ export const resolvers = {
       return neo4jgraphql(object, params, ctx, resolveInfo, true);
     },
     CreateIngredientRelation(object, params, ctx, resolveInfo) {
+      return neo4jgraphql(object, params, ctx, resolveInfo, true);
+    },
+    CreateDifficultyRelation(object, params, ctx, resolveInfo) {
       return neo4jgraphql(object, params, ctx, resolveInfo, true);
     }
   }

@@ -18,7 +18,7 @@ export const CREATE_RECIPE_INGREDIENTS = gql`
     mutation (
         $name: String!,
         $recipe: String!,
-        $quantity: String!,
+        $quantity: String!
     ) {
         CreateIngredientRelation(name: $name, recipe: $recipe, quantity: $quantity) {
             name,
@@ -26,6 +26,18 @@ export const CREATE_RECIPE_INGREDIENTS = gql`
                 name
             }
             quantity
+        }
+    }
+`;
+
+export const CREATE_DIFFICULTY_RELATION = gql`
+    mutation (
+        $recipe: String!,
+        $difficulty: String!
+    ) {
+        CreateDifficultyRelation(recipe: $recipe, difficulty:$difficulty) {
+            recipe,
+            difficulty
         }
     }
 `;
