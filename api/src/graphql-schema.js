@@ -76,6 +76,12 @@ type Mutation {
       difficulty: String
   ): Difficulty @cypher(statement:
     "MATCH (r:Recipe{name:$recipe}),(i:Difficulty{value:$difficulty}) CREATE (r)-[c:Skill_Level]->(i) RETURN r,i,c")
+
+  CreateMealTypeRelation (
+    recipe: String
+    mealType: String
+  ): MealType @cypher(statement:
+    "MATCH (r:Recipe{name:$recipe}),(m:MealType{type:$mealType}) CREATE (r)-[c:Type_Of]->(m) RETURN r,c,m" )
 }
 `;
 
@@ -111,6 +117,9 @@ export const resolvers = {
       return neo4jgraphql(object, params, ctx, resolveInfo, true);
     },
     CreateDifficultyRelation(object, params, ctx, resolveInfo) {
+      return neo4jgraphql(object, params, ctx, resolveInfo, true);
+    },
+    CreateMealTypeRelation(object, params, ctx, resolveInfo) {
       return neo4jgraphql(object, params, ctx, resolveInfo, true);
     }
   }

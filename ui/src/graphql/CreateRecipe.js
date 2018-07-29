@@ -41,3 +41,15 @@ export const CREATE_DIFFICULTY_RELATION = gql`
         }
     }
 `;
+
+export const CREATE_MEALTYPE_RELATION = gql`
+    mutation (
+        $recipe: String!,
+        $mealtype: String!
+    ) {
+        CreateDifficultyRelation(recipe: $recipe, mealtype:$mealtype) {
+            recipe,
+            mealtype
+        }
+    }
+`;

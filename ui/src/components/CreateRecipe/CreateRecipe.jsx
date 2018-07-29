@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import { graphql,compose } from "react-apollo";
-import { CREATE_NEW_RECIPE, CREATE_RECIPE_INGREDIENTS } from '../../graphql';
+import { CREATE_NEW_RECIPE, CREATE_RECIPE_INGREDIENTS, CREATE_MEALTYPE_RELATION, CREATE_DIFFICULTY_RELATION } from '../../graphql';
 
 import Button from "../FormComponents/Button/Button";
 import GetDifficulty from "../GetDifficulty/GetDifficulty";
