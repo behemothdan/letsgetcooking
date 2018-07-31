@@ -33,11 +33,13 @@ export const CREATE_RECIPE_INGREDIENTS = gql`
 export const CREATE_DIFFICULTY_RELATION = gql`
     mutation (
         $recipe: String!,
-        $difficulty: String!
+        $value: String!
     ) {
-        CreateDifficultyRelation(recipe: $recipe, difficulty:$difficulty) {
-            recipe,
-            difficulty
+        CreateDifficultyRelation(recipe: $recipe, value:$value) {
+            recipe{
+                name
+            },
+            value
         }
     }
 `;
@@ -45,11 +47,13 @@ export const CREATE_DIFFICULTY_RELATION = gql`
 export const CREATE_MEALTYPE_RELATION = gql`
     mutation (
         $recipe: String!,
-        $mealtype: String!
+        $type: String!
     ) {
-        CreateDifficultyRelation(recipe: $recipe, mealtype:$mealtype) {
-            recipe,
-            mealtype
+        CreateMealTypeRelation(recipe: $recipe, type:$type) {
+            recipe{
+                name
+            },
+            type
         }
     }
 `;

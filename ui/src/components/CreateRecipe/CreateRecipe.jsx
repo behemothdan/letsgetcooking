@@ -28,8 +28,11 @@ class CreateRecipe extends Component {
         this.removeIngredient = this.removeIngredient.bind(this);
         this.addInstruction = this.addInstruction.bind(this);
         this.removeInstruction = this.removeInstruction.bind(this);
+
         this.handleCreateRecipe = this.handleCreateRecipe.bind(this);
         this.handleCreateIngredientRelation = this.handleCreateIngredientRelation.bind(this);
+        this.handleCreateMealTypeRelation = this.handleCreateMealTypeRelation.bind(this);
+        this.handleCreateDifficultyRelation = this.handleCreateDifficultyRelation.bind(this);
     }
 
     onInputChange(event){
@@ -143,10 +146,13 @@ class CreateRecipe extends Component {
         }})
         .then(({data}) => {
             // Do something with data? Or don't pass it in I guess. Probably use it to change some styling to indicate success?
-            console.log(data);
             this.handleCreateIngredientRelation()
+            this.handleCreateDifficultyRelation()
+            this.handleCreateMealTypeRelation()
         }).catch((error) => {
-            console.log("Error adding recipe", error);
+            return (
+                <div>Oops! We had a hard time creating the recipe! {error}</div>
+            )
         })
     }
 
@@ -165,6 +171,40 @@ class CreateRecipe extends Component {
                 // Create some more informative error messages
                 console.log("Error adding ingredient: " + error)
             })
+        })
+    }
+
+    handleCreateMealTypeRelation = () => {
+        this.props.CreateMealTypeRelation({variables: {
+            recipe: this.state.name.toLowerCase(),
+            type: this.state.mealtype.toLowerCase()
+        }})
+        .then(({data}) => {
+            return (
+                <div>Meal type added! {data}</div>
+            )
+        })
+        .catch(({data}) => {
+            return (
+                <div>Oops! We had a hard time setting the meal type! {data}</div>
+            )
+        })
+    }
+
+    handleCreateDifficultyRelation = () => {
+        this.props.CreateDifficultyRelation({variables: {
+            recipe: this.state.name.toLowerCase(),
+            value: this.state.difficulty.toLowerCase()
+        }})
+        .then(({data}) => {
+            return(
+                <div>Difficulty added! {data}</div>
+            )
+        })
+        .catch(({data}) => {
+            return(
+                <div>Oops! We had a hard time setting the difficulty! {data}</div>
+            )
         })
     }
 
@@ -245,7 +285,10 @@ class CreateRecipe extends Component {
     }
 }
 
-const CreateRecipeWithMutations = compose(graphql(CREATE_NEW_RECIPE, {name: 'CreateRecipe'}),
-    graphql(CREATE_RECIPE_INGREDIENTS, {name: 'CreateIngredientRelation'}))(CreateRecipe)
+const CreateRecipeWithMutations = compose(
+    graphql(CREATE_NEW_RECIPE, {name: 'CreateRecipe'}),
+    graphql(CREATE_RECIPE_INGREDIENTS, {name: 'CreateIngredientRelation'}),
+    graphql(CREATE_MEALTYPE_RELATION, {name: 'CreateMealTypeRelation'}),
+    graphql(CREATE_DIFFICULTY_RELATION, {name: 'CreateDifficultyRelation'}))(CreateRecipe)
 
 export default CreateRecipeWithMutations

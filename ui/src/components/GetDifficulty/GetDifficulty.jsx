@@ -14,7 +14,7 @@ const GetDifficulty = ({onChange}) => (
             );
 
             return (
-                <select name="difficulties" onChange={onChange}>
+                <select name="difficulty" onChange={onChange}>
                         <option key="no-difficulty" value="">Select a difficulty</option>
                     {data.difficulty.map(difficulty => (
                         <option key={difficulty.value} value={difficulty.value}>{difficulty.value}</option>

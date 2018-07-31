@@ -18,10 +18,12 @@ type Ingredient {
 
 type MealType {
   type: String
+  recipe:Recipe
 }
 
 type Difficulty {
   value: String
+  recipe:Recipe
 }
 
 type Query {
@@ -72,16 +74,16 @@ type Mutation {
     "MATCH (r:Recipe{name:$recipe}), (i:Ingredient{name:$name}) CREATE (r)-[c:Contains{quantity:$quantity}]->(i) RETURN r,i,c")
 
   CreateDifficultyRelation (
-      recipe: String
-      difficulty: String
+    value: String
+    recipe: String
   ): Difficulty @cypher(statement:
-    "MATCH (r:Recipe{name:$recipe}),(i:Difficulty{value:$difficulty}) CREATE (r)-[c:Skill_Level]->(i) RETURN r,i,c")
+    "MATCH (r:Recipe{name:$recipe}),(i:Difficulty{value:$value}) CREATE (r)-[c:Skill_Level]->(i) RETURN r,c,i")
 
   CreateMealTypeRelation (
+    type: String
     recipe: String
-    mealType: String
   ): MealType @cypher(statement:
-    "MATCH (r:Recipe{name:$recipe}),(m:MealType{type:$mealType}) CREATE (r)-[c:Type_Of]->(m) RETURN r,c,m" )
+    "MATCH (r:Recipe{name:$recipe}),(m:MealType{type:$type}) CREATE (r)-[c:Type_Of]->(m) RETURN r,c,m")
 }
 `;
 
