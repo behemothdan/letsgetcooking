@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import { graphql,compose } from "react-apollo";
 import { CREATE_NEW_RECIPE, CREATE_RECIPE_INGREDIENTS, CREATE_MEALTYPE_RELATION, CREATE_DIFFICULTY_RELATION } from '../../graphql';
+import PropTypes from "prop-types";
 
 import Button from "../FormComponents/Button/Button";
 import GetDifficulty from "../GetDifficulty/GetDifficulty";
@@ -21,18 +22,26 @@ class CreateRecipe extends Component {
             instructions: [],
             ingredients: [],
             mealtype: '',
-            difficulty: ''
+            difficulty: '',
+            formValid: false,
+            nameFeedback: '',
+            timeFeedback: '',
+            mealtypeFeedback: '',
+            difficultyFeedback: '',
+            instructionsFeedback: '',
+            ingredientsFeedback: ''
         }
         this.onInputChange = this.onInputChange.bind(this);
         this.addIngredient = this.addIngredient.bind(this);
         this.removeIngredient = this.removeIngredient.bind(this);
         this.addInstruction = this.addInstruction.bind(this);
         this.removeInstruction = this.removeInstruction.bind(this);
-
         this.handleCreateRecipe = this.handleCreateRecipe.bind(this);
         this.handleCreateIngredientRelation = this.handleCreateIngredientRelation.bind(this);
         this.handleCreateMealTypeRelation = this.handleCreateMealTypeRelation.bind(this);
         this.handleCreateDifficultyRelation = this.handleCreateDifficultyRelation.bind(this);
+        this.formValidation = this.formValidation.bind(this);
+        this.stringCleaner = this.stringCleaner.bind(this);
     }
 
     onInputChange(event){
@@ -49,7 +58,7 @@ class CreateRecipe extends Component {
 
     addIngredient = () => {
         const newIngredient = {
-            name: this.state.ingredient,
+            name: this.stringCleaner(this.state.ingredient, true),
             quantity: this.state.quantity,
             id: this.guid()
         }
@@ -63,8 +72,6 @@ class CreateRecipe extends Component {
         });
     }
 
-    // I am sure there is going to be a nice easy way to combine removeIngredient and removeInstruction but for now they are separate
-    // This only removes the ingredient that was added to the list and added to the state.
     removeIngredient(id) {
         this.setState(state => {
             return {
@@ -86,6 +93,20 @@ class CreateRecipe extends Component {
                 }
             })
         }, 1000)
+    }
+
+    // Adds the instruction to the state that will be used later for addition to the database
+    addInstruction = () => {
+        const newInstruction = {
+            value: this.stringCleaner(this.state.instruction, false),
+            id: this.guid()
+        }
+        this.setState((state) => ({
+            instructions: [...state.instructions, newInstruction],
+            instruction: ''
+        }), () => {
+            // Refer to onInputChange for thoughts on this section
+        })
     }
 
     // Similar to above, this only removes the instruction from the state before submission.
@@ -112,20 +133,6 @@ class CreateRecipe extends Component {
         }, 1000)
     }
 
-    // Adds the instruction to the state that will be used later for addition to the database
-    addInstruction = () => {
-        const newInstruction = {
-            value: this.state.instruction,
-            id: this.guid()
-        }
-        this.setState((state) => ({
-            instructions: [...state.instructions, newInstruction],
-            instruction: ''
-        }), () => {
-            // Refer to onInputChange for thoughts on this section
-        })
-    }
-
     // Probably move this to an external file for reuse? We should find the best practice for naming dynamic element keys
     guid(){
         return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
@@ -133,35 +140,49 @@ class CreateRecipe extends Component {
         )
     }
 
-    handleCreateRecipe = () => {
-        var tempInstructions = [];
-        this.state.instructions.forEach(instruction => {
-            tempInstructions.push(instruction.value)
-        })
+    formValidation = () => {
+        if(this.state.name === '') {
+            this.setState({nameFeedback: "Give it a name!"})
+        } else if(this.state.name.length <= 6) {
+            this.setState({nameFeedback: "Please make the name longer than 6 characters."})
+        }
+        if(this.state.time === '') {
+            this.setState({timeFeedback: "Tell us how long till we can eat!"})
+        }
+    }
 
-        this.props.CreateRecipe({variables: {
-            name: this.state.name.toLowerCase(),
-            time: this.state.time,
-            instructions: tempInstructions
-        }})
-        .then(({data}) => {
-            // Do something with data? Or don't pass it in I guess. Probably use it to change some styling to indicate success?
-            this.handleCreateIngredientRelation()
-            this.handleCreateDifficultyRelation()
-            this.handleCreateMealTypeRelation()
-        }).catch((error) => {
-            return (
-                <div>Oops! We had a hard time creating the recipe! {error}</div>
-            )
-        })
+    handleCreateRecipe = () => {
+        this.formValidation()
+        if(this.state.formValid === true) {
+            var tempInstructions = [];
+            this.state.instructions.forEach(instruction => {
+                tempInstructions.push(instruction.value)
+            })
+
+            this.props.CreateRecipe({variables: {
+                name: this.stringCleaner(this.state.name, true),
+                time: this.stringCleaner(this.state.time, true),
+                instructions: tempInstructions
+            }})
+            .then(({data}) => {
+                // Do something with data? Or don't pass it in I guess. Probably use it to change some styling to indicate success?
+                this.handleCreateIngredientRelation()
+                this.handleCreateDifficultyRelation()
+                this.handleCreateMealTypeRelation()
+            }).catch((error) => {
+                return (
+                    <div>Oops! We had a hard time creating the recipe! {error}</div>
+                )
+            })
+        }
     }
 
     handleCreateIngredientRelation = () => {
         this.state.ingredients.forEach(ingredient => {
             this.props.CreateIngredientRelation({variables: {
-                name: ingredient.name.toLowerCase(),
-                recipe: this.state.name.toLowerCase(),
-                quantity: ingredient.quantity
+                name: this.stringCleaner(ingredient.name, true),
+                recipe: this.stringCleaner(this.state.name, true),
+                quantity: ingredient.quantity.trim()
             }})
             .then(({data}) => {
                 // Do some kind of feedback on successful relationship creation?
@@ -176,8 +197,8 @@ class CreateRecipe extends Component {
 
     handleCreateMealTypeRelation = () => {
         this.props.CreateMealTypeRelation({variables: {
-            recipe: this.state.name.toLowerCase(),
-            type: this.state.mealtype.toLowerCase()
+            recipe: this.stringCleaner(this.state.name, true),
+            type: this.state.mealtype.toLowerCase().trim()
         }})
         .then(({data}) => {
             return (
@@ -193,7 +214,7 @@ class CreateRecipe extends Component {
 
     handleCreateDifficultyRelation = () => {
         this.props.CreateDifficultyRelation({variables: {
-            recipe: this.state.name.toLowerCase(),
+            recipe: this.stringCleaner(this.string.name, true),
             value: this.state.difficulty.toLowerCase()
         }})
         .then(({data}) => {
@@ -208,6 +229,17 @@ class CreateRecipe extends Component {
         })
     }
 
+    stringCleaner = (string, applyLowerCase) => {
+        let cleanString = string;
+        if(applyLowerCase) {
+            cleanString = cleanString.toLowerCase();
+        }
+        cleanString = cleanString.trim();
+        cleanString = cleanString.replace(/[|&;$%@"<>()+,]/g, "");
+        cleanString = cleanString.replace(/<[^>]*>/g, '');
+        return cleanString;
+    }
+
     render() {
         return (
             <div>
@@ -220,6 +252,7 @@ class CreateRecipe extends Component {
                         value={this.state.name}
                         onChange={this.onInputChange}
                     />
+                    <div id="nameFeedback" className="nameFeedback">{this.state.nameFeedback}</div>
                     <Input
                         name="time"
                         labelValue="Time"
@@ -227,6 +260,7 @@ class CreateRecipe extends Component {
                         value={this.state.time}
                         onChange={this.onInputChange}
                     />
+                    <div id="timeFeedback" className="timeFeedback">{this.state.timeFeedback}</div>
                     <ul key={"instructions-" + this.guid()}>
                         {this.state.instructions.map(instruction => {
                             return <li key={instruction.id}>
@@ -283,6 +317,13 @@ class CreateRecipe extends Component {
             </div>
         )
     }
+}
+
+CreateRecipe.propTypes = {
+    CreateRecipe: PropTypes.func,
+    CreateIngredientRelation: PropTypes.func,
+    CreateMealTypeRelation: PropTypes.func,
+    CreateDifficultyRelation: PropTypes.func
 }
 
 const CreateRecipeWithMutations = compose(
