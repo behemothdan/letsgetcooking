@@ -1,9 +1,10 @@
 import React from "react";
 import { Query } from "react-apollo";
 import { GET_DIFFICULTY } from '../../graphql';
+import Select from "../FormComponents/Select/Select";
 import PropTypes from "prop-types";
 
-const GetDifficulty = ({onChange}) => (
+const GetDifficulty = ({onChange, feedback}) => (
     <Query query={GET_DIFFICULTY}>
         {({loading, error, data}) => {
             if (loading) return(
@@ -14,19 +15,22 @@ const GetDifficulty = ({onChange}) => (
             );
 
             return (
-                <select name="difficulty" onChange={onChange}>
-                        <option key="no-difficulty" value="">Select a difficulty</option>
-                    {data.difficulty.map(difficulty => (
-                        <option key={difficulty.value} value={difficulty.value}>{difficulty.value}</option>
-                    ))}
-                </select>
+                <Select
+                    name="difficulty"
+                    onChange={onChange}
+                    feedback={feedback}
+                    defaultText="Select a difficulty"
+                    optionItems={data.difficulty}
+                    optionKey="value"
+                />
             );
         }}
     </Query>
 );
 
 GetDifficulty.propTypes = {
-    onChange: PropTypes.func
+    onChange: PropTypes.func,
+    feedback: PropTypes.string
 }
 
 export default GetDifficulty

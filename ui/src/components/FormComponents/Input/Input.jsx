@@ -2,8 +2,7 @@ import React from "react";
 import "./Input.css";
 import PropTypes from "prop-types";
 
-
-const Input = ({name, labelValue, required, placeholder, value, className, onChange = () => {}}) => {
+const Input = ({name, labelValue, required, placeholder, value, className, feedback, onChange = () => {}}) => {
     return (
         <span className={className}>
             <label htmlFor={name}>{labelValue}</label>
@@ -14,7 +13,9 @@ const Input = ({name, labelValue, required, placeholder, value, className, onCha
                 placeholder={placeholder}
                 value={value}
                 onChange={onChange}
+                aria-describedby={name + '_error'}
             />
+            <span id={name + '_error'} className="error" role="alert">{feedback}</span>
         </span>
     )
 }
@@ -26,14 +27,15 @@ Input.propTypes = {
     placeholder: PropTypes.string,
     value: PropTypes.string,
     className: PropTypes.string,
+    feedback: PropTypes.string,
     onChange: PropTypes.func
 };
 
 Input.defaultProps = {
-    labelValue: "",
     placeholder: "",
     value: "",
-    className: ""
+    className: "",
+    feedback: ""
 };
 
 export default Input

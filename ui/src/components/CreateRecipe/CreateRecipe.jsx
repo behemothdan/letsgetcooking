@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import { graphql,compose } from "react-apollo";
 import { CREATE_NEW_RECIPE, CREATE_RECIPE_INGREDIENTS, CREATE_MEALTYPE_RELATION, CREATE_DIFFICULTY_RELATION } from '../../graphql';
+import { Guid, StringCleaner } from "../../utilities"
 import PropTypes from "prop-types";
 
 import Button from "../FormComponents/Button/Button";
@@ -24,13 +25,18 @@ class CreateRecipe extends Component {
             mealtype: '',
             difficulty: '',
             formValid: false,
+            formFeedback: '',
             nameFeedback: '',
             timeFeedback: '',
             mealtypeFeedback: '',
             difficultyFeedback: '',
             instructionsFeedback: '',
-            ingredientsFeedback: ''
+            instructionFeedback: '', //This is validating the instruction before adding it to the state, not for form submission
+            ingredientsFeedback: '',
+            ingredientFeedback: '', //This is for validating adding the ingredient to the ingredients array, not for form submission
+            quantityFeedback: ''    //Same as above
         }
+
         this.onInputChange = this.onInputChange.bind(this);
         this.addIngredient = this.addIngredient.bind(this);
         this.removeIngredient = this.removeIngredient.bind(this);
@@ -41,13 +47,58 @@ class CreateRecipe extends Component {
         this.handleCreateMealTypeRelation = this.handleCreateMealTypeRelation.bind(this);
         this.handleCreateDifficultyRelation = this.handleCreateDifficultyRelation.bind(this);
         this.formValidation = this.formValidation.bind(this);
-        this.stringCleaner = this.stringCleaner.bind(this);
+    }
+
+    formValidation = () => {
+        let failedCheck = false;
+
+        // I should also check the name does not exist in the database before trying to submit
+        // TODO: Import RecipeQuery graphql functionality and the recipes query from the schema.
+        // Pass in the state.name and see if it returns anything. If it does, throw an error about
+        // a recipe with that name already existing
+        if(this.state.name === '') {
+            this.setState({nameFeedback: "Give this pile of deliciousness a name!"})
+            failedCheck = true;
+        } else if(this.state.name.length <= 6) {
+            this.setState({nameFeedback: "Please make the name longer than 6 characters."})
+            failedCheck = true;
+        }
+
+        if(this.state.time === '') {
+            this.setState({timeFeedback: "Tell us how long till we can eat!"})
+            failedCheck = true;
+        }
+
+        // Both mealtype and difficulty should validate that the value is a legit choice before allowing submission in case of shenanigans
+        if(this.state.mealtype === '') {
+            this.setState({mealtypeFeedback: "Please choose what kind of food this happens to be!"})
+            failedCheck = true;
+        }
+
+        if(this.state.difficulty === '') {
+            this.setState({difficultyFeedback: "How skilled do we have to be to cook this food?"})
+            failedCheck = true;
+        }
+
+        if(this.state.instructions.length < 1) {
+            this.setState({instructionsFeedback: "We should probably provide some instructions."})
+            failedCheck = true;
+        }
+
+        if(this.state.ingredients.length < 1) {
+            this.setState({ingredientsFeedback: "We can't have anything to eat without ingredients!"})
+            failedCheck = true;
+        }
+        if(failedCheck === false) {
+            this.setState({formValid: true})
+        }
     }
 
     onInputChange(event){
         // As long as the name of the input component matches the name of the state property this will add them to the appropriate keys.
         const stateName = event.target.name;
         const value = event.target.value;
+
         this.setState(({[stateName]: value}), () => {
             // In other components this calls back to the parent
             // We can probably use this for something else like some kind of validation
@@ -57,19 +108,34 @@ class CreateRecipe extends Component {
     }
 
     addIngredient = () => {
-        const newIngredient = {
-            name: this.stringCleaner(this.state.ingredient, true),
-            quantity: this.state.quantity,
-            id: this.guid()
+        let ingredientValid = true;
+        if(this.state.quantity === '' || this.state.quantity === null) {
+            this.setState({quantityFeedback: 'Please tell us how much awesome flavor to use!'})
+            ingredientValid = false;
+        } else {
+            this.setState({quantityFeedback: ''})
         }
-        this.setState((state) => ({
-            ingredients: [...state.ingredients, newIngredient],
-            ingredient: '',
-            quantity: ''
-        }), () => {
-            // Refer to onInputChange for thoughts on this section
-            //console.log(this.state.ingredients);
-        });
+        if(this.state.ingredient === '' || this.state.ingredient === null) {
+            this.setState({ingredientFeedback: 'Please tell us what ingredient we are adding!'})
+            ingredientValid = false;
+        } else {
+            this.setState({ingredientFeedback: ''})
+        }
+        if(ingredientValid === true){
+            const newIngredient = {
+                name: this.stringCleaner(this.state.ingredient, true),
+                quantity: this.state.quantity,
+                id: Guid()
+            }
+            this.setState((state) => ({
+                ingredients: [...state.ingredients, newIngredient],
+                ingredient: '',
+                quantity: ''
+            }), () => {
+                // Refer to onInputChange for thoughts on this section
+                //console.log(this.state.ingredients);
+            });
+        }
     }
 
     removeIngredient(id) {
@@ -97,16 +163,25 @@ class CreateRecipe extends Component {
 
     // Adds the instruction to the state that will be used later for addition to the database
     addInstruction = () => {
-        const newInstruction = {
-            value: this.stringCleaner(this.state.instruction, false),
-            id: this.guid()
+        let instructionValid = true;
+        if(this.state.instruction === '' || this.state.instruction === null) {
+            this.setState({instructionFeedback: "Empty instructions don't help anybody!"})
+            instructionValid = false;
+        } else {
+            this.setState({quantityFeedback: ''})
         }
-        this.setState((state) => ({
-            instructions: [...state.instructions, newInstruction],
-            instruction: ''
-        }), () => {
-            // Refer to onInputChange for thoughts on this section
-        })
+        if(instructionValid) {
+            const newInstruction = {
+                value: StringCleaner(this.state.instruction, false),
+                id: Guid()
+            }
+            this.setState((state) => ({
+                instructions: [...state.instructions, newInstruction],
+                instruction: ''
+            }), () => {
+                // Refer to onInputChange for thoughts on this section
+            })
+        }
     }
 
     // Similar to above, this only removes the instruction from the state before submission.
@@ -133,24 +208,6 @@ class CreateRecipe extends Component {
         }, 1000)
     }
 
-    // Probably move this to an external file for reuse? We should find the best practice for naming dynamic element keys
-    guid(){
-        return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
-            ((c ^ crypto.getRandomValues(new Uint8Array(1))[0]) & (15 >> c / 4)).toString(16)
-        )
-    }
-
-    formValidation = () => {
-        if(this.state.name === '') {
-            this.setState({nameFeedback: "Give it a name!"})
-        } else if(this.state.name.length <= 6) {
-            this.setState({nameFeedback: "Please make the name longer than 6 characters."})
-        }
-        if(this.state.time === '') {
-            this.setState({timeFeedback: "Tell us how long till we can eat!"})
-        }
-    }
-
     handleCreateRecipe = () => {
         this.formValidation()
         if(this.state.formValid === true) {
@@ -160,12 +217,11 @@ class CreateRecipe extends Component {
             })
 
             this.props.CreateRecipe({variables: {
-                name: this.stringCleaner(this.state.name, true),
-                time: this.stringCleaner(this.state.time, true),
+                name: StringCleaner(this.state.name, true),
+                time: StringCleaner(this.state.time, true),
                 instructions: tempInstructions
             }})
             .then(({data}) => {
-                // Do something with data? Or don't pass it in I guess. Probably use it to change some styling to indicate success?
                 this.handleCreateIngredientRelation()
                 this.handleCreateDifficultyRelation()
                 this.handleCreateMealTypeRelation()
@@ -174,6 +230,8 @@ class CreateRecipe extends Component {
                     <div>Oops! We had a hard time creating the recipe! {error}</div>
                 )
             })
+        } else {
+            this.setState({formFeedback: "Please resolve any problems and try adding the recipe again!"});
         }
     }
 
@@ -184,14 +242,6 @@ class CreateRecipe extends Component {
                 recipe: this.stringCleaner(this.state.name, true),
                 quantity: ingredient.quantity.trim()
             }})
-            .then(({data}) => {
-                // Do some kind of feedback on successful relationship creation?
-                //console.log("Added ingredient: " + data)
-            })
-            .catch(({error}) => {
-                // Create some more informative error messages
-                console.log("Error adding ingredient: " + error)
-            })
         })
     }
 
@@ -200,16 +250,6 @@ class CreateRecipe extends Component {
             recipe: this.stringCleaner(this.state.name, true),
             type: this.state.mealtype.toLowerCase().trim()
         }})
-        .then(({data}) => {
-            return (
-                <div>Meal type added! {data}</div>
-            )
-        })
-        .catch(({data}) => {
-            return (
-                <div>Oops! We had a hard time setting the meal type! {data}</div>
-            )
-        })
     }
 
     handleCreateDifficultyRelation = () => {
@@ -229,21 +269,11 @@ class CreateRecipe extends Component {
         })
     }
 
-    stringCleaner = (string, applyLowerCase) => {
-        let cleanString = string;
-        if(applyLowerCase) {
-            cleanString = cleanString.toLowerCase();
-        }
-        cleanString = cleanString.trim();
-        cleanString = cleanString.replace(/[|&;$%@"<>()+,]/g, "");
-        cleanString = cleanString.replace(/<[^>]*>/g, '');
-        return cleanString;
-    }
-
     render() {
         return (
             <div>
                 <h2>Add a new recipe!</h2>
+                <span id="formFeedback" className="formFeedback">{this.state.formFeedback}</span>
                 <form onSubmit={e => { e.preventDefault(); this.handleCreateRecipe() }}>
                     <Input
                         name="name"
@@ -251,17 +281,17 @@ class CreateRecipe extends Component {
                         placeholder="Recipe Name"
                         value={this.state.name}
                         onChange={this.onInputChange}
+                        feedback={this.state.nameFeedback}
                     />
-                    <div id="nameFeedback" className="nameFeedback">{this.state.nameFeedback}</div>
                     <Input
                         name="time"
                         labelValue="Time"
                         placeholder="How long till eating?"
                         value={this.state.time}
                         onChange={this.onInputChange}
+                        feedback={this.state.timeFeedback}
                     />
-                    <div id="timeFeedback" className="timeFeedback">{this.state.timeFeedback}</div>
-                    <ul key={"instructions-" + this.guid()}>
+                    <ul key={"instructions-" + Guid()}>
                         {this.state.instructions.map(instruction => {
                             return <li key={instruction.id}>
                                         {instruction.value}
@@ -277,19 +307,23 @@ class CreateRecipe extends Component {
                         className="instructionbox"
                         row="4"
                         onChange={this.onInputChange}
+                        feedback={this.state.instructionFeedback}
                     />
+                    <span id="instructionsFeedback" className="instructionsFeedback">{this.state.instructionsFeedback}</span>
                     <Button type="button" value="Add Step" buttonClick={this.addInstruction} />
 
                     <GetMealTypes
                         value={this.state.mealtype}
                         onChange={this.onInputChange}
+                        feedback={this.state.mealtypeFeedback}
                     />
                     <GetDifficulty
                         value={this.state.difficulty}
                         onChange={this.onInputChange}
+                        feedback={this.state.difficultyFeedback}
                     />
 
-                    <ul key={"ingredients-" + this.guid()}>
+                    <ul key={"ingredients-" + Guid()}>
                         {this.state.ingredients.map(ingredient => {
                             return <li key={ingredient.id}>
                                         {ingredient.quantity} {ingredient.name}
@@ -297,12 +331,15 @@ class CreateRecipe extends Component {
                                     </li>
                         })}
                     </ul>
+                    <span id="ingredientsFeedback" className="ingredientsFeedback">{this.state.ingredientsFeedback}</span>
+
                     <Input
                         name="ingredient"
                         value={this.state.ingredient}
                         labelValue="Ingredient"
                         className="ingredientinput"
                         onChange={this.onInputChange}
+                        feedback={this.state.ingredientFeedback}
                     />
                     <Input
                         name="quantity"
@@ -310,6 +347,7 @@ class CreateRecipe extends Component {
                         labelValue="Quantity"
                         className="quantityinput"
                         onChange={this.onInputChange}
+                        feedback={this.state.quantityFeedback}
                     />
                     <Button type="button" value="Add Ingredient" buttonClick={this.addIngredient} />
                     <Button type="submit" value="Add that delicious recipe!" />

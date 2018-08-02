@@ -4,7 +4,7 @@ import { GET_MEALTYPES } from '../../graphql';
 import Select from "../FormComponents/Select/Select";
 import PropTypes from "prop-types";
 
-const GetMealTypes = ({onChange}) => (
+const GetMealTypes = ({onChange, feedback}) => (
     <Query query={GET_MEALTYPES}>
         {({loading, error, data}) => {
             if (loading) return(
@@ -15,16 +15,22 @@ const GetMealTypes = ({onChange}) => (
             );
 
             return (
-                <div>
-                    <Select name="mealtype" onChange={onChange} defaultText="What kind of food is it?" optionItems={data.mealtype} />
-                </div>
+                <Select
+                    name="mealtype"
+                    onChange={onChange}
+                    feedback={feedback}
+                    defaultText="What kind of food is it?"
+                    optionItems={data.mealtype}
+                    optionKey="type"
+                />
             );
         }}
     </Query>
 );
 
 GetMealTypes.propTypes = {
-    onChange: PropTypes.func.isRequired
+    onChange: PropTypes.func.isRequired,
+    feedback: PropTypes.string
 }
 
 export default GetMealTypes
