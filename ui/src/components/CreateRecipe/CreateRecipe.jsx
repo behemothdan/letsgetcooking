@@ -3,6 +3,7 @@ import { graphql,compose } from "react-apollo";
 import { CREATE_NEW_RECIPE, CREATE_RECIPE_INGREDIENTS, CREATE_MEALTYPE_RELATION, CREATE_DIFFICULTY_RELATION } from '../../graphql';
 import { Guid, StringCleaner } from "../../utilities"
 import PropTypes from "prop-types";
+import autoBind from 'react-autobind';
 
 import Button from "../FormComponents/Button/Button";
 import GetDifficulty from "../GetDifficulty/GetDifficulty";
@@ -13,6 +14,7 @@ import Textbox from "../FormComponents/Textbox/Textbox";
 class CreateRecipe extends Component {
     constructor(props) {
         super(props);
+        autoBind(this);
 
         this.state = {
             ingredient: '',     // This is only used to temporarily hold the ingredient until it is added to the array below
@@ -20,12 +22,13 @@ class CreateRecipe extends Component {
             instruction: '',    // Same as above
             name: '',
             time: '',
+            mealtypes: '',
             instructions: [],
             ingredients: [],
             mealtype: '',
             difficulty: '',
             formValid: false,
-            formFeedback: '',
+            formFeedback: '', // In the future we can probably build one array of feedback data for ease of reading.
             nameFeedback: '',
             timeFeedback: '',
             mealtypeFeedback: '',
@@ -36,17 +39,6 @@ class CreateRecipe extends Component {
             ingredientFeedback: '', //This is for validating adding the ingredient to the ingredients array, not for form submission
             quantityFeedback: ''    //Same as above
         }
-
-        this.onInputChange = this.onInputChange.bind(this);
-        this.addIngredient = this.addIngredient.bind(this);
-        this.removeIngredient = this.removeIngredient.bind(this);
-        this.addInstruction = this.addInstruction.bind(this);
-        this.removeInstruction = this.removeInstruction.bind(this);
-        this.handleCreateRecipe = this.handleCreateRecipe.bind(this);
-        this.handleCreateIngredientRelation = this.handleCreateIngredientRelation.bind(this);
-        this.handleCreateMealTypeRelation = this.handleCreateMealTypeRelation.bind(this);
-        this.handleCreateDifficultyRelation = this.handleCreateDifficultyRelation.bind(this);
-        this.formValidation = this.formValidation.bind(this);
     }
 
     formValidation = () => {
