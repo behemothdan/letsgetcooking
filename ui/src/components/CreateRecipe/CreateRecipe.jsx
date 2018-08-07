@@ -1,28 +1,25 @@
 import React, {Component} from "react";
-import { graphql,compose } from "react-apollo";
-import { CREATE_NEW_RECIPE, CREATE_RECIPE_INGREDIENTS, CREATE_MEALTYPE_RELATION, CREATE_DIFFICULTY_RELATION } from '../../graphql';
+import { graphql, compose } from "react-apollo";
+import { CREATE_NEW_RECIPE, CREATE_RECIPE_INGREDIENTS, CREATE_MEALTYPE_RELATION, CREATE_DIFFICULTY_RELATION, GET_MEALTYPES } from '../../graphql';
 import { Guid, StringCleaner } from "../../utilities"
 import PropTypes from "prop-types";
-import autoBind from 'react-autobind';
-
 import Button from "../FormComponents/Button/Button";
 import GetDifficulty from "../GetDifficulty/GetDifficulty";
 import GetMealTypes from "../GetMealTypes/GetMealTypes";
 import Input from "../FormComponents/Input/Input";
 import Textbox from "../FormComponents/Textbox/Textbox";
+import './CreateRecipe.css';
 
 class CreateRecipe extends Component {
     constructor(props) {
         super(props);
-        autoBind(this);
-
         this.state = {
             ingredient: '',     // This is only used to temporarily hold the ingredient until it is added to the array below
             quantity: '',       // The same is true for this as it is for the item above
             instruction: '',    // Same as above
             name: '',
             time: '',
-            mealtypes: '',
+            mealtypes: [],
             instructions: [],
             ingredients: [],
             mealtype: '',
@@ -39,6 +36,16 @@ class CreateRecipe extends Component {
             ingredientFeedback: '', //This is for validating adding the ingredient to the ingredients array, not for form submission
             quantityFeedback: ''    //Same as above
         }
+        this.onInputChange = this.onInputChange.bind(this);
+        this.addIngredient = this.addIngredient.bind(this);
+        this.removeIngredient = this.removeIngredient.bind(this);
+        this.addInstruction = this.addInstruction.bind(this);
+        this.removeInstruction = this.removeInstruction.bind(this);
+        this.handleCreateRecipe = this.handleCreateRecipe.bind(this);
+        this.handleCreateIngredientRelation = this.handleCreateIngredientRelation.bind(this);
+        this.handleCreateMealTypeRelation = this.handleCreateMealTypeRelation.bind(this);
+        this.handleCreateDifficultyRelation = this.handleCreateDifficultyRelation.bind(this);
+        this.formValidation = this.formValidation.bind(this);
     }
 
     formValidation = () => {
@@ -115,7 +122,7 @@ class CreateRecipe extends Component {
         }
         if(ingredientValid === true){
             const newIngredient = {
-                name: this.stringCleaner(this.state.ingredient, true),
+                name: StringCleaner(this.state.ingredient, true),
                 quantity: this.state.quantity,
                 id: Guid()
             }
@@ -263,7 +270,7 @@ class CreateRecipe extends Component {
 
     render() {
         return (
-            <div>
+            <div className="createRecipe">
                 <h2>Add a new recipe!</h2>
                 <span id="formFeedback" className="formFeedback">{this.state.formFeedback}</span>
                 <form onSubmit={e => { e.preventDefault(); this.handleCreateRecipe() }}>
@@ -357,6 +364,7 @@ CreateRecipe.propTypes = {
 }
 
 const CreateRecipeWithMutations = compose(
+    graphql(GET_MEALTYPES),
     graphql(CREATE_NEW_RECIPE, {name: 'CreateRecipe'}),
     graphql(CREATE_RECIPE_INGREDIENTS, {name: 'CreateIngredientRelation'}),
     graphql(CREATE_MEALTYPE_RELATION, {name: 'CreateMealTypeRelation'}),

@@ -1,35 +1,20 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-import configureStore from './store';
-
-import App from './App';
+import { BrowserRouter as Router, Route} from 'react-router-dom';
 import registerServiceWorker from './registerServiceWorker';
-import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from 'react-apollo';
+import { client } from './Client';
 import './style/Index.css';
-
-const client = new ApolloClient({
-    uri: process.env.REACT_APP_GRAPHQL_URI,
-    onError: ({ graphQLErrors, networkError }) => {
-        if (graphQLErrors)
-            graphQLErrors.map(({ message, locations, path }) =>
-            console.log(`💢[GraphQL Error]: Message: ${message}, Location: ${locations}, Path: ${path}`) //eslint-disable-line
-            )
-        if (networkError) console.log(`💢[Network error]: ${networkError}`); //eslint-disable-line
-      }
-})
-
-const Main = () => (
-    <ApolloProvider client={client}>
-        <App />
-    </ApolloProvider>
-)
+import Home from "./views/Home";
 
 ReactDOM.render(
-    <Provider store={configureStore()}>
-        <Main />
-    </Provider>,
+    <ApolloProvider client={client}>
+        <Router>
+            <div>
+                <Route path="/" component={Home} />
+            </div>
+        </Router>
+    </ApolloProvider>,
     document.getElementById('root')
 );
 registerServiceWorker();
