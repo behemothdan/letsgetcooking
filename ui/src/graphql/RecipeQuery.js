@@ -19,3 +19,11 @@ export const RECIPE_QUERY = gql`
             }
         }
     }`;
+
+export const RECIPE_EXACT = gql`
+    query($searchQuery: String = "null")
+    {
+        RecipesByExactName(searchQuery: $searchQuery) {
+            name
+        }
+    }`;

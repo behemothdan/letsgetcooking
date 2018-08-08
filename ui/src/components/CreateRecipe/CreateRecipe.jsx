@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import { graphql, compose } from "react-apollo";
-import { CREATE_NEW_RECIPE, CREATE_RECIPE_INGREDIENTS, CREATE_MEALTYPE_RELATION, CREATE_DIFFICULTY_RELATION, GET_MEALTYPES } from '../../graphql';
+import { CREATE_NEW_RECIPE, CREATE_RECIPE_INGREDIENTS, CREATE_MEALTYPE_RELATION, CREATE_DIFFICULTY_RELATION, GET_MEALTYPES, GET_DIFFICULTY, RECIPE_EXACT } from '../../graphql';
 import { Guid, StringCleaner } from "../../utilities"
 import PropTypes from "prop-types";
 import Button from "../FormComponents/Button/Button";
@@ -9,6 +9,7 @@ import GetMealTypes from "../GetMealTypes/GetMealTypes";
 import Input from "../FormComponents/Input/Input";
 import Textbox from "../FormComponents/Textbox/Textbox";
 import './CreateRecipe.css';
+import { client }  from '../../Client';
 
 class CreateRecipe extends Component {
     constructor(props) {
@@ -20,6 +21,7 @@ class CreateRecipe extends Component {
             name: '',
             time: '',
             mealtypes: [],
+            difficulties: [],
             instructions: [],
             ingredients: [],
             mealtype: '',
@@ -48,8 +50,23 @@ class CreateRecipe extends Component {
         this.formValidation = this.formValidation.bind(this);
     }
 
+    componentDidMount() {
+        client.query({
+            query: GET_MEALTYPES,
+        }).then(response => this.setState({mealtypes: response.data.mealtype}))
+
+        client.query({
+            query: GET_DIFFICULTY
+        }).then(response => this.setState({difficulties: response.data.difficulty}))
+    }
+
     formValidation = () => {
         let failedCheck = false;
+
+        client.query({
+            variables: {searchQuery: this.state.name},
+            query: RECIPE_EXACT
+        }).then(this.setState({nameFeedback: "Someone already named a delicious recipe " + this.state.name + ". Try another!"}), failedCheck = true)
 
         // I should also check the name does not exist in the database before trying to submit
         // TODO: Import RecipeQuery graphql functionality and the recipes query from the schema.
@@ -365,6 +382,8 @@ CreateRecipe.propTypes = {
 
 const CreateRecipeWithMutations = compose(
     graphql(GET_MEALTYPES),
+    graphql(GET_DIFFICULTY),
+    //graphql(RECIPE_EXACT),
     graphql(CREATE_NEW_RECIPE, {name: 'CreateRecipe'}),
     graphql(CREATE_RECIPE_INGREDIENTS, {name: 'CreateIngredientRelation'}),
     graphql(CREATE_MEALTYPE_RELATION, {name: 'CreateMealTypeRelation'}),

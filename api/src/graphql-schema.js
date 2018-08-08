@@ -36,12 +36,6 @@ type Query {
     difficulty: String
   ): [Recipe]
 
-  RecipesBySubstring(searchQuery: String): [Recipe] @cypher(statement:
-    "MATCH (r:Recipe) WHERE toLower(r.name) CONTAINS toLower($searchQuery) OR toLower(r.time) CONTAINS toLower($searchQuery) RETURN r ORDER BY r.name ASC" )
-
-  IngredientsBySubstring(ingredientQuery: String): [Ingredient] @cypher(statement:
-    "MATCH (i:Ingredient) WHERE toLower(i.name) CONTAINS toLower($ingredientQuery) RETURN i" )
-
   mealtype(
     type: String
   ): [MealType]
@@ -53,6 +47,15 @@ type Query {
   ingredients(
     name: String
   ): [Ingredient]
+
+  RecipesByExactName(searchQuery: String): [Recipe] @cypher(statement:
+    "MATCH (r:Recipe {name: toLower($searchQuery)}) return r")
+
+  RecipesBySubstring(searchQuery: String): [Recipe] @cypher(statement:
+    "MATCH (r:Recipe) WHERE toLower(r.name) CONTAINS toLower($searchQuery) OR toLower(r.time) CONTAINS toLower($searchQuery) RETURN r ORDER BY r.name ASC")
+
+  IngredientsBySubstring(ingredientQuery: String): [Ingredient] @cypher(statement:
+    "MATCH (i:Ingredient) WHERE toLower(i.name) CONTAINS toLower($ingredientQuery) RETURN i")
 }
 
 type Mutation {
@@ -90,6 +93,9 @@ type Mutation {
 export const resolvers = {
   Query: {
     recipes(object, params, ctx, resolveInfo) {
+      return neo4jgraphql(object, params, ctx, resolveInfo, true);
+    },
+    RecipesByExactName(object, params, ctx, resolveInfo) {
       return neo4jgraphql(object, params, ctx, resolveInfo, true);
     },
     RecipesBySubstring(object, params, ctx, resolveInfo) {

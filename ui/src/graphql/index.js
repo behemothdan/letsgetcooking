@@ -7,7 +7,7 @@ export {
 } from './CreateIngredient';
 
 export {
-    RECIPE_QUERY
+    RECIPE_QUERY, RECIPE_EXACT
 } from './RecipeQuery';
 
 export {
