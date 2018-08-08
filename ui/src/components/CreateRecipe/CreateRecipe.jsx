@@ -89,10 +89,16 @@ class CreateRecipe extends Component {
         if(this.state.mealtype === '') {
             this.setState({mealtypeFeedback: "Please choose what kind of food this happens to be!"})
             failedCheck = true;
+        } else if(!this.state.mealtypes.includes(this.state.mealtype)) {
+            this.setState({mealtypeFeedback: "Naughty! Don't try to mess with the form data!"})
+            failedCheck = true;
         }
 
         if(this.state.difficulty === '') {
             this.setState({difficultyFeedback: "How skilled do we have to be to cook this food?"})
+            failedCheck = true;
+        } else if(!this.state.difficulties.includes(this.state.difficulty)) {
+            this.setState({difficultyFeedback: "Naughty! Don'try to mess with the form data!"})
             failedCheck = true;
         }
 
