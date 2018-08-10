@@ -9,11 +9,11 @@ const Home = () => {
         <div>
             <Header />
             <div className="container">
-            <div className="content-area">
-                <Search />
-                <AddIngredient />
-                <CreateRecipe />
-            </div>
+                <div className="content-area">
+                    <Search />
+                    <AddIngredient />
+                    <CreateRecipe />
+                </div>
             </div>
         </div>
     )

@@ -9,7 +9,7 @@ import GetMealTypes from "../GetMealTypes/GetMealTypes";
 import Input from "../FormComponents/Input/Input";
 import Textbox from "../FormComponents/Textbox/Textbox";
 import './CreateRecipe.css';
-import { client }  from '../../Client';
+import { client }  from '../../client';
 
 class CreateRecipe extends Component {
     constructor(props) {
@@ -245,8 +245,8 @@ class CreateRecipe extends Component {
             }})
             .then(({data}) => {
                 this.handleCreateIngredientRelation()
-                this.handleCreateDifficultyRelation()
                 this.handleCreateMealTypeRelation()
+                this.handleCreateDifficultyRelation()
             }).catch((error) => {
                 return (
                     <div>Oops! We had a hard time creating the recipe! {error}</div>
@@ -389,7 +389,6 @@ CreateRecipe.propTypes = {
 const CreateRecipeWithMutations = compose(
     graphql(GET_MEALTYPES),
     graphql(GET_DIFFICULTY),
-    //graphql(RECIPE_EXACT),
     graphql(CREATE_NEW_RECIPE, {name: 'CreateRecipe'}),
     graphql(CREATE_RECIPE_INGREDIENTS, {name: 'CreateIngredientRelation'}),
     graphql(CREATE_MEALTYPE_RELATION, {name: 'CreateMealTypeRelation'}),

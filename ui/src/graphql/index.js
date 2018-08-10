@@ -17,3 +17,7 @@ export {
 export {
     GET_MEALTYPES
 } from './GetMealTypes';
+
+export {
+    READ_SEARCHQUERY
+} from './ReadSearchQuery';

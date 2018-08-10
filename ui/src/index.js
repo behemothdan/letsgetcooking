@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route} from 'react-router-dom';
 import registerServiceWorker from './registerServiceWorker';
 import { ApolloProvider } from 'react-apollo';
-import { client } from './Client';
+import { client } from './client';
 import './style/Index.css';
 import Home from "./views/Home";
 

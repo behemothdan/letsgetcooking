@@ -1,7 +1,9 @@
 import ApolloClient from 'apollo-boost';
+import clientState from './clientState';
 
 const client = new ApolloClient({
     uri: process.env.REACT_APP_GRAPHQL_URI,
+    clientState,
     onError: ({ graphQLErrors, networkError }) => {
         if (graphQLErrors)
             graphQLErrors.map(({ message, locations, path }) =>
