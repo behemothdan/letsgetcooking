@@ -9,7 +9,6 @@ export default class SearchInput extends Component {
     constructor(props) {
         super(props);
         this.state = {};
-        //this.handleChange = debounce(this.handleChange.bind(this), 500);
         this.handleChange = this.handleChange.bind(this);
     }
 
@@ -18,7 +17,7 @@ export default class SearchInput extends Component {
             // We check for this prop for now in case this component is still embedded in the HOC Search component.
             // I imagine it will be stand-alone completely very soon so the pieces can live different places and still work.
             if(this.props.handleSearchQueryChange) {
-                this.props.handleSearchQueryChange(this.state[this.props.searchitem]);
+                 this.props.handleSearchQueryChange(this.state[this.props.searchitem]);
             }
         });
         client.writeQuery({ // This can probably be moved to it's own GraphQL file to keep things consistent.

@@ -3,6 +3,12 @@ import { debounce } from "lodash";
 import SearchInput from "../SearchInput/SearchInput";
 import RecipeSearchQuery from "../RecipeSearchQuery/RecipeSearchQuery";
 import "./Search.css";
+// import { client }  from '../../client';
+// import { READ_SEARCHQUERY } from '../../graphql';
+
+// const data = client.readQuery({
+//     query: READ_SEARCHQUERY
+// })
 
 export default class Search extends Component {
     constructor(props) {

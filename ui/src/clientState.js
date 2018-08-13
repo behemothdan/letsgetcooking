@@ -1,6 +1,6 @@
 const defaults = {
     searchQuery: {
-        query: 'holy cow',
+        query: 'baked',
         __typename: 'searchQuery'
     }
 }

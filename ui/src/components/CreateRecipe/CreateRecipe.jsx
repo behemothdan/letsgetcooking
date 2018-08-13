@@ -68,10 +68,6 @@ class CreateRecipe extends Component {
             query: RECIPE_EXACT
         }).then(this.setState({nameFeedback: "Someone already named a delicious recipe " + this.state.name + ". Try another!"}), failedCheck = true)
 
-        // I should also check the name does not exist in the database before trying to submit
-        // TODO: Import RecipeQuery graphql functionality and the recipes query from the schema.
-        // Pass in the state.name and see if it returns anything. If it does, throw an error about
-        // a recipe with that name already existing
         if(this.state.name === '') {
             this.setState({nameFeedback: "Give this pile of deliciousness a name!"})
             failedCheck = true;
