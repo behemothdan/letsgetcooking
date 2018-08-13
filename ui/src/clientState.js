@@ -1,7 +1,7 @@
 const defaults = {
     searchQuery: {
-        query: 'baked',
-        __typename: 'searchQuery'
+        __typename: 'searchQuery',
+        query: 'baked'
     }
 }
 

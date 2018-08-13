@@ -2,7 +2,7 @@ import React from 'react';
 import AddIngredient from '../components/AddIngredient/AddIngredient';
 import CreateRecipe from '../components/CreateRecipe/CreateRecipe';
 import Header from '../components/Header/Header';
-import Search from '../components/Search/Search';
+import RecipeSearchQuery from "../components/RecipeSearchQuery/RecipeSearchQuery";
 
 const Home = () => {
     return (
@@ -10,7 +10,7 @@ const Home = () => {
             <Header />
             <div className="container">
                 <div className="content-area">
-                    <Search />
+                    <RecipeSearchQuery />
                     <AddIngredient />
                     <CreateRecipe />
                 </div>

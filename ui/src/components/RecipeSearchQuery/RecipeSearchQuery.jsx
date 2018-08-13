@@ -1,36 +1,42 @@
-import React from "react";
+import React, { Component } from "react";
 import { Query } from "react-apollo";
 import { RECIPE_QUERY } from '../../graphql';
 import RecipeSearchResults from "../RecipeSearchResults/RecipeSearchResults";
 import PropTypes from "prop-types";
+import { READ_SEARCHQUERY } from '../../graphql';
+import { graphql, compose } from "react-apollo";
 
-// import { client }  from '../../client';
-// import { READ_SEARCHQUERY } from '../../graphql';
+class RecipeSearchQuery extends Component {
+    render() {
+        const { searchQuery : { query } } = this.props;
+        return (
+            <Query query={RECIPE_QUERY} variables={{searchQuery: query}}>
+                {({loading, error, data}) => {
+                    if (loading) return(
+                        <p>Finding something delicious...</p>
+                    );
 
-// const data = client.readQuery({
-//     query: READ_SEARCHQUERY
-// })
+                    if (error) return (
+                        <p>Ah man! There was nothing to eat.</p>
+                    );
 
-const RecipeSearchQuery = ({searchQuery}) => (
-    <Query query={RECIPE_QUERY} variables={{searchQuery}}>
-        {({loading, error, data}) => {
-            if (loading) return(
-                <p>Finding something delicious...</p>
-            );
-
-            if (error) return (
-                <p>Ah man! There was nothing to eat.</p>
-            );
-
-            return (
-                <RecipeSearchResults searchResults={data.RecipesBySubstring} />
-            );
-        }}
-    </Query>
-);
-
-RecipeSearchQuery.propTypes = {
-    searchQuery: PropTypes.string
+                    return (
+                        <RecipeSearchResults searchResults={data.RecipesBySubstring} />
+                    );
+                }}
+            </Query>
+        )
+    }
 }
 
-export default RecipeSearchQuery;
+RecipeSearchQuery.propTypes = {
+    searchQuery: PropTypes.object
+}
+
+export default compose(
+    graphql(READ_SEARCHQUERY, {
+        props: ({ data: {searchQuery}}) => ({
+            searchQuery
+        })
+    })
+)(RecipeSearchQuery)

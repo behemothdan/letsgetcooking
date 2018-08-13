@@ -15,7 +15,7 @@ const Header = () => (
         <div>
         </div>
       </div>
-      <SearchInput searchitem="recipes" name="searchInput" labelValue="What are we searching for?" placeholder="Let's get cooking!" handleSearchQueryChange={this.handleChange} />
+      <SearchInput searchitem="recipes" name="searchInput" labelValue="What are we searching for?" placeholder="Let's get cooking!" />
     </header>
   )
 
