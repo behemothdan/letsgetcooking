@@ -12,8 +12,6 @@ const Header = () => (
         <div className="title">
           <h1>Let&apos;s get cooking!</h1>
         </div>
-        <div>
-        </div>
       </div>
       <SearchInput searchitem="recipes" name="searchInput" labelValue="What are we searching for?" placeholder="Let's get cooking!" />
     </header>

@@ -8,7 +8,7 @@ const GetDifficulty = ({onChange, feedback}) => (
     <Query query={GET_DIFFICULTY}>
         {({loading, error, data}) => {
             if (loading) return(
-                <p>So many times to eat...</p>
+                <p>Getting suitable challenges...</p>
             );
             if (error) return (
                 <p>Oops! We had a problem finding a suitable challenge!</p>
