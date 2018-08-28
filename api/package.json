@@ -1,14 +1,23 @@
 {
   "name": "lets-get-cooking-api",
-  "version": "0.0.5",
+  "version": "0.0.8",
+  "author": {
+    "name": "Daniel Gray",
+    "email": "gray.daniel@gmail.com",
+    "url": "http://www.behemothdan.com"
+  },
+  "license": "UNLICENSED",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/behemothdan/letsgetcooking"
+  },
   "description": "API app for LetsGetCooking - Based off the GRAND stack",
   "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "./node_modules/.bin/nodemon --exec babel-node src/index.js"
   },
-  "author": "William Lyon",
-  "license": "MIT",
   "dependencies": {
     "apollo-boost": "^0.1.7",
     "apollo-cache-inmemory": "^1.2.2",
