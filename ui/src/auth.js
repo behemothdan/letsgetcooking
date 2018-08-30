@@ -6,6 +6,7 @@ export default class Auth {
       domain: 'letsgetcooking.auth0.com',
       clientID: '0gFgBNlFCzqTnBhLrK9b1XISlvb6wGrO', // This will obviously be changed when it comes time to deploy.
       redirectUri: process.env.NODE_ENV === 'development' ? 'http://localhost:3000/callback' : 'http://localhost:3000/callback',
+      audience: 'https://letsgetcooking.auth0.com/userinfo',
       responseType: 'token id_token',
       scope: 'openid'
     });
