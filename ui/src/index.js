@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter as Router, Route} from 'react-router-dom';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { ApolloProvider } from 'react-apollo';
 import { client } from './client';
 import registerServiceWorker from './registerServiceWorker';
@@ -13,9 +13,9 @@ const auth = new Auth();
 
 const handleAuthentication = (nextState, replace) => {
     if (/access_token|id_token|error/.test(nextState.location.hash)) {
-      auth.handleAuthentication();
+        auth.handleAuthentication();
     }
-  }
+}
 
 ReactDOM.render(
     <ApolloProvider client={client}>
@@ -26,7 +26,7 @@ ReactDOM.render(
                 <Route path="/callback" render={(props) => {
                     handleAuthentication(props);
                     return <Callback {...props} />
-                }}/>
+                }} />
             </div>
         </Router>
     </ApolloProvider>,
