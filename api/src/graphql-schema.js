@@ -10,6 +10,14 @@ type Recipe {
   difficulty: Difficulty @relation(name: "Skill_Level", direction: "OUT")
 }
 
+type User {
+  name: String
+  picture: String
+  id: String!
+  given_name: String
+  email: String
+}
+
 type Ingredient {
   name: String!
   quantity: String @cypher(statement:"MATCH (:Recipe)-[c:Contains]-(this) RETURN c.quantity")
@@ -35,6 +43,13 @@ type Query {
     mealtype: String,
     difficulty: String
   ): [Recipe]
+
+  user (
+    name: String
+    picture: String
+    given_name: String
+    email: String
+  ): [User]
 
   mealtype(
     type: String
@@ -62,6 +77,14 @@ type Mutation {
   CreateIngredient (
     name: String
   ): Ingredient
+
+  CreateUser (
+    name: String
+    picture: String
+    id: String
+    given_name: String
+    email: String
+  ): User
 
   CreateRecipe (
     name: String
@@ -116,6 +139,9 @@ export const resolvers = {
   },
   Mutation: {
     CreateIngredient(object, params, ctx, resolveInfo) {
+      return neo4jgraphql(object, params, ctx, resolveInfo, true);
+    },
+    CreateUser(object, params, ctx, resolveInfo) {
       return neo4jgraphql(object, params, ctx, resolveInfo, true);
     },
     CreateRecipe(object, params, ctx, resolveInfo) {
