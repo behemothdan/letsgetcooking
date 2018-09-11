@@ -223,7 +223,7 @@ class CreateRecipe extends Component {
                     instructions: state.instructions.filter(i => i.id !== id)
                 }
             })
-        }, 1000)
+        }, 500)
     }
 
     handleCreateRecipe = () => {

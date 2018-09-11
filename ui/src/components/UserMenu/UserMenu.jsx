@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import Auth from '../../auth';
+import { CREATE_USER } from '../../graphql';
+import { graphql, compose } from "react-apollo";
+import PropTypes from "prop-types";
 
 const auth = new Auth();
 
@@ -10,6 +13,17 @@ class UserMenu extends Component {
     logout = () => {
         auth.logout();
     }
+    constructor(props){
+        super(props);
+        this.handleNewUserCreation = this.handleNewUserCreation.bind(this);
+    }
+
+    handleNewUserCreation = () => {
+        this.props.CreateUser({variables: {
+
+        }})
+    }
+
     render() {
         const { isAuthenticated } = auth;
         return (
@@ -34,4 +48,11 @@ class UserMenu extends Component {
     }
 }
 
-export default UserMenu
+UserMenu.propTypes = {
+    CreateUser: PropTypes.func
+}
+
+const UserMenuWithMutations = compose(
+    graphql(CREATE_USER, {name: 'CreateUser'}))(UserMenu)
+
+export default UserMenuWithMutations

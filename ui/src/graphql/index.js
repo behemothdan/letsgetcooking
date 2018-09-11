@@ -21,3 +21,7 @@ export {
 export {
     READ_SEARCHQUERY
 } from './ReadSearchQuery';
+
+export {
+    CREATE_USER
+} from './CreateUser';
