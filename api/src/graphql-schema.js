@@ -47,6 +47,7 @@ type Query {
   user (
     name: String
     picture: String
+    id: String
     given_name: String
     email: String
   ): [User]
@@ -71,6 +72,9 @@ type Query {
 
   IngredientsBySubstring(ingredientQuery: String): [Ingredient] @cypher(statement:
     "MATCH (i:Ingredient) WHERE toLower(i.name) CONTAINS toLower($ingredientQuery) RETURN i")
+
+  UserById(id: String): [User] @cypher(statement:
+    "MATCH (u:User {id: $id}) return u")
 }
 
 type Mutation {
@@ -125,6 +129,9 @@ export const resolvers = {
       return neo4jgraphql(object, params, ctx, resolveInfo, true);
     },
     IngredientsBySubstring(object, params, ctx, resolveInfo) {
+      return neo4jgraphql(object, params, ctx, resolveInfo, true);
+    },
+    UserById(object, params, ctx, resolveInfo) {
       return neo4jgraphql(object, params, ctx, resolveInfo, true);
     },
     difficulty(object, params, ctx, resolveInfo) {

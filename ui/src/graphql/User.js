@@ -17,3 +17,12 @@ export const CREATE_USER = gql`
         }
     }
 `;
+
+export const FIND_USER = gql`
+    query($id: String = "null")
+    {
+        UserById(id: $id) {
+            id
+        }
+    }
+`;

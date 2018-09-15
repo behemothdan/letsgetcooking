@@ -239,7 +239,7 @@ class CreateRecipe extends Component {
                 time: StringCleaner(this.state.time, true),
                 instructions: tempInstructions
             }})
-            .then(({data}) => {
+            .then(() => { // We can pass data here if we end up needing it for something in the future.
                 this.handleCreateIngredientRelation()
                 this.handleCreateMealTypeRelation()
                 this.handleCreateDifficultyRelation()
