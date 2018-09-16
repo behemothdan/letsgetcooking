@@ -30,26 +30,40 @@ export default class Auth {
     });
   }
 
+  setUserInfo = (authResult) => {
+    let expiresAt = JSON.stringify((authResult.expiresIn * 1000) + new Date().getTime());
+    localStorage.setItem('access_token', authResult.accessToken);
+    localStorage.setItem('id_token', authResult.idToken);
+    localStorage.setItem('expires_at', expiresAt);
+    localStorage.setItem('user_image', authResult.idTokenPayload.picture)
+    localStorage.setItem('name', authResult.idTokenPayload.name)
+    history.replace('/');
+  }
+
   // Sets authorization information in localStorage
+  // Creates new user if they are not in the database
   setSession = (authResult) => {
     client.query({
       variables: { id: authResult.idToken },
       query: FIND_USER
     }).then(response => {
-      if(response.data.length > 0) {
-        // eslint-disable-next-line
-        console.log("User found.")
+      if (response.data.length > 0) {
+        this.setUserInfo(authResult);
       } else {
-        // eslint-disable-next-line
-        console.log("Create a new user")
+        client.mutate({
+          variables: {
+            name: authResult.idTokenPayload.name,
+            id: authResult.idTokenPayload.sub,
+            given_name: authResult.idTokenPayload.given_name,
+            email: authResult.idTokenPayload.email
+          },
+          mutation: CREATE_USER
+        }).then(this.setUserInfo(authResult))
+          .catch((error) => {
+            console.log(error)
+          })
       }
     })
-
-    let expiresAt = JSON.stringify((authResult.expiresIn * 1000) + new Date().getTime());
-    localStorage.setItem('access_token', authResult.accessToken);
-    localStorage.setItem('id_token', authResult.idToken);
-    localStorage.setItem('expires_at', expiresAt);
-    history.replace('/');
   }
 
   // Removes authorization information from localStorage
@@ -57,6 +71,7 @@ export default class Auth {
     localStorage.removeItem('access_token');
     localStorage.removeItem('id_token');
     localStorage.removeItem('expires_at');
+    localStorage.removeItem('user_image');
     history.replace('/');
   }
 

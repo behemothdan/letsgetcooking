@@ -46,7 +46,6 @@ type Query {
 
   user (
     name: String
-    picture: String
     id: String
     given_name: String
     email: String
@@ -84,7 +83,6 @@ type Mutation {
 
   CreateUser (
     name: String
-    picture: String
     id: String
     given_name: String
     email: String

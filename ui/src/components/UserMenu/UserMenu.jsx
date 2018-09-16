@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import Auth from '../../auth';
-import { CREATE_USER } from '../../graphql';
-import { graphql, compose } from "react-apollo";
-import PropTypes from "prop-types";
+import './UserMenu.css';
 
 const auth = new Auth();
 
@@ -13,16 +11,6 @@ class UserMenu extends Component {
     logout = () => {
         auth.logout();
     }
-    constructor(props){
-        super(props);
-        this.handleNewUserCreation = this.handleNewUserCreation.bind(this);
-    }
-
-    handleNewUserCreation = () => {
-        this.props.CreateUser({variables: {
-
-        }})
-    }
 
     render() {
         const { isAuthenticated } = auth;
@@ -31,8 +19,9 @@ class UserMenu extends Component {
                 {
                     isAuthenticated() &&
                     <h5>
-                        You are logged in!{' '}
+                        You are logged in!{' '} {localStorage.getItem('name')}
                         <a style={{ cursor: 'pointer' }} onClick={this.logout}>Log Out</a>.
+                        <img className="userImage" src={localStorage.getItem('user_image')} alt="User" />
                     </h5>
                 }
                 {
@@ -48,11 +37,4 @@ class UserMenu extends Component {
     }
 }
 
-UserMenu.propTypes = {
-    CreateUser: PropTypes.func
-}
-
-const UserMenuWithMutations = compose(
-    graphql(CREATE_USER, {name: 'CreateUser'}))(UserMenu)
-
-export default UserMenuWithMutations
+export default UserMenu

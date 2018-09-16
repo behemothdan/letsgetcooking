@@ -3,14 +3,12 @@ import gql from "graphql-tag";
 export const CREATE_USER = gql`
     mutation User(
         $name: String!,
-        $picture: String,
         $id: String,
         $given_name: String,
         $email: String
     ) {
-        CreateUser(name: $name) {
+        CreateUser(name: $name, id: $id, given_name: $given_name, email: $email) {
             name,
-            picture,
             id,
             given_name,
             email
