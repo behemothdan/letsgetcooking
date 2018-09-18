@@ -23,5 +23,5 @@ export {
 } from './ReadSearchQuery';
 
 export {
-    CREATE_USER, FIND_USER
+    CREATE_USER, FIND_USER, CREATE_USERRECIPE_RELATION
 } from './User';

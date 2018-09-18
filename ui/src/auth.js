@@ -17,7 +17,6 @@ export default class Auth {
     this.auth0.authorize();
   }
 
-
   // These do not appear to be redirecting properly. Need to see how to get users back to the homepage or wherever.
   handleAuthentication = () => {
     this.auth0.parseHash((err, authResult) => {
@@ -44,10 +43,10 @@ export default class Auth {
   // Creates new user if they are not in the database
   setSession = (authResult) => {
     client.query({
-      variables: { id: authResult.idToken },
+      variables: { id: authResult.idTokenPayload.sub },
       query: FIND_USER
     }).then(response => {
-      if (response.data.length > 0) {
+      if (response.data.UserById.length > 0) {
         this.setUserInfo(authResult);
       } else {
         client.mutate({

@@ -1,6 +1,6 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import { graphql, compose } from "react-apollo";
-import { CREATE_NEW_RECIPE, CREATE_RECIPE_INGREDIENTS, CREATE_MEALTYPE_RELATION, CREATE_DIFFICULTY_RELATION, GET_MEALTYPES, GET_DIFFICULTY, RECIPE_EXACT } from '../../graphql';
+import { CREATE_NEW_RECIPE, CREATE_RECIPE_INGREDIENTS, CREATE_MEALTYPE_RELATION, CREATE_DIFFICULTY_RELATION, GET_MEALTYPES, GET_DIFFICULTY, RECIPE_EXACT, CREATE_USERRECIPE_RELATION } from '../../graphql';
 import { Guid, StringCleaner } from "../../utilities"
 import PropTypes from "prop-types";
 import Button from "../FormComponents/Button/Button";
@@ -9,7 +9,7 @@ import GetMealTypes from "../GetMealTypes/GetMealTypes";
 import Input from "../FormComponents/Input/Input";
 import Textbox from "../FormComponents/Textbox/Textbox";
 import './CreateRecipe.css';
-import { client }  from '../../client';
+import { client } from '../../client';
 
 class CreateRecipe extends Component {
     constructor(props) {
@@ -47,77 +47,75 @@ class CreateRecipe extends Component {
         this.handleCreateIngredientRelation = this.handleCreateIngredientRelation.bind(this);
         this.handleCreateMealTypeRelation = this.handleCreateMealTypeRelation.bind(this);
         this.handleCreateDifficultyRelation = this.handleCreateDifficultyRelation.bind(this);
+        this.handleCreateUserRecipeRelation = this.handleCreateUserRecipeRelation.bind(this);
         this.formValidation = this.formValidation.bind(this);
-    }
-
-    componentDidMount() {
-        client.query({
-            query: GET_MEALTYPES,
-        }).then(response => this.setState({mealtypes: response.data.mealtype}))
-
-        client.query({
-            query: GET_DIFFICULTY
-        }).then(response => this.setState({difficulties: response.data.difficulty}))
     }
 
     formValidation = () => {
         let failedCheck = false;
+        client.query({
+            query: GET_MEALTYPES,
+        }).then(response => this.setState({ mealtypes: response.data.mealtype }))
 
         client.query({
-            variables: {searchQuery: this.state.name},
-            query: RECIPE_EXACT
-        }).then(this.setState({nameFeedback: "Someone already named a delicious recipe " + this.state.name + ". Try another!"}), failedCheck = true)
+            query: GET_DIFFICULTY
+        }).then(response => this.setState({ difficulties: response.data.difficulty }))
 
-        if(this.state.name === '') {
-            this.setState({nameFeedback: "Give this pile of deliciousness a name!"})
+        client.query({
+            variables: { searchQuery: this.state.name },
+            query: RECIPE_EXACT
+        }).then(response => response.data.RecipesByExactName.length ? (this.setState({ nameFeedback: "Someone already named a delicious recipe " + this.state.name + ". Try another!" }), failedCheck = true) : this.setState({ nameFeedback: '' }))
+
+        if (this.state.name === '') {
+            this.setState({ nameFeedback: "Give this pile of deliciousness a name!" })
             failedCheck = true;
-        } else if(this.state.name.length <= 6) {
-            this.setState({nameFeedback: "Please make the name longer than 6 characters."})
+        } else if (this.state.name.length <= 6) {
+            this.setState({ nameFeedback: "Please make the name longer than 6 characters." })
             failedCheck = true;
         }
 
-        if(this.state.time === '') {
-            this.setState({timeFeedback: "Tell us how long till we can eat!"})
+        if (this.state.time === '') {
+            this.setState({ timeFeedback: "Tell us how long till we can eat!" })
             failedCheck = true;
         }
 
         // Both mealtype and difficulty should validate that the value is a legit choice before allowing submission in case of shenanigans
-        if(this.state.mealtype === '') {
-            this.setState({mealtypeFeedback: "Please choose what kind of food this happens to be!"})
+        if (this.state.mealtype === '') {
+            this.setState({ mealtypeFeedback: "Please choose what kind of food this happens to be!" })
             failedCheck = true;
-        } else if(!this.state.mealtypes.includes(this.state.mealtype)) {
-            this.setState({mealtypeFeedback: "Naughty! Don't try to mess with the form data!"})
-            failedCheck = true;
-        }
-
-        if(this.state.difficulty === '') {
-            this.setState({difficultyFeedback: "How skilled do we have to be to cook this food?"})
-            failedCheck = true;
-        } else if(!this.state.difficulties.includes(this.state.difficulty)) {
-            this.setState({difficultyFeedback: "Naughty! Don'try to mess with the form data!"})
+        } else if (!this.state.mealtypes.includes(this.state.mealtype)) {
+            this.setState({ mealtypeFeedback: "Naughty! Don't try to mess with the form data!" })
             failedCheck = true;
         }
 
-        if(this.state.instructions.length < 1) {
-            this.setState({instructionsFeedback: "We should probably provide some instructions."})
+        if (this.state.difficulty === '') {
+            this.setState({ difficultyFeedback: "How skilled do we have to be to cook this food?" })
+            failedCheck = true;
+        } else if (!this.state.difficulties.includes(this.state.difficulty)) {
+            this.setState({ difficultyFeedback: "Naughty! Don'try to mess with the form data!" })
             failedCheck = true;
         }
 
-        if(this.state.ingredients.length < 1) {
-            this.setState({ingredientsFeedback: "We can't have anything to eat without ingredients!"})
+        if (this.state.instructions.length < 1) {
+            this.setState({ instructionsFeedback: "We should probably provide some instructions." })
             failedCheck = true;
         }
-        if(failedCheck === false) {
-            this.setState({formValid: true})
+
+        if (this.state.ingredients.length < 1) {
+            this.setState({ ingredientsFeedback: "We can't have anything to eat without ingredients!" })
+            failedCheck = true;
+        }
+        if (failedCheck === false) {
+            this.setState({ formValid: true })
         }
     }
 
-    onInputChange(event){
+    onInputChange(event) {
         // As long as the name of the input component matches the name of the state property this will add them to the appropriate keys.
         const stateName = event.target.name;
         const value = event.target.value;
 
-        this.setState(({[stateName]: value}), () => {
+        this.setState(({ [stateName]: value }), () => {
             // In other components this calls back to the parent
             // We can probably use this for something else like some kind of validation
             // since it is called after the setState is finished or simplify it:
@@ -127,19 +125,19 @@ class CreateRecipe extends Component {
 
     addIngredient = () => {
         let ingredientValid = true;
-        if(this.state.quantity === '' || this.state.quantity === null) {
-            this.setState({quantityFeedback: 'Please tell us how much awesome flavor to use!'})
+        if (this.state.quantity === '' || this.state.quantity === null) {
+            this.setState({ quantityFeedback: 'Please tell us how much awesome flavor to use!' })
             ingredientValid = false;
         } else {
-            this.setState({quantityFeedback: ''})
+            this.setState({ quantityFeedback: '' })
         }
-        if(this.state.ingredient === '' || this.state.ingredient === null) {
-            this.setState({ingredientFeedback: 'Please tell us what ingredient we are adding!'})
+        if (this.state.ingredient === '' || this.state.ingredient === null) {
+            this.setState({ ingredientFeedback: 'Please tell us what ingredient we are adding!' })
             ingredientValid = false;
         } else {
-            this.setState({ingredientFeedback: ''})
+            this.setState({ ingredientFeedback: '' })
         }
-        if(ingredientValid === true){
+        if (ingredientValid === true) {
             const newIngredient = {
                 name: StringCleaner(this.state.ingredient, true),
                 quantity: this.state.quantity,
@@ -160,7 +158,7 @@ class CreateRecipe extends Component {
         this.setState(state => {
             return {
                 ingredients: state.ingredients.map(ingredient => {
-                    if(ingredient.id !== id){
+                    if (ingredient.id !== id) {
                         return ingredient
                     } else {
                         return {
@@ -182,13 +180,13 @@ class CreateRecipe extends Component {
     // Adds the instruction to the state that will be used later for addition to the database
     addInstruction = () => {
         let instructionValid = true;
-        if(this.state.instruction === '' || this.state.instruction === null) {
-            this.setState({instructionFeedback: "Empty instructions don't help anybody!"})
+        if (this.state.instruction === '' || this.state.instruction === null) {
+            this.setState({ instructionFeedback: "Empty instructions don't help anybody!" })
             instructionValid = false;
         } else {
-            this.setState({quantityFeedback: ''})
+            this.setState({ quantityFeedback: '' })
         }
-        if(instructionValid) {
+        if (instructionValid) {
             const newInstruction = {
                 value: StringCleaner(this.state.instruction, false),
                 id: Guid()
@@ -207,7 +205,7 @@ class CreateRecipe extends Component {
         this.setState(state => {
             return {
                 instructions: state.instructions.map(instruction => {
-                    if(instruction.id !== id) {
+                    if (instruction.id !== id) {
                         return instruction;
                     } else {
                         return {
@@ -228,63 +226,82 @@ class CreateRecipe extends Component {
 
     handleCreateRecipe = () => {
         this.formValidation()
-        if(this.state.formValid === true) {
+        if (this.state.formValid === true) {
             var tempInstructions = [];
             this.state.instructions.forEach(instruction => {
                 tempInstructions.push(instruction.value)
             })
 
-            this.props.CreateRecipe({variables: {
-                name: StringCleaner(this.state.name, true),
-                time: StringCleaner(this.state.time, true),
-                instructions: tempInstructions
-            }})
-            .then(() => { // We can pass data here if we end up needing it for something in the future.
-                this.handleCreateIngredientRelation()
-                this.handleCreateMealTypeRelation()
-                this.handleCreateDifficultyRelation()
-            }).catch((error) => {
-                return (
-                    <div>Oops! We had a hard time creating the recipe! {error}</div>
-                )
+            this.props.CreateRecipe({
+                variables: {
+                    name: StringCleaner(this.state.name, true),
+                    time: StringCleaner(this.state.time, true),
+                    instructions: tempInstructions
+                }
             })
+                .then(() => { // We can pass data here if we end up needing it for something in the future.
+                    this.handleCreateIngredientRelation()
+                    this.handleCreateMealTypeRelation()
+                    this.handleCreateDifficultyRelation()
+                    this.handleCreateUserRecipeRelation()
+                }).catch((error) => {
+                    return (
+                        <div>Oops! We had a hard time creating the recipe! - {error}</div>
+                    )
+                })
         } else {
-            this.setState({formFeedback: "Please resolve any problems and try adding the recipe again!"});
+            this.setState({ formFeedback: "Please resolve any problems and try adding the recipe again!" });
         }
     }
 
     handleCreateIngredientRelation = () => {
         this.state.ingredients.forEach(ingredient => {
-            this.props.CreateIngredientRelation({variables: {
-                name: this.stringCleaner(ingredient.name, true),
-                recipe: this.stringCleaner(this.state.name, true),
-                quantity: ingredient.quantity.trim()
-            }})
+            this.props.CreateIngredientRelation({
+                variables: {
+                    name: this.stringCleaner(ingredient.name, true),
+                    recipe: this.stringCleaner(this.state.name, true),
+                    quantity: ingredient.quantity.trim()
+                }
+            })
         })
     }
 
     handleCreateMealTypeRelation = () => {
-        this.props.CreateMealTypeRelation({variables: {
-            recipe: this.stringCleaner(this.state.name, true),
-            type: this.state.mealtype.toLowerCase().trim()
-        }})
+        this.props.CreateMealTypeRelation({
+            variables: {
+                recipe: this.stringCleaner(this.state.name, true),
+                type: this.state.mealtype.toLowerCase().trim()
+            }
+        })
+    }
+
+    handleCreateUserRecipeRelation = () => {
+        this.props.CreateUserRecipeRelation({
+            variables: {
+                id: localStorage.getItem('id_token'),
+                recipe: this.stringCleaner(this.state.name, true),
+                date: "Test"
+            }
+        })
     }
 
     handleCreateDifficultyRelation = () => {
-        this.props.CreateDifficultyRelation({variables: {
-            recipe: this.stringCleaner(this.string.name, true),
-            value: this.state.difficulty.toLowerCase()
-        }})
-        .then(({data}) => {
-            return(
-                <div>Difficulty added! {data}</div>
-            )
+        this.props.CreateDifficultyRelation({
+            variables: {
+                recipe: this.stringCleaner(this.string.name, true),
+                value: this.state.difficulty.toLowerCase()
+            }
         })
-        .catch(({data}) => {
-            return(
-                <div>Oops! We had a hard time setting the difficulty! {data}</div>
-            )
-        })
+            .then(({ data }) => {
+                return (
+                    <div>Difficulty added! {data}</div>
+                )
+            })
+            .catch(({ data }) => {
+                return (
+                    <div>Oops! We had a hard time setting the difficulty! {data}</div>
+                )
+            })
     }
 
     render() {
@@ -312,9 +329,9 @@ class CreateRecipe extends Component {
                     <ul key={"instructions-" + Guid()}>
                         {this.state.instructions.map(instruction => {
                             return <li key={instruction.id}>
-                                        {instruction.value}
-                                        <Button className="remove" buttonClick={() => this.removeInstruction(instruction.id)} value="x" type="button" />
-                                    </li>
+                                {instruction.value}
+                                <Button className="remove" buttonClick={() => this.removeInstruction(instruction.id)} value="x" type="button" />
+                            </li>
                         })}
                     </ul>
 
@@ -344,9 +361,9 @@ class CreateRecipe extends Component {
                     <ul key={"ingredients-" + Guid()}>
                         {this.state.ingredients.map(ingredient => {
                             return <li key={ingredient.id}>
-                                        {ingredient.quantity} {ingredient.name}
-                                        <Button className="remove" buttonClick={() => this.removeIngredient(ingredient.id)} value="x" type="button" />
-                                    </li>
+                                {ingredient.quantity} {ingredient.name}
+                                <Button className="remove" buttonClick={() => this.removeIngredient(ingredient.id)} value="x" type="button" />
+                            </li>
                         })}
                     </ul>
                     <span id="ingredientsFeedback" className="ingredientsFeedback">{this.state.ingredientsFeedback}</span>
@@ -379,15 +396,17 @@ CreateRecipe.propTypes = {
     CreateRecipe: PropTypes.func,
     CreateIngredientRelation: PropTypes.func,
     CreateMealTypeRelation: PropTypes.func,
-    CreateDifficultyRelation: PropTypes.func
+    CreateDifficultyRelation: PropTypes.func,
+    CreateUserRecipeRelation: PropTypes.func
 }
 
 const CreateRecipeWithMutations = compose(
     graphql(GET_MEALTYPES),
     graphql(GET_DIFFICULTY),
-    graphql(CREATE_NEW_RECIPE, {name: 'CreateRecipe'}),
-    graphql(CREATE_RECIPE_INGREDIENTS, {name: 'CreateIngredientRelation'}),
-    graphql(CREATE_MEALTYPE_RELATION, {name: 'CreateMealTypeRelation'}),
-    graphql(CREATE_DIFFICULTY_RELATION, {name: 'CreateDifficultyRelation'}))(CreateRecipe)
+    graphql(CREATE_NEW_RECIPE, { name: 'CreateRecipe' }),
+    graphql(CREATE_RECIPE_INGREDIENTS, { name: 'CreateIngredientRelation' }),
+    graphql(CREATE_MEALTYPE_RELATION, { name: 'CreateMealTypeRelation' }),
+    graphql(CREATE_USERRECIPE_RELATION, { name: 'CreateUserRecipeRelation' }),
+    graphql(CREATE_DIFFICULTY_RELATION, { name: 'CreateDifficultyRelation' }))(CreateRecipe)
 
 export default CreateRecipeWithMutations

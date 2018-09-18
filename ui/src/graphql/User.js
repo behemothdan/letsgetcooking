@@ -24,3 +24,17 @@ export const FIND_USER = gql`
         }
     }
 `;
+
+export const CREATE_USERRECIPE_RELATION = gql`
+    mutation User(
+        $id: String,
+        $recipe: String,
+        $date: String
+    ) {
+        CreateUserRecipeRelation(id: $id, recipe: $recipe, date: $date) {
+            id,
+            recipe,
+            date
+        }
+    }
+`;
