@@ -12,7 +12,6 @@ type Recipe {
 
 type User {
   name: String
-  picture: String
   id: String!
   given_name: String
   email: String
@@ -112,6 +111,13 @@ type Mutation {
     recipe: String
   ): MealType @cypher(statement:
     "MATCH (r:Recipe{name:$recipe}),(m:MealType{type:$type}) CREATE (r)-[c:Type_Of]->(m) RETURN r,c,m")
+
+  CreateUserRecipeRelation (
+    id: String
+    recipe: String
+    date: String
+  ): User @cypher(statement:
+    "MATCH (r:recipe{name:$recipe}),(u:User{id:$user}) CREATE (u)-[c:Created{date:$date}]->(r) RETURN u,c,r")
 }
 `;
 
@@ -159,6 +165,9 @@ export const resolvers = {
       return neo4jgraphql(object, params, ctx, resolveInfo, true);
     },
     CreateMealTypeRelation(object, params, ctx, resolveInfo) {
+      return neo4jgraphql(object, params, ctx, resolveInfo, true);
+    },
+    CreateUserRecipeRelation(object, params, ctx, resolveInfo) {
       return neo4jgraphql(object, params, ctx, resolveInfo, true);
     }
   }

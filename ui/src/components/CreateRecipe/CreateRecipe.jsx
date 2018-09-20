@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { client } from '../../client';
 import { graphql, compose } from "react-apollo";
 import { CREATE_NEW_RECIPE, CREATE_RECIPE_INGREDIENTS, CREATE_MEALTYPE_RELATION, CREATE_DIFFICULTY_RELATION, GET_MEALTYPES, GET_DIFFICULTY, RECIPE_EXACT, CREATE_USERRECIPE_RELATION } from '../../graphql';
 import { Guid, StringCleaner } from "../../utilities"
@@ -9,7 +10,6 @@ import GetMealTypes from "../GetMealTypes/GetMealTypes";
 import Input from "../FormComponents/Input/Input";
 import Textbox from "../FormComponents/Textbox/Textbox";
 import './CreateRecipe.css';
-import { client } from '../../client';
 
 class CreateRecipe extends Component {
     constructor(props) {
@@ -53,18 +53,24 @@ class CreateRecipe extends Component {
 
     formValidation = () => {
         let failedCheck = false;
-        client.query({
-            query: GET_MEALTYPES,
-        }).then(response => this.setState({ mealtypes: response.data.mealtype }))
 
+        // Chaining promises together. The real problem is that it's trying to validate the diffifulty and mealtype before the query
+        // returns because it the code is just so dang fast. I am having troubles getting all the validation pieces wiring up properly
+        // so that the queries finish before validation begins. I was trying to have the mealtypes and difficulties get fetched on
+        // componentDidMount but that was obviously incorrect as that also was finishing before the query did and the componentDidMount
+        // online renders once. This whole section is very messy but it's also the most intricate form in the entire project so we need
+        // to make sure this dang thing is bullet-proof. So still working on it. :(
         client.query({
-            query: GET_DIFFICULTY
-        }).then(response => this.setState({ difficulties: response.data.difficulty }))
-
-        client.query({
-            variables: { searchQuery: this.state.name },
-            query: RECIPE_EXACT
-        }).then(response => response.data.RecipesByExactName.length ? (this.setState({ nameFeedback: "Someone already named a delicious recipe " + this.state.name + ". Try another!" }), failedCheck = true) : this.setState({ nameFeedback: '' }))
+            query: GET_MEALTYPES
+        }).then(response => this.setState({ mealtypes: response.data.mealtype }),
+            client.query({
+                query: GET_DIFFICULTY
+            }).then(response => this.setState({ difficulties: response.data.difficulty }),
+                client.query({
+                    variables: { searchQuery: this.state.name },
+                    query: RECIPE_EXACT
+                }).then(response => response.data.RecipesByExactName.length ? (this.setState({ nameFeedback: "Someone already named a delicious recipe " + this.state.name + ". Try another!" }), failedCheck = true) : (!failedCheck ? this.setState({ nameFeedback: '' }) : null))
+            ))
 
         if (this.state.name === '') {
             this.setState({ nameFeedback: "Give this pile of deliciousness a name!" })
@@ -77,6 +83,8 @@ class CreateRecipe extends Component {
         if (this.state.time === '') {
             this.setState({ timeFeedback: "Tell us how long till we can eat!" })
             failedCheck = true;
+        } else {
+            this.setState({ timeFeedback: "" })
         }
 
         // Both mealtype and difficulty should validate that the value is a legit choice before allowing submission in case of shenanigans
@@ -174,7 +182,7 @@ class CreateRecipe extends Component {
                     ingredients: state.ingredients.filter(i => i.id !== id)
                 }
             })
-        }, 1000)
+        }, 500)
     }
 
     // Adds the instruction to the state that will be used later for addition to the database
@@ -225,7 +233,6 @@ class CreateRecipe extends Component {
     }
 
     handleCreateRecipe = () => {
-        this.formValidation()
         if (this.state.formValid === true) {
             var tempInstructions = [];
             this.state.instructions.forEach(instruction => {
@@ -309,7 +316,7 @@ class CreateRecipe extends Component {
             <div className="createRecipe">
                 <h2>Add a new recipe!</h2>
                 <span id="formFeedback" className="formFeedback">{this.state.formFeedback}</span>
-                <form onSubmit={e => { e.preventDefault(); this.handleCreateRecipe() }}>
+                <form onSubmit={e => { e.preventDefault(); this.formValidation() }}>
                     <Input
                         name="name"
                         labelValue="Recipe Name"
