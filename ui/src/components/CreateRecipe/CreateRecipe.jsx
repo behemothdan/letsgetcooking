@@ -32,10 +32,10 @@ class CreateRecipe extends Component {
             timeFeedback: '',
             mealtypeFeedback: '',
             difficultyFeedback: '',
-            instructionsFeedback: '',
-            instructionFeedback: '', //This is validating the instruction before adding it to the state, not for form submission
-            ingredientsFeedback: '',
-            ingredientFeedback: '', //This is for validating adding the ingredient to the ingredients array, not for form submission
+            instructionsFeedback: '', // This is feedback for the array of instructions
+            instructionFeedback: '', //This is validating s single instruction being added through the form before adding it to the state, not for form submission
+            ingredientsFeedback: '', // This is feedback for the array of ingredients
+            ingredientFeedback: '', //This is for validating adding a single ingredient through the form to the ingredients array, not for form submission
             quantityFeedback: ''    //Same as above
         }
         this.onInputChange = this.onInputChange.bind(this);
@@ -54,31 +54,66 @@ class CreateRecipe extends Component {
     formValidation = () => {
         let failedCheck = false;
 
-        // Chaining promises together. The real problem is that it's trying to validate the diffifulty and mealtype before the query
-        // returns because it the code is just so dang fast. I am having troubles getting all the validation pieces wiring up properly
-        // so that the queries finish before validation begins. I was trying to have the mealtypes and difficulties get fetched on
-        // componentDidMount but that was obviously incorrect as that also was finishing before the query did and the componentDidMount
-        // online renders once. This whole section is very messy but it's also the most intricate form in the entire project so we need
-        // to make sure this dang thing is bullet-proof. So still working on it. :(
-        client.query({
-            query: GET_MEALTYPES
-        }).then(response => this.setState({ mealtypes: response.data.mealtype }),
-            client.query({
-                query: GET_DIFFICULTY
-            }).then(response => this.setState({ difficulties: response.data.difficulty }),
-                client.query({
-                    variables: { searchQuery: this.state.name },
-                    query: RECIPE_EXACT
-                }).then(response => response.data.RecipesByExactName.length ? (this.setState({ nameFeedback: "Someone already named a delicious recipe " + this.state.name + ". Try another!" }), failedCheck = true) : (!failedCheck ? this.setState({ nameFeedback: '' }) : null))
-            ))
+        // Both mealtype and difficulty should validate that the value is a legit choice before allowing submission in case of shenanigans
+        const getMealtypes = async () => {
+            const mealtypes = await client.query({
+                query: GET_MEALTYPES
+            })
+            this.setState({ mealtypes: mealtypes.data.mealtype })
 
-        if (this.state.name === '') {
-            this.setState({ nameFeedback: "Give this pile of deliciousness a name!" })
-            failedCheck = true;
-        } else if (this.state.name.length <= 6) {
-            this.setState({ nameFeedback: "Please make the name longer than 6 characters." })
-            failedCheck = true;
+            if (this.state.mealtype === '') {
+                failedCheck = true;
+                return this.setState({ mealtypeFeedback: "Please choose what kind of food this happens to be!" })
+            } else if (this.state.mealtypes.filter(e => e.type === this.state.mealtype).length === 0) {
+                failedCheck = true;
+                return this.setState({ mealtypeFeedback: "Naughty! Don't try to mess with the form data!" })
+            } else {
+                return this.setState({ mealtypeFeedback: '' })
+            }
         }
+
+        const getDifficulties = async () => {
+            const difficulties = await client.query({
+                query: GET_DIFFICULTY
+            })
+            this.setState({ difficulties: difficulties.data.difficulty })
+
+            if (this.state.difficulty === '') {
+                failedCheck = true;
+                return this.setState({ difficultyFeedback: "How skilled do we have to be to cook this food?" })
+            } else if (this.state.difficulties.filter(e => e.value === this.state.difficulty).length === 0) {
+                failedCheck = true;
+                return this.setState({ difficultyFeedback: "Naughty! Don'try to mess with the form data!" })
+            } else {
+                return this.setState({ difficultyFeedback: '' })
+            }
+        }
+
+        const checkRecipeName = async () => {
+            const checkResults = await client.query({
+                variables: { searchQuery: this.state.name },
+                query: RECIPE_EXACT
+            })
+
+            if (checkResults.data.RecipesByExactName.length) {
+                failedCheck = true;
+                return this.setState({ nameFeedback: "Someone already named a delicious recipe " + this.state.name + ". Try another!" })
+            } else {
+                if (this.state.name === '') {
+                    failedCheck = true;
+                    return this.setState({ nameFeedback: "Give this pile of deliciousness a name!" })
+                } else if (this.state.name.length <= 6) {
+                    failedCheck = true;
+                    return this.setState({ nameFeedback: "Please make the name longer than 6 characters." })
+                } else {
+                    return this.setState({ nameFeedback: '' })
+                }
+            }
+        }
+
+        getMealtypes()
+        getDifficulties()
+        checkRecipeName()
 
         if (this.state.time === '') {
             this.setState({ timeFeedback: "Tell us how long till we can eat!" })
@@ -87,34 +122,25 @@ class CreateRecipe extends Component {
             this.setState({ timeFeedback: "" })
         }
 
-        // Both mealtype and difficulty should validate that the value is a legit choice before allowing submission in case of shenanigans
-        if (this.state.mealtype === '') {
-            this.setState({ mealtypeFeedback: "Please choose what kind of food this happens to be!" })
-            failedCheck = true;
-        } else if (!this.state.mealtypes.includes(this.state.mealtype)) {
-            this.setState({ mealtypeFeedback: "Naughty! Don't try to mess with the form data!" })
-            failedCheck = true;
-        }
-
-        if (this.state.difficulty === '') {
-            this.setState({ difficultyFeedback: "How skilled do we have to be to cook this food?" })
-            failedCheck = true;
-        } else if (!this.state.difficulties.includes(this.state.difficulty)) {
-            this.setState({ difficultyFeedback: "Naughty! Don'try to mess with the form data!" })
-            failedCheck = true;
-        }
-
         if (this.state.instructions.length < 1) {
             this.setState({ instructionsFeedback: "We should probably provide some instructions." })
             failedCheck = true;
+        } else {
+            this.setState({ instructionsFeedback: ''})
         }
 
         if (this.state.ingredients.length < 1) {
             this.setState({ ingredientsFeedback: "We can't have anything to eat without ingredients!" })
             failedCheck = true;
+        } else {
+            this.setState({ ingredientsFeedback: '' })
         }
+
         if (failedCheck === false) {
-            this.setState({ formValid: true })
+            //this.setState({ formValid: true })
+            return true;
+        } else {
+            return false;
         }
     }
 
@@ -233,40 +259,50 @@ class CreateRecipe extends Component {
     }
 
     handleCreateRecipe = () => {
-        if (this.state.formValid === true) {
-            var tempInstructions = [];
-            this.state.instructions.forEach(instruction => {
-                tempInstructions.push(instruction.value)
-            })
-
-            this.props.CreateRecipe({
-                variables: {
-                    name: StringCleaner(this.state.name, true),
-                    time: StringCleaner(this.state.time, true),
-                    instructions: tempInstructions
-                }
-            })
-                .then(() => { // We can pass data here if we end up needing it for something in the future.
-                    this.handleCreateIngredientRelation()
-                    this.handleCreateMealTypeRelation()
-                    this.handleCreateDifficultyRelation()
-                    this.handleCreateUserRecipeRelation()
-                }).catch((error) => {
-                    return (
-                        <div>Oops! We had a hard time creating the recipe! - {error}</div>
-                    )
-                })
-        } else {
-            this.setState({ formFeedback: "Please resolve any problems and try adding the recipe again!" });
+        const formIsValid = async () => {
+            const formValidation = await this.formValidation()
+            creatingRecipe(formValidation);
+            // if(formValidation === true) {
+            //     this.setState({ formValid: true })
+            //     return formValidation
+            // } else {
+            //     this.setState({ formValid: false })
+            //     return formValidation
+            // }
         }
+
+        const creatingRecipe = async (validationResult) => {
+            if(validationResult) {
+                var tempInstructions = [];
+                this.state.instructions.forEach(instruction => {
+                    tempInstructions.push(instruction.value)
+                })
+
+                const recipe = await this.props.CreateRecipe({
+                    variables: {
+                        name: StringCleaner(this.state.name, true),
+                        time: StringCleaner(this.state.time, true),
+                        instructions: tempInstructions
+                    }
+                })
+                console.log(recipe)
+                this.handleCreateIngredientRelation()
+                this.handleCreateMealTypeRelation()
+                this.handleCreateDifficultyRelation()
+                this.handleCreateUserRecipeRelation()
+            } else {
+                this.setState({ formFeedback: "Please resolve any problems and try adding the recipe again!" });
+            }
+        }
+        formIsValid()
     }
 
     handleCreateIngredientRelation = () => {
         this.state.ingredients.forEach(ingredient => {
             this.props.CreateIngredientRelation({
                 variables: {
-                    name: this.stringCleaner(ingredient.name, true),
-                    recipe: this.stringCleaner(this.state.name, true),
+                    name: StringCleaner(ingredient.name, true),
+                    recipe: StringCleaner(this.state.name, true),
                     quantity: ingredient.quantity.trim()
                 }
             })
@@ -276,7 +312,7 @@ class CreateRecipe extends Component {
     handleCreateMealTypeRelation = () => {
         this.props.CreateMealTypeRelation({
             variables: {
-                recipe: this.stringCleaner(this.state.name, true),
+                recipe: StringCleaner(this.state.name, true),
                 type: this.state.mealtype.toLowerCase().trim()
             }
         })
@@ -286,7 +322,7 @@ class CreateRecipe extends Component {
         this.props.CreateUserRecipeRelation({
             variables: {
                 id: localStorage.getItem('id_token'),
-                recipe: this.stringCleaner(this.state.name, true),
+                recipe: StringCleaner(this.state.name, true),
                 date: "Test"
             }
         })
@@ -295,7 +331,7 @@ class CreateRecipe extends Component {
     handleCreateDifficultyRelation = () => {
         this.props.CreateDifficultyRelation({
             variables: {
-                recipe: this.stringCleaner(this.string.name, true),
+                recipe: StringCleaner(this.state.name, true),
                 value: this.state.difficulty.toLowerCase()
             }
         })
@@ -316,7 +352,7 @@ class CreateRecipe extends Component {
             <div className="createRecipe">
                 <h2>Add a new recipe!</h2>
                 <span id="formFeedback" className="formFeedback">{this.state.formFeedback}</span>
-                <form onSubmit={e => { e.preventDefault(); this.formValidation() }}>
+                <form onSubmit={e => { e.preventDefault(); this.handleCreateRecipe() }}>
                     <Input
                         name="name"
                         labelValue="Recipe Name"
