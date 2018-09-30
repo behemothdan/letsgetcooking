@@ -32,5 +32,5 @@ const server = new ApolloServer({
 });
 
 server.listen().then(({ url }) => {
-  console.log(`🚀 GraphQL API ready at ${url}`);
+  console.log(`🚀: GraphQL API ready at ${url}`);
 });

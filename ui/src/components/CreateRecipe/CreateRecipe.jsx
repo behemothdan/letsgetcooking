@@ -262,13 +262,6 @@ class CreateRecipe extends Component {
         const formIsValid = async () => {
             const formValidation = await this.formValidation()
             creatingRecipe(formValidation);
-            // if(formValidation === true) {
-            //     this.setState({ formValid: true })
-            //     return formValidation
-            // } else {
-            //     this.setState({ formValid: false })
-            //     return formValidation
-            // }
         }
 
         const creatingRecipe = async (validationResult) => {
@@ -285,11 +278,10 @@ class CreateRecipe extends Component {
                         instructions: tempInstructions
                     }
                 })
-                console.log(recipe)
-                this.handleCreateIngredientRelation()
-                this.handleCreateMealTypeRelation()
-                this.handleCreateDifficultyRelation()
-                this.handleCreateUserRecipeRelation()
+                // this.handleCreateIngredientRelation()
+                // this.handleCreateMealTypeRelation()
+                // this.handleCreateDifficultyRelation()
+                //this.handleCreateUserRecipeRelation()
             } else {
                 this.setState({ formFeedback: "Please resolve any problems and try adding the recipe again!" });
             }
@@ -322,7 +314,7 @@ class CreateRecipe extends Component {
         this.props.CreateUserRecipeRelation({
             variables: {
                 id: localStorage.getItem('id_token'),
-                recipe: StringCleaner(this.state.name, true),
+                recipeName: StringCleaner(this.state.name, true),
                 date: "Test"
             }
         })

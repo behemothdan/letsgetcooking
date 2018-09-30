@@ -8,8 +8,6 @@ type Recipe {
   ingredients: [Ingredient] @relation(name: "Contains", direction: "OUT")
   mealtype: MealType @relation(name: "Type_Of", direction:"OUT")
   difficulty: Difficulty @relation(name: "Skill_Level", direction: "OUT")
-  date: String @cypher(statement: "MATCH (:User)-[c:Created]-(this) Return c.date")
-  user: User
 }
 
 type User {
@@ -21,7 +19,7 @@ type User {
 
 type Ingredient {
   name: String!
-  quantity: String @cypher(statement:"MATCH (:Recipe)-[c:Contains]-(this) RETURN c.quantity")
+  quantity: String @cypher(statement:"MATCH (:Recipe)-[c:Contains]-(this) RETURN q.quantity")
   recipe: Recipe
 }
 
@@ -43,7 +41,6 @@ type Query {
     ingredients: [String],
     mealtype: String,
     difficulty: String
-    date: String
   ): [Recipe]
 
   users (
@@ -79,9 +76,11 @@ type Query {
 }
 
 type Mutation {
-  CreateIngredient (
+  CreateRecipe (
     name: String
-  ): Ingredient
+    time: String
+    instructions: [String]
+  ): Recipe
 
   CreateUser (
     name: String
@@ -90,37 +89,35 @@ type Mutation {
     email: String
   ): User
 
-  CreateRecipe (
+  CreateIngredient (
     name: String
-    time: String
-    instructions: [String]
-  ): Recipe
+  ): Ingredient
 
   CreateIngredientRelation (
     name: String
     recipe: String
     quantity: String
   ): Ingredient @cypher(statement:
-    "MATCH (r:Recipe{name:$recipe}), (i:Ingredient{name:$name}) CREATE (r)-[c:Contains{quantity:$quantity}]->(i) RETURN r,i,c")
+    "MATCH (r:Recipe{name:$recipe}), (i:Ingredient{name:$name}) CREATE (r)-[c:Contains{quantity:$quantity}]->(i) RETURN r,c,i")
+
+  CreateUserRecipeRelation (
+    id: String
+    recipeName: String
+    date: String
+  ): User @cypher(statement:
+    "MATCH (r:Recipe{name:$recipeName}), (u:User{id:$id}) CREATE (r)-[c:Created_By]->(u) RETURN r,c,u")
 
   CreateDifficultyRelation (
     value: String
     recipe: String
   ): Difficulty @cypher(statement:
-    "MATCH (r:Recipe{name:$recipe}), (i:Difficulty{value:$value}) CREATE (r)-[c:Skill_Level]->(i) RETURN r,c,i")
+    "MATCH (r:Recipe{name:$recipe}), (d:Difficulty{value:$value}) CREATE (r)-[s:Skill_Level]->(i) RETURN r,s,d")
 
   CreateMealTypeRelation (
     type: String
     recipe: String
   ): MealType @cypher(statement:
-    "MATCH (r:Recipe{name:$recipe}), (m:MealType{type:$type}) CREATE (r)-[c:Type_Of]->(m) RETURN r,c,m")
-
-  CreateUserRecipeRelation (
-    recipe: String
-    id: String
-    date: String
-  ): Recipe @cypher(statement:
-    "MATCH (r:Recipe{name:$recipe}), (u:User{id:$user}) CREATE (u)-[c:Created{date:$date}]->(r) RETURN u,c,r")
+    "MATCH (r:Recipe{name:$recipe}), (m:MealType{type:$type}) CREATE (r)-[t:Type_Of]->(m) RETURN r,t,m")
 }
 `;
 
@@ -138,6 +135,9 @@ export const resolvers = {
     ingredients(object, params, ctx, resolveInfo) {
       return neo4jgraphql(object, params, ctx, resolveInfo, true);
     },
+    difficulty(object, params, ctx, resolveInfo) {
+      return neo4jgraphql(object, params, ctx, resolveInfo, true);
+    },
     RecipesByExactName(object, params, ctx, resolveInfo) {
       return neo4jgraphql(object, params, ctx, resolveInfo, true);
     },
@@ -148,9 +148,6 @@ export const resolvers = {
       return neo4jgraphql(object, params, ctx, resolveInfo, true);
     },
     UserById(object, params, ctx, resolveInfo) {
-      return neo4jgraphql(object, params, ctx, resolveInfo, true);
-    },
-    difficulty(object, params, ctx, resolveInfo) {
       return neo4jgraphql(object, params, ctx, resolveInfo, true);
     }
   },
