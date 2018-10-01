@@ -266,6 +266,7 @@ class CreateRecipe extends Component {
 
         const creatingRecipe = async (validationResult) => {
             if(validationResult) {
+                this.setState({ formFeedback: '' })
                 var tempInstructions = [];
                 this.state.instructions.forEach(instruction => {
                     tempInstructions.push(instruction.value)
@@ -278,10 +279,11 @@ class CreateRecipe extends Component {
                         instructions: tempInstructions
                     }
                 })
-                // this.handleCreateIngredientRelation()
-                // this.handleCreateMealTypeRelation()
-                // this.handleCreateDifficultyRelation()
-                //this.handleCreateUserRecipeRelation()
+
+                await this.handleCreateIngredientRelation(recipe)
+                //await this.handleCreateMealTypeRelation(recipe)
+                //await this.handleCreateDifficultyRelation(recipe)
+                //await this.handleCreateUserRecipeRelation(recipe)
             } else {
                 this.setState({ formFeedback: "Please resolve any problems and try adding the recipe again!" });
             }
@@ -289,22 +291,25 @@ class CreateRecipe extends Component {
         formIsValid()
     }
 
-    handleCreateIngredientRelation = () => {
-        this.state.ingredients.forEach(ingredient => {
-            this.props.CreateIngredientRelation({
-                variables: {
-                    name: StringCleaner(ingredient.name, true),
-                    recipe: StringCleaner(this.state.name, true),
-                    quantity: ingredient.quantity.trim()
-                }
+    handleCreateIngredientRelation = (recipe) => {
+        const createRelation = async() => {
+            await this.state.ingredients.forEach(ingredient => {
+                this.props.CreateIngredientRelation({
+                    variables: {
+                        name: ingredient.name,
+                        recipe: recipe.data.CreateRecipe.name,
+                        quantity: ingredient.quantity.trim()
+                    }
+                })
             })
-        })
+        }
+        createRelation()
     }
 
-    handleCreateMealTypeRelation = () => {
+    handleCreateMealTypeRelation = (recipe) => {
         this.props.CreateMealTypeRelation({
             variables: {
-                recipe: StringCleaner(this.state.name, true),
+                recipe: recipe.data.CreateRecipe.name,
                 type: this.state.mealtype.toLowerCase().trim()
             }
         })
@@ -320,10 +325,10 @@ class CreateRecipe extends Component {
         })
     }
 
-    handleCreateDifficultyRelation = () => {
+    handleCreateDifficultyRelation = (recipe) => {
         this.props.CreateDifficultyRelation({
             variables: {
-                recipe: StringCleaner(this.state.name, true),
+                recipe: recipe.data.CreateRecipe.name,
                 value: this.state.difficulty.toLowerCase()
             }
         })
