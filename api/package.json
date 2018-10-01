@@ -1,6 +1,6 @@
 {
   "name": "lets-get-cooking-api",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "author": {
     "name": "Daniel Gray",
     "email": "gray.daniel@gmail.com",
@@ -19,16 +19,16 @@
     "start": "./node_modules/.bin/nodemon --exec babel-node src/index.js"
   },
   "dependencies": {
-    "apollo-boost": "^0.1.7",
-    "apollo-cache-inmemory": "^1.2.2",
+    "apollo-boost": "^0.1.10",
+    "apollo-cache-inmemory": "^1.2.5",
     "apollo-client": "^2.3.2",
     "apollo-link-http": "^1.5.4",
-    "apollo-server": "^2.0.0",
-    "dotenv": "^5.0.1",
+    "apollo-server": "2.1.0",
+    "dotenv": "^6.0.0",
     "graphql": "^0.13.2",
     "graphql-tag": "^2.9.2",
-    "neo4j-driver": "^1.6.1",
-    "neo4j-graphql-js": "^0.1.27",
+    "neo4j-driver": "^1.6.3",
+    "neo4j-graphql-js": "^1.0.1",
     "node-fetch": "^2.1.2"
   },
   "devDependencies": {

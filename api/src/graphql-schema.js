@@ -10,24 +10,31 @@ type Recipe {
   difficulty: Difficulty @relation(name: "Skill_Level", direction: "OUT")
 }
 
+type User {
+  name: String
+  id: String!
+  given_name: String
+  email: String
+}
+
 type Ingredient {
   name: String!
-  quantity: String @cypher(statement:"MATCH (:Recipe)-[c:Contains]-(this) RETURN c.quantity")
-  recipe:Recipe
+  quantity: String @cypher(statement:"MATCH (:Recipe)-[c:Contains]-(this) RETURN q.quantity")
+  recipe: Recipe
 }
 
 type MealType {
   type: String
-  recipe:Recipe
+  recipe: Recipe
 }
 
 type Difficulty {
   value: String
-  recipe:Recipe
+  recipe: Recipe
 }
 
 type Query {
-  recipes(
+  recipes (
     name: String,
     time: String,
     instructions: [String],
@@ -36,15 +43,22 @@ type Query {
     difficulty: String
   ): [Recipe]
 
-  mealtype(
+  users (
+    name: String
+    id: String
+    given_name: String
+    email: String
+  ): [User]
+
+  mealtype (
     type: String
   ): [MealType]
 
-  difficulty(
+  difficulty (
     value: String
   ): [Difficulty]
 
-  ingredients(
+  ingredients (
     name: String
   ): [Ingredient]
 
@@ -56,43 +70,72 @@ type Query {
 
   IngredientsBySubstring(ingredientQuery: String): [Ingredient] @cypher(statement:
     "MATCH (i:Ingredient) WHERE toLower(i.name) CONTAINS toLower($ingredientQuery) RETURN i")
+
+  UserById(id: String): [User] @cypher(statement:
+    "MATCH (u:User {id: $id}) return u")
 }
 
 type Mutation {
-  CreateIngredient (
-    name: String
-  ): Ingredient
-
   CreateRecipe (
     name: String
     time: String
     instructions: [String]
   ): Recipe
 
+  CreateUser (
+    name: String
+    id: String
+    given_name: String
+    email: String
+  ): User
+
+  CreateIngredient (
+    name: String
+  ): Ingredient
+
   CreateIngredientRelation (
     name: String
     recipe: String
     quantity: String
   ): Ingredient @cypher(statement:
-    "MATCH (r:Recipe{name:$recipe}), (i:Ingredient{name:$name}) CREATE (r)-[c:Contains{quantity:$quantity}]->(i) RETURN r,i,c")
+    "MATCH (r:Recipe{name:$recipe}), (i:Ingredient{name:$name}) CREATE (r)-[c:Contains{quantity:$quantity}]->(i) RETURN r,c,i")
+
+  CreateUserRecipeRelation (
+    id: String
+    recipeName: String
+    date: String
+  ): User @cypher(statement:
+    "MATCH (r:Recipe{name:$recipeName}), (u:User{id:$id}) CREATE (r)-[c:Created_By]->(u) RETURN r,c,u")
 
   CreateDifficultyRelation (
     value: String
     recipe: String
   ): Difficulty @cypher(statement:
-    "MATCH (r:Recipe{name:$recipe}),(i:Difficulty{value:$value}) CREATE (r)-[c:Skill_Level]->(i) RETURN r,c,i")
+    "MATCH (r:Recipe{name:$recipe}), (d:Difficulty{value:$value}) CREATE (r)-[s:Skill_Level]->(i) RETURN r,s,d")
 
   CreateMealTypeRelation (
     type: String
     recipe: String
   ): MealType @cypher(statement:
-    "MATCH (r:Recipe{name:$recipe}),(m:MealType{type:$type}) CREATE (r)-[c:Type_Of]->(m) RETURN r,c,m")
+    "MATCH (r:Recipe{name:$recipe}), (m:MealType{type:$type}) CREATE (r)-[t:Type_Of]->(m) RETURN r,t,m")
 }
 `;
 
 export const resolvers = {
   Query: {
     recipes(object, params, ctx, resolveInfo) {
+      return neo4jgraphql(object, params, ctx, resolveInfo, true);
+    },
+    users(object, params, ctx, resolveInfo) {
+      return neo4jgraphql(object, params, ctx, resolveInfo, true);
+    },
+    mealtype(object, params, ctx, resolveInfo) {
+      return neo4jgraphql(object, params, ctx, resolveInfo, true);
+    },
+    ingredients(object, params, ctx, resolveInfo) {
+      return neo4jgraphql(object, params, ctx, resolveInfo, true);
+    },
+    difficulty(object, params, ctx, resolveInfo) {
       return neo4jgraphql(object, params, ctx, resolveInfo, true);
     },
     RecipesByExactName(object, params, ctx, resolveInfo) {
@@ -104,18 +147,15 @@ export const resolvers = {
     IngredientsBySubstring(object, params, ctx, resolveInfo) {
       return neo4jgraphql(object, params, ctx, resolveInfo, true);
     },
-    difficulty(object, params, ctx, resolveInfo) {
-      return neo4jgraphql(object, params, ctx, resolveInfo, true);
-    },
-    mealtype(object, params, ctx, resolveInfo) {
-      return neo4jgraphql(object, params, ctx, resolveInfo, true);
-    },
-    ingredients(object, params, ctx, resolveInfo) {
+    UserById(object, params, ctx, resolveInfo) {
       return neo4jgraphql(object, params, ctx, resolveInfo, true);
     }
   },
   Mutation: {
     CreateIngredient(object, params, ctx, resolveInfo) {
+      return neo4jgraphql(object, params, ctx, resolveInfo, true);
+    },
+    CreateUser(object, params, ctx, resolveInfo) {
       return neo4jgraphql(object, params, ctx, resolveInfo, true);
     },
     CreateRecipe(object, params, ctx, resolveInfo) {
@@ -128,6 +168,9 @@ export const resolvers = {
       return neo4jgraphql(object, params, ctx, resolveInfo, true);
     },
     CreateMealTypeRelation(object, params, ctx, resolveInfo) {
+      return neo4jgraphql(object, params, ctx, resolveInfo, true);
+    },
+    CreateUserRecipeRelation(object, params, ctx, resolveInfo) {
       return neo4jgraphql(object, params, ctx, resolveInfo, true);
     }
   }
