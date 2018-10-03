@@ -19,7 +19,7 @@ type User {
 
 type Ingredient {
   name: String!
-  quantity: String @cypher(statement:"MATCH (:Recipe)-[c:Contains]-(this) RETURN q.quantity")
+  quantity: String @cypher(statement:"MATCH (:Recipe)-[c:Contains]-(this) RETURN c.quantity")
   recipe: Recipe
 }
 
