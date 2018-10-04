@@ -27,7 +27,7 @@ const server = new ApolloServer({
   typeDefs,
   resolvers,
   context: { driver },
-  // remove schema and uncomment typeDefs and resolvers above to use original (unaugmented) schema
+  // comment out schema and uncomment typeDefs and resolvers above to use original (unaugmented) schema
   //schema: augmentedSchema
 });
 

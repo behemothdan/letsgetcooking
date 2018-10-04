@@ -22,6 +22,8 @@ ui/yarn.lock
 api/.env
 ui/.env
 
+*.css
+
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*

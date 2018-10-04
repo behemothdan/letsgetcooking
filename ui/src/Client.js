@@ -7,10 +7,10 @@ const client = new ApolloClient({
     onError: ({ graphQLErrors, networkError }) => {
         if (graphQLErrors)
             graphQLErrors.map(({ message, locations, path }) =>
-            console.log(`💢[GraphQL Error]: Message: ${message}, Location: ${locations}, Path: ${path}`) //eslint-disable-line
+                console.log(`💢[GraphQL Error]: Message: ${message}, Location: ${locations}, Path: ${path}`) //eslint-disable-line
             )
         if (networkError) console.log(`💢[Network error]: ${networkError}`); //eslint-disable-line
-      }
+    }
 })
 
-export {client}
+export { client }

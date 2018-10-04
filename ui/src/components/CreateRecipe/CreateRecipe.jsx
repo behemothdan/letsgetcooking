@@ -126,7 +126,7 @@ class CreateRecipe extends Component {
             this.setState({ instructionsFeedback: "We should probably provide some instructions." })
             failedCheck = true;
         } else {
-            this.setState({ instructionsFeedback: ''})
+            this.setState({ instructionsFeedback: '' })
         }
 
         if (this.state.ingredients.length < 1) {
@@ -265,7 +265,7 @@ class CreateRecipe extends Component {
         }
 
         const creatingRecipe = async (validationResult) => {
-            if(validationResult) {
+            if (validationResult) {
                 this.setState({ formFeedback: '' })
                 var tempInstructions = [];
                 this.state.instructions.forEach(instruction => {
@@ -280,9 +280,9 @@ class CreateRecipe extends Component {
                     }
                 })
 
-                await this.handleCreateIngredientRelation(recipe)
+                //await this.handleCreateIngredientRelation(recipe)
                 //await this.handleCreateMealTypeRelation(recipe)
-                //await this.handleCreateDifficultyRelation(recipe)
+                await this.handleCreateDifficultyRelation(recipe)
                 //await this.handleCreateUserRecipeRelation(recipe)
             } else {
                 this.setState({ formFeedback: "Please resolve any problems and try adding the recipe again!" });
@@ -291,23 +291,29 @@ class CreateRecipe extends Component {
         formIsValid()
     }
 
-    handleCreateIngredientRelation = (recipe) => {
-        const createRelation = async() => {
-            await this.state.ingredients.forEach(ingredient => {
-                this.props.CreateIngredientRelation({
-                    variables: {
-                        name: ingredient.name,
-                        recipe: recipe.data.CreateRecipe.name,
-                        quantity: ingredient.quantity.trim()
-                    }
-                })
+    handleCreateIngredientRelation = async (recipe) => {
+        await this.state.ingredients.forEach(ingredient => {
+            this.props.CreateIngredientRelation({
+                variables: {
+                    name: ingredient.name,
+                    recipe: recipe.data.CreateRecipe.name,
+                    quantity: ingredient.quantity.trim()
+                }
             })
-        }
-        createRelation()
+        })
     }
 
-    handleCreateMealTypeRelation = (recipe) => {
-        this.props.CreateMealTypeRelation({
+    handleCreateDifficultyRelation = async (recipe) => {
+        await this.props.CreateDifficultyRelation({
+            variables: {
+                recipe: recipe.data.CreateRecipe.name,
+                value: this.state.difficulty.toLowerCase()
+            }
+        })
+    }
+
+    handleCreateMealTypeRelation = async (recipe) => {
+        await this.props.CreateMealTypeRelation({
             variables: {
                 recipe: recipe.data.CreateRecipe.name,
                 type: this.state.mealtype.toLowerCase().trim()
@@ -315,33 +321,14 @@ class CreateRecipe extends Component {
         })
     }
 
-    handleCreateUserRecipeRelation = () => {
-        this.props.CreateUserRecipeRelation({
+    handleCreateUserRecipeRelation = async (recipe) => {
+        await this.props.CreateUserRecipeRelation({
             variables: {
                 id: localStorage.getItem('id_token'),
-                recipeName: StringCleaner(this.state.name, true),
+                recipeName: recipe.data.CreateRecipe.name,
                 date: "Test"
             }
         })
-    }
-
-    handleCreateDifficultyRelation = (recipe) => {
-        this.props.CreateDifficultyRelation({
-            variables: {
-                recipe: recipe.data.CreateRecipe.name,
-                value: this.state.difficulty.toLowerCase()
-            }
-        })
-            .then(({ data }) => {
-                return (
-                    <div>Difficulty added! {data}</div>
-                )
-            })
-            .catch(({ data }) => {
-                return (
-                    <div>Oops! We had a hard time setting the difficulty! {data}</div>
-                )
-            })
     }
 
     render() {
