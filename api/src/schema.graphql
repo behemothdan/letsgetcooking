@@ -106,12 +106,6 @@ type Mutation {
   ): User @cypher(statement:
     "MATCH (r:Recipe{name:$recipe}), (u:User{id:$id}) CREATE (r)-[:Created_By]->(u) RETURN r,u")
 
-  CreateDifficultyRelation (
-    value: String
-    recipe: String
-  ): Difficulty @cypher(statement:
-    "MATCH (r:Recipe{name:$recipe}), (d:Difficulty{value:$value}) CREATE (r)-[:Skill_Level]->(d) RETURN r,d")
-
   CreateMealTypeRelation (
     recipe: String
     type: String
