@@ -50,6 +50,9 @@ export const resolvers = {
     CreateMealTypeRelation(object, params, ctx, resolveInfo) {
       return neo4jgraphql(object, params, ctx, resolveInfo, true);
     },
+    CreateDifficultyRelation(object, params, ctx, resolveInfo) {
+      return neo4jgraphql(object, params, ctx, resolveInfo, true);
+    },
     CreateUserRecipeRelation(object, params, ctx, resolveInfo) {
       return neo4jgraphql(object, params, ctx, resolveInfo, true);
     }
