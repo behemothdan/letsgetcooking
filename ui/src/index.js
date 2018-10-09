@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { ApolloProvider } from 'react-apollo';
 import { client } from './client';
 import registerServiceWorker from './registerServiceWorker';
-import './style/Index.css';
+import './style/index.css';
 import Home from "./views/Home";
 import Auth from './auth';
 import Callback from './components/Callback/Callback';

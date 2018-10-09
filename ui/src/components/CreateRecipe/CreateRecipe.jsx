@@ -280,10 +280,10 @@ class CreateRecipe extends Component {
                     }
                 })
 
-                //await this.handleCreateIngredientRelation(recipe)
-                //await this.handleCreateMealTypeRelation(recipe)
+                await this.handleCreateIngredientRelation(recipe)
+                await this.handleCreateMealTypeRelation(recipe)
                 await this.handleCreateDifficultyRelation(recipe)
-                //await this.handleCreateUserRecipeRelation(recipe)
+                await this.handleCreateUserRecipeRelation(recipe)
             } else {
                 this.setState({ formFeedback: "Please resolve any problems and try adding the recipe again!" });
             }
