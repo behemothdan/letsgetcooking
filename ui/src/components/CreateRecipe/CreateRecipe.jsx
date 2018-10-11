@@ -1,7 +1,15 @@
 import React, { Component } from "react";
 import { client } from '../../client';
 import { graphql, compose } from "react-apollo";
-import { CREATE_NEW_RECIPE, CREATE_RECIPE_INGREDIENTS, CREATE_MEALTYPE_RELATION, CREATE_DIFFICULTY_RELATION, GET_MEALTYPES, GET_DIFFICULTY, RECIPE_EXACT, CREATE_USERRECIPE_RELATION } from '../../graphql';
+import {
+    CREATE_NEW_RECIPE,
+    CREATE_RECIPE_INGREDIENTS,
+    CREATE_MEALTYPE_RELATION,
+    CREATE_DIFFICULTY_RELATION,
+    GET_MEALTYPES, GET_DIFFICULTY,
+    RECIPE_EXACT,
+    CREATE_USERRECIPE_RELATION
+} from '../../graphql';
 import { Guid, StringCleaner } from "../../utilities"
 import PropTypes from "prop-types";
 import Button from "../FormComponents/Button/Button";
@@ -283,7 +291,7 @@ class CreateRecipe extends Component {
                 await this.handleCreateIngredientRelation(recipe)
                 await this.handleCreateMealTypeRelation(recipe)
                 await this.handleCreateDifficultyRelation(recipe)
-                await this.handleCreateUserRecipeRelation(recipe)
+                //await this.handleCreateUserRecipeRelation(recipe)
             } else {
                 this.setState({ formFeedback: "Please resolve any problems and try adding the recipe again!" });
             }

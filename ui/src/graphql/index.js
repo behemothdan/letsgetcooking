@@ -1,10 +1,14 @@
 export {
-    CREATE_NEW_RECIPE, CREATE_RECIPE_INGREDIENTS, CREATE_DIFFICULTY_RELATION, CREATE_MEALTYPE_RELATION
+    CREATE_NEW_RECIPE,
+    CREATE_RECIPE_INGREDIENTS,
+    CREATE_DIFFICULTY_RELATION,
+    CREATE_MEALTYPE_RELATION,
+    CREATE_USERRECIPE_RELATION
 } from './CreateRecipe';
 
 export {
     CREATE_INGREDIENT
-} from './CreateIngredient';
+} from './Ingredient';
 
 export {
     RECIPE_QUERY, RECIPE_EXACT
@@ -12,16 +16,16 @@ export {
 
 export {
     GET_DIFFICULTY
-} from './GetDifficulty';
+} from './Difficulty';
 
 export {
     GET_MEALTYPES
-} from './GetMealTypes';
+} from './MealTypes';
 
 export {
     READ_SEARCHQUERY
 } from './ReadSearchQuery';
 
 export {
-    CREATE_USER, FIND_USER, CREATE_USERRECIPE_RELATION
+    CREATE_USER, FIND_USER
 } from './User';

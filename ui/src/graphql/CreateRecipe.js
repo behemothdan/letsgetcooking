@@ -22,10 +22,20 @@ export const CREATE_RECIPE_INGREDIENTS = gql`
     ) {
         CreateIngredientRelation(name: $name, recipe: $recipe, quantity: $quantity) {
             name,
-            recipe{
-                name
-            }
             quantity
+        }
+    }
+`;
+
+export const CREATE_USERRECIPE_RELATION = gql`
+    mutation (
+        $id: String!,
+        $recipe: String!,
+        $date: String!
+    ) {
+        CreateUserRecipeRelation(id: $id, recipe: $recipe, date: $date) {
+            id,
+            date
         }
     }
 `;
@@ -36,9 +46,6 @@ export const CREATE_DIFFICULTY_RELATION = gql`
         $value: String!
     ) {
         CreateDifficultyRelation(recipe: $recipe, value:$value) {
-            recipe{
-                name
-            },
             value
         }
     }
@@ -50,9 +57,6 @@ export const CREATE_MEALTYPE_RELATION = gql`
         $type: String!
     ) {
         CreateMealTypeRelation(recipe: $recipe, type:$type) {
-            recipe{
-                name
-            },
             type
         }
     }
