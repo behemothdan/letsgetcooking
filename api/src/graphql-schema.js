@@ -6,55 +6,23 @@ export const typeDefs = fs.readFileSync(process.env.GRAPHQL_SCHEMA || path.join(
 
 export const resolvers = {
   Query: {
-    recipes(object, params, ctx, resolveInfo) {
-      return neo4jgraphql(object, params, ctx, resolveInfo, true);
-    },
-    users(object, params, ctx, resolveInfo) {
-      return neo4jgraphql(object, params, ctx, resolveInfo, true);
-    },
-    mealtype(object, params, ctx, resolveInfo) {
-      return neo4jgraphql(object, params, ctx, resolveInfo, true);
-    },
-    ingredients(object, params, ctx, resolveInfo) {
-      return neo4jgraphql(object, params, ctx, resolveInfo, true);
-    },
-    difficulty(object, params, ctx, resolveInfo) {
-      return neo4jgraphql(object, params, ctx, resolveInfo, true);
-    },
-    RecipesByExactName(object, params, ctx, resolveInfo) {
-      return neo4jgraphql(object, params, ctx, resolveInfo, true);
-    },
-    RecipesBySubstring(object, params, ctx, resolveInfo) {
-      return neo4jgraphql(object, params, ctx, resolveInfo, true);
-    },
-    IngredientsBySubstring(object, params, ctx, resolveInfo) {
-      return neo4jgraphql(object, params, ctx, resolveInfo, true);
-    },
-    UserById(object, params, ctx, resolveInfo) {
-      return neo4jgraphql(object, params, ctx, resolveInfo, true);
-    }
+    recipes: neo4jgraphql,
+    users: neo4jgraphql,
+    mealtype: neo4jgraphql,
+    ingredients: neo4jgraphql,
+    difficulty: neo4jgraphql,
+    RecipesByExactName: neo4jgraphql,
+    RecipesBySubstring: neo4jgraphql,
+    IngredientsBySubstring: neo4jgraphql,
+    UserById: neo4jgraphql
   },
   Mutation: {
-    CreateIngredient(object, params, ctx, resolveInfo) {
-      return neo4jgraphql(object, params, ctx, resolveInfo, true);
-    },
-    CreateUser(object, params, ctx, resolveInfo) {
-      return neo4jgraphql(object, params, ctx, resolveInfo, true);
-    },
-    CreateRecipe(object, params, ctx, resolveInfo) {
-      return neo4jgraphql(object, params, ctx, resolveInfo, true);
-    },
-    CreateIngredientRelation(object, params, ctx, resolveInfo) {
-      return neo4jgraphql(object, params, ctx, resolveInfo, true);
-    },
-    CreateMealTypeRelation(object, params, ctx, resolveInfo) {
-      return neo4jgraphql(object, params, ctx, resolveInfo, true);
-    },
-    CreateDifficultyRelation(object, params, ctx, resolveInfo) {
-      return neo4jgraphql(object, params, ctx, resolveInfo, true);
-    },
-    CreateUserRecipeRelation(object, params, ctx, resolveInfo) {
-      return neo4jgraphql(object, params, ctx, resolveInfo, true);
-    }
+    CreateIngredient: neo4jgraphql,
+    CreateUser: neo4jgraphql,
+    CreateRecipe: neo4jgraphql,
+    CreateIngredientRelation: neo4jgraphql,
+    CreateMealTypeRelation: neo4jgraphql,
+    CreateDifficultyRelation: neo4jgraphql,
+    CreateUserRecipeRelation: neo4jgraphql
   }
 };

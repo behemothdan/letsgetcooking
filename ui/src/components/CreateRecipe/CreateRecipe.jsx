@@ -60,7 +60,7 @@ class CreateRecipe extends Component {
     }
 
     formValidation = () => {
-        let failedCheck = false;
+        let recipeFailedValidation = false;
 
         // Both mealtype and difficulty should validate that the value is a legit choice before allowing submission in case of shenanigans
         const getMealtypes = async () => {
@@ -70,10 +70,10 @@ class CreateRecipe extends Component {
             this.setState({ mealtypes: mealtypes.data.mealtype })
 
             if (this.state.mealtype === '') {
-                failedCheck = true;
+                recipeFailedValidation = true;
                 return this.setState({ mealtypeFeedback: "Please choose what kind of food this happens to be!" })
             } else if (this.state.mealtypes.filter(e => e.type === this.state.mealtype).length === 0) {
-                failedCheck = true;
+                recipeFailedValidation = true;
                 return this.setState({ mealtypeFeedback: "Naughty! Don't try to mess with the form data!" })
             } else {
                 return this.setState({ mealtypeFeedback: '' })
@@ -87,10 +87,10 @@ class CreateRecipe extends Component {
             this.setState({ difficulties: difficulties.data.difficulty })
 
             if (this.state.difficulty === '') {
-                failedCheck = true;
+                recipeFailedValidation = true;
                 return this.setState({ difficultyFeedback: "How skilled do we have to be to cook this food?" })
             } else if (this.state.difficulties.filter(e => e.value === this.state.difficulty).length === 0) {
-                failedCheck = true;
+                recipeFailedValidation = true;
                 return this.setState({ difficultyFeedback: "Naughty! Don'try to mess with the form data!" })
             } else {
                 return this.setState({ difficultyFeedback: '' })
@@ -104,14 +104,14 @@ class CreateRecipe extends Component {
             })
 
             if (checkResults.data.RecipesByExactName.length) {
-                failedCheck = true;
+                recipeFailedValidation = true;
                 return this.setState({ nameFeedback: "Someone already named a delicious recipe " + this.state.name + ". Try another!" })
             } else {
                 if (this.state.name === '') {
-                    failedCheck = true;
+                    recipeFailedValidation = true;
                     return this.setState({ nameFeedback: "Give this pile of deliciousness a name!" })
                 } else if (this.state.name.length <= 6) {
-                    failedCheck = true;
+                    recipeFailedValidation = true;
                     return this.setState({ nameFeedback: "Please make the name longer than 6 characters." })
                 } else {
                     return this.setState({ nameFeedback: '' })
@@ -125,26 +125,26 @@ class CreateRecipe extends Component {
 
         if (this.state.time === '') {
             this.setState({ timeFeedback: "Tell us how long till we can eat!" })
-            failedCheck = true;
+            recipeFailedValidation = true;
         } else {
             this.setState({ timeFeedback: "" })
         }
 
         if (this.state.instructions.length < 1) {
             this.setState({ instructionsFeedback: "We should probably provide some instructions." })
-            failedCheck = true;
+            recipeFailedValidation = true;
         } else {
             this.setState({ instructionsFeedback: '' })
         }
 
         if (this.state.ingredients.length < 1) {
             this.setState({ ingredientsFeedback: "We can't have anything to eat without ingredients!" })
-            failedCheck = true;
+            recipeFailedValidation = true;
         } else {
             this.setState({ ingredientsFeedback: '' })
         }
 
-        if (failedCheck === false) {
+        if (recipeFailedValidation === false) {
             //this.setState({ formValid: true })
             return true;
         } else {
