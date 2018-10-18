@@ -20,7 +20,7 @@ const GetMealTypes = ({onChange, feedback}) => (
                     onChange={onChange}
                     feedback={feedback}
                     defaultText="What kind of food is it?"
-                    optionItems={data.mealtype}
+                    optionItems={data.MealType}
                     optionKey="type"
                 />
             );

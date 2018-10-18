@@ -6,11 +6,14 @@ import {
     CREATE_RECIPE_INGREDIENTS,
     CREATE_MEALTYPE_RELATION,
     CREATE_DIFFICULTY_RELATION,
-    GET_MEALTYPES, GET_DIFFICULTY,
+    GET_MEALTYPES,
+    GET_DIFFICULTY,
     RECIPE_EXACT,
-    CREATE_USERRECIPE_RELATION
+    CREATE_USERRECIPE_RELATION,
+    INGREDIENTS,
+    CREATE_INGREDIENT
 } from '../../graphql';
-import { Guid, StringCleaner } from "../../utilities"
+import { Guid, StringCleaner, GenerateSlug } from "../../utilities"
 import PropTypes from "prop-types";
 import Button from "../FormComponents/Button/Button";
 import GetDifficulty from "../GetDifficulty/GetDifficulty";
@@ -56,6 +59,7 @@ class CreateRecipe extends Component {
         this.handleCreateMealTypeRelation = this.handleCreateMealTypeRelation.bind(this);
         this.handleCreateDifficultyRelation = this.handleCreateDifficultyRelation.bind(this);
         this.handleCreateUserRecipeRelation = this.handleCreateUserRecipeRelation.bind(this);
+        this.checkIngredient = this.checkIngredient.bind(this);
         this.formValidation = this.formValidation.bind(this);
     }
 
@@ -165,6 +169,19 @@ class CreateRecipe extends Component {
         });
     }
 
+    checkIngredient = async(ingredientName) => {
+        const checkIngredientExists = await client.query({
+            variables: { ingredientQuery: ingredientName },
+            query: INGREDIENTS
+        })
+
+        if(checkIngredientExists.data.Ingredients.length) {
+            return null
+        } else {
+            console.log("We need to create this ingredient.")
+        }
+    }
+
     addIngredient = () => {
         let ingredientValid = true;
         if (this.state.quantity === '' || this.state.quantity === null) {
@@ -180,6 +197,7 @@ class CreateRecipe extends Component {
             this.setState({ ingredientFeedback: '' })
         }
         if (ingredientValid === true) {
+            this.checkIngredient(this.state.ingredient)
             const newIngredient = {
                 name: StringCleaner(this.state.ingredient, true),
                 quantity: this.state.quantity,
@@ -284,6 +302,7 @@ class CreateRecipe extends Component {
                     variables: {
                         name: StringCleaner(this.state.name, true),
                         time: StringCleaner(this.state.time, true),
+                        slug: GenerateSlug(this.state.name),
                         instructions: tempInstructions
                     }
                 })

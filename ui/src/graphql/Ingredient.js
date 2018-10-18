@@ -6,3 +6,11 @@ export const CREATE_INGREDIENT = gql`
             name
         }
     }`;
+
+export const INGREDIENTS = gql`
+    query($ingredientQuery: String = "null")
+    {
+        ingredients(name: $ingredientQuery) {
+            name
+        }
+    }`;

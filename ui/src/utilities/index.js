@@ -5,3 +5,7 @@ export {
 export {
     StringCleaner
 } from './StringCleaner'
+
+export {
+    GenerateSlug
+} from './GenerateSlug'

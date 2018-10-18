@@ -1,6 +1,7 @@
 type Recipe {
     name: String
     time: String
+    slug: String
     instructions: [String]
     ingredients: [Ingredient] @relation(name:"Contains", direction: "OUT")
     mealtype: MealType @relation(name:"Type_Of", direction:"OUT")
@@ -34,35 +35,6 @@ type Difficulty {
 }
 
 type Query {
-  recipes (
-    name: String,
-    time: String,
-    instructions: [String],
-    ingredients: [String],
-    mealtype: String,
-    difficulty: String,
-    creator: String
-  ): [Recipe]
-
-  users (
-    name: String
-    id: String
-    given_name: String
-    email: String
-  ): [User]
-
-  mealtype (
-    type: String
-  ): [MealType]
-
-  difficulty (
-    value: String
-  ): [Difficulty]
-
-  ingredients (
-    name: String
-  ): [Ingredient]
-
   RecipesByExactName(searchQuery: String): [Recipe] @cypher(statement:
     "MATCH (r:Recipe {name: toLower($searchQuery)}) return r")
 
@@ -80,19 +52,9 @@ type Mutation {
   CreateRecipe (
     name: String
     time: String
+    slug: String
     instructions: [String]
   ): Recipe
-
-  CreateUser (
-    name: String
-    id: String
-    given_name: String
-    email: String
-  ): User
-
-  CreateIngredient (
-    name: String
-  ): Ingredient
 
   CreateIngredientRelation (
     name: String

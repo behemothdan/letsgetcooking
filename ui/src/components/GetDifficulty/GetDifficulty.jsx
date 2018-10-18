@@ -20,7 +20,7 @@ const GetDifficulty = ({onChange, feedback}) => (
                     onChange={onChange}
                     feedback={feedback}
                     defaultText="Select a difficulty"
-                    optionItems={data.difficulty}
+                    optionItems={data.Difficulty}
                     optionKey="value"
                 />
             );

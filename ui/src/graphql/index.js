@@ -7,7 +7,8 @@ export {
 } from './CreateRecipe';
 
 export {
-    CREATE_INGREDIENT
+    CREATE_INGREDIENT,
+    INGREDIENTS
 } from './Ingredient';
 
 export {
