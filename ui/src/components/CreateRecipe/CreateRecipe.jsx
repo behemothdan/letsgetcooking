@@ -352,8 +352,8 @@ class CreateRecipe extends Component {
         await this.props.CreateUserRecipeRelation({
             variables: {
                 id: localStorage.getItem('id_token'),
-                recipeName: recipe.data.CreateRecipe.name,
-                date: "Test"
+                recipe: recipe.data.CreateRecipe.name,
+                date: "10/18/2018"
             }
         })
     }

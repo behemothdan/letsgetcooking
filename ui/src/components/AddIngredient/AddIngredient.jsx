@@ -1,6 +1,6 @@
 import React from "react";
 import { Mutation } from "react-apollo";
-import { CREATE_INGREDIENT} from '../../graphql';
+import { CREATE_INGREDIENT } from '../../graphql';
 import "./AddIngredient.css";
 import Button from "../FormComponents/Button/Button";
 
@@ -9,11 +9,11 @@ const CreateIngredient = () => {
 
     return (
         <Mutation mutation={CREATE_INGREDIENT} errorPolicy="none">
-            {(CreateIngredient, {loading, error, data}) =>  {
-                if(loading) return (
+            {(CreateIngredient, { loading, error, data }) => {
+                if (loading) return (
                     <span>Adding that delicious flavor... </span>
                 );
-                if(error) return (
+                if (error) return (
                     // We need to add much more robust, user-friendly error handling.
                     <pre>Bad: {error.graphQLErrors.map(({ message }, i) => (
                         <span key={i}>{message} - {data}</span>
@@ -26,7 +26,7 @@ const CreateIngredient = () => {
                         <form
                             onSubmit={e => {
                                 e.preventDefault();
-                                CreateIngredient({variables: {name: input.value.toLowerCase()}});
+                                CreateIngredient({ variables: { name: input.value.toLowerCase() } });
                             }}
                         >
                             <input type="text" required="true"

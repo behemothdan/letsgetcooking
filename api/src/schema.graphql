@@ -6,16 +6,22 @@ type Recipe {
     ingredients: [Ingredient] @relation(name:"Contains", direction: "OUT")
     mealtype: MealType @relation(name:"Type_Of", direction:"OUT")
     difficulty: Difficulty @relation(name:"Skill_Level", direction: "OUT")
-    creator: User @relation(name:"Created_By", direction: "OUT")
+    creator: Creator
 }
 
 type User {
-    name: String
     id: String!
+    name: String
     given_name: String
     email: String
     date: String @cypher(statement: "MATCH (:Recipe)-[c:Created_By]-(this) RETURN c.date")
-    recipe: Recipe @relation(name:"Created_By", direction:"IN")
+    created: Creator
+}
+
+type Creator @relation(name: "Created_By") {
+  from: Recipe
+  to: User
+  date: String
 }
 
 type Ingredient {

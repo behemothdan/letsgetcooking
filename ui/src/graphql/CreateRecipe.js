@@ -29,14 +29,35 @@ export const CREATE_RECIPE_INGREDIENTS = gql`
     }
 `;
 
+// export const CREATE_USERRECIPE_RELATION = gql`
+//     mutation (
+//         $id: String!,
+//         $recipe: String!,
+//         $date: String!
+//     ) {
+//         CreateUserRecipeRelation(id: $id, recipe: $recipe, date: $date) {
+//             id,
+//             date,
+//             recipe {
+//                 name
+//             }
+//         }
+//     }
+// `;
+
 export const CREATE_USERRECIPE_RELATION = gql`
     mutation (
-        $id: String!,
-        $recipe: String!,
-        $date: String!
+        $id: _UserInput!,
+        $recipe: _RecipeInput!,
+        $date: _CreatorInput!
     ) {
-        CreateUserRecipeRelation(id: $id, recipe: $recipe, date: $date) {
-            id,
+        AddRecipeCreator(to: $id, from: $recipe, data: $date) {
+            from {
+                name
+            }
+            to {
+                id
+            }
             date
         }
     }
