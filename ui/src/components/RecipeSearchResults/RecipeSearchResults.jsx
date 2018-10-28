@@ -15,7 +15,7 @@ const RecipeSearchResults = ({searchResults}) => {
                     </ul>
                     <ul key={recipe.ingredients}>
                         {recipe.ingredients.map(i => {
-                            return <li key={recipe.name + "-" + i.name}>{i.quantity} {i.name}</li>
+                            return <li key={recipe.name + "-" + i.Ingredient.name}>{i.Ingredient.quantity} {i.Ingredient.name}</li>
                         })}
                     </ul>
                     <ul>
@@ -28,6 +28,11 @@ const RecipeSearchResults = ({searchResults}) => {
                         <li>Difficulty:
                             {
                                 recipe.difficulty === null || '' ? "Difficulty not selected" : recipe.difficulty.value
+                            }
+                        </li>
+                        <li>Created By:
+                            {
+                                recipe.creator.User.name === null || '' ? '' : recipe.creator.User.name
                             }
                         </li>
                     </ul>

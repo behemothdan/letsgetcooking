@@ -3,7 +3,7 @@ type Recipe {
     time: String
     slug: String
     instructions: [String]
-    ingredients: [Ingredient] @relation(name:"Contains", direction: "OUT")
+    ingredients: [Ingredients]
     mealtype: MealType @relation(name:"Type_Of", direction:"OUT")
     difficulty: Difficulty @relation(name:"Skill_Level", direction: "OUT")
     creator: Creator
@@ -19,15 +19,21 @@ type User {
 }
 
 type Creator @relation(name: "Created_By") {
-  from: Recipe
-  to: User
-  date: String
+	from: Recipe
+	to: User
+	date: String
 }
 
 type Ingredient {
     name: String!
     quantity: String @cypher(statement:"MATCH (:Recipe)-[c:Contains]-(this) RETURN c.quantity")
-    recipe: Recipe @relation(name:"Contains", direction:"IN")
+    for: Ingredients
+}
+
+type Ingredients @relation(name: "Contains") {
+	from: Recipe
+	to: Ingredient
+	quantity: String
 }
 
 type MealType {
@@ -61,20 +67,6 @@ type Mutation {
     slug: String
     instructions: [String]
   ): Recipe
-
-  CreateIngredientRelation (
-    name: String
-    recipe: String
-    quantity: String
-  ): Ingredient @cypher(statement:
-    "MATCH (r:Recipe{name:$recipe}), (i:Ingredient{name:$name}) CREATE (r)-[c:Contains{quantity:$quantity}]->(i) RETURN r,c,i")
-
-  CreateUserRecipeRelation (
-    id: String
-    recipe: String
-    date: String
-  ): User @cypher(statement:
-    "MATCH (r:Recipe{name:$recipe}), (u:User{id:$id}) CREATE (r)-[c:Created_By{date:$date}]->(u) RETURN r,c,u")
 
   CreateDifficultyRelation (
     value: String

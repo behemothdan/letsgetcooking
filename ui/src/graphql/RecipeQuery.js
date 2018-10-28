@@ -1,6 +1,6 @@
 import gql from "graphql-tag";
 
-export const RECIPE_QUERY = gql`
+export const RECIPE_QUERY = gql `
     query($searchQuery: String = "null")
     {
         RecipesBySubstring(searchQuery: $searchQuery) {
@@ -8,8 +8,10 @@ export const RECIPE_QUERY = gql`
             time
             instructions
             ingredients {
-                name
-                quantity
+                Ingredient {
+                    name
+                    quantity
+                }
             }
             mealtype {
                 type
@@ -17,10 +19,15 @@ export const RECIPE_QUERY = gql`
             difficulty {
                 value
             }
+            creator {
+                User {
+                    name
+                }
+            }
         }
     }`;
 
-export const RECIPE_EXACT = gql`
+export const RECIPE_EXACT = gql `
     query($searchQuery: String = "null")
     {
         RecipesByExactName(searchQuery: $searchQuery) {

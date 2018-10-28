@@ -18,32 +18,21 @@ export const CREATE_NEW_RECIPE = gql`
 
 export const CREATE_RECIPE_INGREDIENTS = gql`
     mutation (
-        $name: String!,
-        $recipe: String!,
-        $quantity: String!
+        $ingredient: _IngredientInput!,
+        $recipe: _RecipeInput!,
+        $quantity: _IngredientsInput!
     ) {
-        CreateIngredientRelation(name: $name, recipe: $recipe, quantity: $quantity) {
-            name,
+        CreateIngredientRelation(to: $ingredient, from: $recipe, data: $quantity) {
+            from {
+                name
+            }
+            to {
+                name
+            }
             quantity
         }
     }
 `;
-
-// export const CREATE_USERRECIPE_RELATION = gql`
-//     mutation (
-//         $id: String!,
-//         $recipe: String!,
-//         $date: String!
-//     ) {
-//         CreateUserRecipeRelation(id: $id, recipe: $recipe, date: $date) {
-//             id,
-//             date,
-//             recipe {
-//                 name
-//             }
-//         }
-//     }
-// `;
 
 export const CREATE_USERRECIPE_RELATION = gql`
     mutation (
