@@ -10,7 +10,7 @@ export const CREATE_INGREDIENT = gql`
 export const INGREDIENTS = gql`
     query($ingredientQuery: String = "null")
     {
-        ingredients(name: $ingredientQuery) {
+        Ingredient(name: $ingredientQuery) {
             name
         }
     }`;

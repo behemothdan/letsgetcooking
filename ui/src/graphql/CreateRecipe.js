@@ -22,7 +22,7 @@ export const CREATE_RECIPE_INGREDIENTS = gql`
         $recipe: _RecipeInput!,
         $quantity: _IngredientsInput!
     ) {
-        CreateIngredientRelation(to: $ingredient, from: $recipe, data: $quantity) {
+        AddRecipeIngredients(to: $ingredient, from: $recipe, data: $quantity) {
             from {
                 name
             }

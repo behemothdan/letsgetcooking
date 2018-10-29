@@ -32,7 +32,7 @@ const RecipeSearchResults = ({searchResults}) => {
                         </li>
                         <li>Created By:
                             {
-                                recipe.creator.User.name === null || '' ? '' : recipe.creator.User.name
+                                recipe.creator === null ? '' : recipe.creator.User.name
                             }
                         </li>
                     </ul>

@@ -71,8 +71,7 @@ class CreateRecipe extends Component {
             const mealtypes = await client.query({
                 query: GET_MEALTYPES
             })
-            this.setState({ mealtypes: mealtypes.data.mealtype })
-
+            this.setState({ mealtypes: mealtypes.data.MealType })
             if (this.state.mealtype === '') {
                 recipeFailedValidation = true;
                 return this.setState({ mealtypeFeedback: "Please choose what kind of food this happens to be!" })
@@ -88,8 +87,7 @@ class CreateRecipe extends Component {
             const difficulties = await client.query({
                 query: GET_DIFFICULTY
             })
-            this.setState({ difficulties: difficulties.data.difficulty })
-
+            this.setState({ difficulties: difficulties.data.Difficulty })
             if (this.state.difficulty === '') {
                 recipeFailedValidation = true;
                 return this.setState({ difficultyFeedback: "How skilled do we have to be to cook this food?" })
@@ -169,13 +167,13 @@ class CreateRecipe extends Component {
         });
     }
 
-    checkIngredient = async(ingredientName) => {
+    checkIngredient = async (ingredientName) => {
         const checkIngredientExists = await client.query({
             variables: { ingredientQuery: ingredientName },
             query: INGREDIENTS
         })
 
-        if(checkIngredientExists.data.Ingredients.length) {
+        if (checkIngredientExists.data.Ingredients !== null) {
             return null
         } else {
             console.log("We need to create this ingredient.")
@@ -308,9 +306,9 @@ class CreateRecipe extends Component {
                 })
 
                 await this.handleCreateIngredientRelation(recipe)
-                await this.handleCreateMealTypeRelation(recipe)
-                await this.handleCreateDifficultyRelation(recipe)
-                //await this.handleCreateUserRecipeRelation(recipe)
+                // await this.handleCreateMealTypeRelation(recipe)
+                // await this.handleCreateDifficultyRelation(recipe)
+                // await this.handleCreateUserRecipeRelation(recipe)
             } else {
                 this.setState({ formFeedback: "Please resolve any problems and try adding the recipe again!" });
             }
@@ -320,11 +318,11 @@ class CreateRecipe extends Component {
 
     handleCreateIngredientRelation = async (recipe) => {
         await this.state.ingredients.forEach(ingredient => {
-            this.props.CreateIngredientRelation({
+            this.props.AddRecipeIngredients({
                 variables: {
-                    name: ingredient.name,
-                    recipe: recipe.data.CreateRecipe.name,
-                    quantity: ingredient.quantity.trim()
+                    "ingredient": { name: ingredient.name },
+                    "recipe": { name: recipe.data.CreateRecipe.name },
+                    "quantity" : { quantity: ingredient.quantity.trim() }
                 }
             })
         })
@@ -349,11 +347,11 @@ class CreateRecipe extends Component {
     }
 
     handleCreateUserRecipeRelation = async (recipe) => {
-        await this.props.CreateUserRecipeRelation({
+        await this.props.AddRecipeCreator({
             variables: {
-                id: localStorage.getItem('id_token'),
-                recipe: recipe.data.CreateRecipe.name,
-                date: "10/18/2018"
+                "id" : { id: localStorage.getItem('id_token') },
+                "recipe" : { recipe: recipe.data.CreateRecipe.name },
+                "date" : { date: "10/18/2018" }
             }
         })
     }
@@ -448,19 +446,19 @@ class CreateRecipe extends Component {
 
 CreateRecipe.propTypes = {
     CreateRecipe: PropTypes.func,
-    CreateIngredientRelation: PropTypes.func,
+    AddRecipeIngredients: PropTypes.func,
     CreateMealTypeRelation: PropTypes.func,
     CreateDifficultyRelation: PropTypes.func,
-    CreateUserRecipeRelation: PropTypes.func
+    AddRecipeCreator: PropTypes.func
 }
 
 const CreateRecipeWithMutations = compose(
     graphql(GET_MEALTYPES),
     graphql(GET_DIFFICULTY),
     graphql(CREATE_NEW_RECIPE, { name: 'CreateRecipe' }),
-    graphql(CREATE_RECIPE_INGREDIENTS, { name: 'CreateIngredientRelation' }),
+    graphql(CREATE_RECIPE_INGREDIENTS, { name: 'AddRecipeIngredients' }),
     graphql(CREATE_MEALTYPE_RELATION, { name: 'CreateMealTypeRelation' }),
-    graphql(CREATE_USERRECIPE_RELATION, { name: 'CreateUserRecipeRelation' }),
+    graphql(CREATE_USERRECIPE_RELATION, { name: 'AddRecipeCreator' }),
     graphql(CREATE_DIFFICULTY_RELATION, { name: 'CreateDifficultyRelation' }))(CreateRecipe)
 
 export default CreateRecipeWithMutations
