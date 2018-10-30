@@ -67,16 +67,4 @@ type Mutation {
     slug: String
     instructions: [String]
   ): Recipe
-
-  CreateDifficultyRelation (
-    value: String
-    recipe: String
-  ): Difficulty @cypher(statement:
-    "MATCH (r:Recipe{name:$recipe}), (d:Difficulty{value:$value}) CREATE (r)-[:Skill_Level]->(d) RETURN r,d")
-
-  CreateMealTypeRelation (
-    recipe: String
-    type: String
-  ): MealType @cypher(statement:
-    "MATCH (r:Recipe{name:$recipe}), (m:MealType{type:$type}) CREATE (r)-[:Type_Of]->(m) RETURN r,m")
 }

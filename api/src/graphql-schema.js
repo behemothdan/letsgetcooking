@@ -12,8 +12,6 @@ export const resolvers = {
     UserById: neo4jgraphql
   },
   Mutation: {
-    CreateRecipe: neo4jgraphql,
-    CreateMealTypeRelation: neo4jgraphql,
-    CreateDifficultyRelation: neo4jgraphql
+    CreateRecipe: neo4jgraphql
   }
 };

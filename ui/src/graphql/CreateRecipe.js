@@ -1,6 +1,6 @@
 import gql from "graphql-tag";
 
-export const CREATE_NEW_RECIPE = gql`
+export const CREATE_NEW_RECIPE = gql `
     mutation Recipe (
         $name: String!,
         $time: String!,
@@ -16,7 +16,7 @@ export const CREATE_NEW_RECIPE = gql`
     }
 `;
 
-export const CREATE_RECIPE_INGREDIENTS = gql`
+export const CREATE_RECIPE_INGREDIENTS = gql `
     mutation (
         $ingredient: _IngredientInput!,
         $recipe: _RecipeInput!,
@@ -34,7 +34,7 @@ export const CREATE_RECIPE_INGREDIENTS = gql`
     }
 `;
 
-export const CREATE_USERRECIPE_RELATION = gql`
+export const CREATE_USERRECIPE_RELATION = gql `
     mutation (
         $id: _UserInput!,
         $recipe: _RecipeInput!,
@@ -52,24 +52,34 @@ export const CREATE_USERRECIPE_RELATION = gql`
     }
 `;
 
-export const CREATE_DIFFICULTY_RELATION = gql`
+export const CREATE_DIFFICULTY_RELATION = gql `
     mutation (
-        $recipe: String!,
-        $value: String!
+        $recipe: _RecipeInput!,
+        $value: _DifficultyInput!
     ) {
-        CreateDifficultyRelation(recipe: $recipe, value:$value) {
-            value
+        AddRecipeDifficulty(from: $recipe, to:$value) {
+            from {
+                name
+            }
+            to {
+                value
+            }
         }
     }
 `;
 
-export const CREATE_MEALTYPE_RELATION = gql`
+export const CREATE_MEALTYPE_RELATION = gql `
     mutation (
-        $recipe: String!,
-        $type: String!
+        $recipe: _RecipeInput!,
+        $type: _MealTypeInput!
     ) {
-        CreateMealTypeRelation(recipe: $recipe, type:$type) {
-            type
+        AddRecipeMealtype(from: $recipe, to: $type) {
+            from {
+                name
+            }
+            to {
+                type
+            }
         }
     }
 `;

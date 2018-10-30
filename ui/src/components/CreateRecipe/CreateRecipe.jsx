@@ -322,7 +322,7 @@ class CreateRecipe extends Component {
                 variables: {
                     "ingredient": { name: ingredient.name },
                     "recipe": { name: recipe.data.CreateRecipe.name },
-                    "quantity" : { quantity: ingredient.quantity.trim() }
+                    "quantity": { quantity: ingredient.quantity.trim() }
                 }
             })
         })
@@ -331,8 +331,8 @@ class CreateRecipe extends Component {
     handleCreateDifficultyRelation = async (recipe) => {
         await this.props.CreateDifficultyRelation({
             variables: {
-                recipe: recipe.data.CreateRecipe.name,
-                value: this.state.difficulty.toLowerCase()
+                "recipe": { name: recipe.data.CreateRecipe.name },
+                "value": { value: this.state.difficulty.toLowerCase() }
             }
         })
     }
@@ -340,8 +340,8 @@ class CreateRecipe extends Component {
     handleCreateMealTypeRelation = async (recipe) => {
         await this.props.CreateMealTypeRelation({
             variables: {
-                recipe: recipe.data.CreateRecipe.name,
-                type: this.state.mealtype.toLowerCase().trim()
+                "recipe": { name: recipe.data.CreateRecipe.name },
+                "type": { type: this.state.mealtype.toLowerCase().trim() }
             }
         })
     }
@@ -349,9 +349,9 @@ class CreateRecipe extends Component {
     handleCreateUserRecipeRelation = async (recipe) => {
         await this.props.AddRecipeCreator({
             variables: {
-                "id" : { id: localStorage.getItem('id_token') },
-                "recipe" : { recipe: recipe.data.CreateRecipe.name },
-                "date" : { date: "10/18/2018" }
+                "id": { id: localStorage.getItem('id_token') },
+                "recipe": { recipe: recipe.data.CreateRecipe.name },
+                "date": { date: "10/18/2018" }
             }
         })
     }
