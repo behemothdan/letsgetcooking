@@ -34,8 +34,9 @@ export default class Auth {
     localStorage.setItem('access_token', authResult.accessToken);
     localStorage.setItem('id_token', authResult.idToken);
     localStorage.setItem('expires_at', expiresAt);
-    localStorage.setItem('user_image', authResult.idTokenPayload.picture)
-    localStorage.setItem('name', authResult.idTokenPayload.name)
+    localStorage.setItem('user_image', authResult.idTokenPayload.picture);
+    localStorage.setItem('name', authResult.idTokenPayload.name);
+    localStorage.setItem('id', authResult.idTokenPayload.sub)
     history.replace('/');
   }
 

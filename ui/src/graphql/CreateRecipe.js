@@ -22,7 +22,7 @@ export const CREATE_RECIPE_INGREDIENTS = gql `
         $recipe: _RecipeInput!,
         $quantity: _IngredientsInput!
     ) {
-        AddRecipeIngredients(to: $ingredient, from: $recipe, data: $quantity) {
+        AddRecipeIngredients(from: $recipe, to: $ingredient, data: $quantity) {
             from {
                 name
             }
@@ -36,11 +36,11 @@ export const CREATE_RECIPE_INGREDIENTS = gql `
 
 export const CREATE_USERRECIPE_RELATION = gql `
     mutation (
-        $id: _UserInput!,
         $recipe: _RecipeInput!,
+        $user: _UserInput!,
         $date: _CreatorInput!
     ) {
-        AddRecipeCreator(to: $id, from: $recipe, data: $date) {
+        AddRecipeCreator(from: $recipe, to: $user, data: $date) {
             from {
                 name
             }
