@@ -1,8 +1,8 @@
 import React from "react";
-import "./Button.css";
 import PropTypes from "prop-types";
+import "./Button.css";
 
-const Button = ({type, value, buttonClick, className}) => {
+const Button = ({ type, value, buttonClick, className }) => {
     return (
         <button className={className} type={type} onClick={buttonClick}>{value}</button>
     )

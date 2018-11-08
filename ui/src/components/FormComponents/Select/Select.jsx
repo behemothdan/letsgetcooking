@@ -1,8 +1,8 @@
 import React from "react";
-import "./Select.css";
 import PropTypes from "prop-types";
+import "./Select.css";
 
-const Select = ({name, onChange, defaultText, feedback, optionItems, optionKey}) => {
+const Select = ({ name, onChange, defaultText, feedback, optionItems, optionKey }) => {
     return (
         <span>
             <select name={name} onChange={onChange} aria-describedby={name + '_error'}>

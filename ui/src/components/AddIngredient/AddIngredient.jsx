@@ -1,8 +1,8 @@
 import React from "react";
-import { Mutation } from "react-apollo";
-import { CREATE_INGREDIENT } from '../../graphql';
 import "./AddIngredient.css";
 import Button from "../FormComponents/Button/Button";
+import { Mutation } from "react-apollo";
+import { CREATE_INGREDIENT } from '../../graphql';
 
 const CreateIngredient = () => {
     let input;

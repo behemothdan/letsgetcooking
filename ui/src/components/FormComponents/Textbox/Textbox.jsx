@@ -1,9 +1,9 @@
 import React from "react";
-import "./Textbox.css";
 import PropTypes from "prop-types";
+import "./Textbox.css";
 
-const Textbox = ({name, labelValue, required, placeholder, value, className, feedback, rows, onChange = () => {}}) => {
-    return(
+const Textbox = ({ name, labelValue, required, placeholder, value, className, feedback, rows, onChange = () => { } }) => {
+    return (
         <span>
             <label htmlFor={name}>{labelValue}</label>
             <textarea
@@ -31,7 +31,7 @@ Textbox.propTypes = {
     value: PropTypes.string,
     className: PropTypes.string,
     feedback: PropTypes.string,
-    rows: PropTypes.oneOf([1,2,3,4,5]),
+    rows: PropTypes.oneOf([1, 2, 3, 4, 5]),
     onChange: PropTypes.func
 }
 
@@ -40,7 +40,7 @@ Textbox.defaultProps = {
     placeholder: "",
     value: "",
     className: "",
-    row:4,
+    row: 4,
     feedback: ""
 };
 

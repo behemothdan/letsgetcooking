@@ -1,13 +1,13 @@
 import React from "react";
-import { Query } from "react-apollo";
-import { GET_MEALTYPES } from '../../graphql';
 import Select from "../FormComponents/Select/Select";
 import PropTypes from "prop-types";
+import { Query } from "react-apollo";
+import { GET_MEALTYPES } from '../../graphql';
 
-const GetMealTypes = ({onChange, feedback}) => (
+const GetMealTypes = ({ onChange, feedback }) => (
     <Query query={GET_MEALTYPES}>
-        {({loading, error, data}) => {
-            if (loading) return(
+        {({ loading, error, data }) => {
+            if (loading) return (
                 <p>So many things to eat...</p>
             );
             if (error) return (

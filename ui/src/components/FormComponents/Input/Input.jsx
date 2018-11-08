@@ -1,8 +1,8 @@
 import React from "react";
-import "./Input.css";
 import PropTypes from "prop-types";
+import "./Input.css";
 
-const Input = ({name, labelValue, required, placeholder, value, className, feedback, onChange = () => {}}) => {
+const Input = ({ name, labelValue, required, placeholder, value, className, feedback, onChange = () => { } }) => {
     return (
         <span className={className}>
             <label htmlFor={name}>{labelValue}</label>

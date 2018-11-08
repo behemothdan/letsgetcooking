@@ -1,13 +1,13 @@
 import React from "react";
-import { Query } from "react-apollo";
-import { GET_DIFFICULTY } from '../../graphql';
 import Select from "../FormComponents/Select/Select";
 import PropTypes from "prop-types";
+import { Query } from "react-apollo";
+import { GET_DIFFICULTY } from '../../graphql';
 
-const GetDifficulty = ({onChange, feedback}) => (
+const GetDifficulty = ({ onChange, feedback }) => (
     <Query query={GET_DIFFICULTY}>
-        {({loading, error, data}) => {
-            if (loading) return(
+        {({ loading, error, data }) => {
+            if (loading) return (
                 <p>Getting suitable challenges...</p>
             );
             if (error) return (

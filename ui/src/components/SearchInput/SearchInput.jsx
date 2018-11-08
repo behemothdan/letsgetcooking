@@ -1,8 +1,8 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import Input from "../FormComponents/Input/Input";
 import PropTypes from "prop-types";
 import gql from "graphql-tag";
-import { client }  from '../../client';
+import { client } from '../../client';
 import { debounce } from "lodash";
 import "./SearchInput.css";
 
@@ -13,7 +13,7 @@ export default class SearchInput extends Component {
         this.handleChange = this.handleChange.bind(this);
     }
 
-    queryDatabase = debounce((text) =>  {
+    queryDatabase = debounce((text) => {
         client.writeQuery({
             query: gql`
                 {
@@ -32,7 +32,7 @@ export default class SearchInput extends Component {
     }, 500);
 
     handleChange = (text) => {
-        this.setState({[this.props.searchitem]: text});
+        this.setState({ [this.props.searchitem]: text });
         this.queryDatabase(text);
     };
 
@@ -58,5 +58,5 @@ SearchInput.propTypes = {
     name: PropTypes.string.isRequired,
     searchitem: PropTypes.string, // Used to say what item it's being used to search (ie recipes, ingredients, etc)
     labelValue: PropTypes.string,
-    placeholder:PropTypes.string
+    placeholder: PropTypes.string
 }

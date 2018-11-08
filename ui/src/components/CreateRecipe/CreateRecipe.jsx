@@ -1,4 +1,10 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
+import Button from "../FormComponents/Button/Button";
+import GetDifficulty from "../GetDifficulty/GetDifficulty";
+import GetMealTypes from "../GetMealTypes/GetMealTypes";
+import Input from "../FormComponents/Input/Input";
+import Textbox from "../FormComponents/Textbox/Textbox";
 import { client } from '../../client';
 import { graphql, compose } from "react-apollo";
 import {
@@ -13,13 +19,7 @@ import {
     INGREDIENTS,
     CREATE_INGREDIENT
 } from '../../graphql';
-import { Guid, StringCleaner, GenerateSlug } from "../../utilities"
-import PropTypes from "prop-types";
-import Button from "../FormComponents/Button/Button";
-import GetDifficulty from "../GetDifficulty/GetDifficulty";
-import GetMealTypes from "../GetMealTypes/GetMealTypes";
-import Input from "../FormComponents/Input/Input";
-import Textbox from "../FormComponents/Textbox/Textbox";
+import { Guid, StringCleaner, GenerateSlug } from "../../utilities";
 import './CreateRecipe.css';
 
 class CreateRecipe extends Component {
