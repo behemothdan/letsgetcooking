@@ -27,9 +27,9 @@ export default class Auth {
         this.auth0.parseHash((err, authResult) => {
             if (authResult && authResult.accessToken && authResult.idToken) {
                 this.setSession(authResult);
-                history.replace('/');
+                history.push('/');
             } else if (err) {
-                history.replace('/');
+                history.push('/');
             }
         });
     }
@@ -41,8 +41,8 @@ export default class Auth {
         localStorage.setItem('expires_at', expiresAt);
         localStorage.setItem('user_image', authResult.idTokenPayload.picture);
         localStorage.setItem('name', authResult.idTokenPayload.name);
-        localStorage.setItem('id', authResult.idTokenPayload.sub)
-        history.replace('/');
+        localStorage.setItem('id', authResult.idTokenPayload.sub);
+        history.push('/');
     }
 
     // Sets authorization information in localStorage
@@ -79,7 +79,7 @@ export default class Auth {
         localStorage.removeItem('id_token');
         localStorage.removeItem('expires_at');
         localStorage.removeItem('user_image');
-        history.replace('/');
+        history.push('/');
     }
 
     isAuthenticated = () => {

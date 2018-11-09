@@ -4,8 +4,9 @@ import registerServiceWorker from './registerServiceWorker';
 import Home from "./views/Home";
 import Recipe from "./views/Recipe";
 import Auth from './auth';
+import history from './history';
 import Callback from './components/Callback/Callback';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { Router, Route } from 'react-router-dom';
 import { ApolloProvider } from 'react-apollo';
 import { client } from './client';
 import './style/index.css';
@@ -20,7 +21,7 @@ const handleAuthentication = (nextState, replace) => {
 
 ReactDOM.render(
     <ApolloProvider client={client}>
-        <Router>
+        <Router component={Home} history={history}>
             <Fragment>
                 <Route exact path="/" render={(props) => <Home auth={auth} {...props} />} />
                 <Route path="/home" render={(props) => <Home auth={auth} {...props} />} />
