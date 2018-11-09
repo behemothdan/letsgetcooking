@@ -1,10 +1,9 @@
-import React, { Component } from "react";
-import RecipeSearchResults from "../RecipeSearchResults/RecipeSearchResults";
-import PropTypes from "prop-types";
-import { Query } from "react-apollo";
-import { RECIPE_QUERY } from '../../graphql';
-import { READ_SEARCHQUERY } from '../../graphql';
-import { graphql, compose } from "react-apollo";
+import React, { Component } from 'react';
+import RecipeSearchResults from 'components/RecipeSearchResults/RecipeSearchResults';
+import PropTypes from 'prop-types';
+import { Query } from 'react-apollo';
+import { RECIPE_QUERY, READ_SEARCHQUERY } from '../../graphql';
+import { graphql, compose } from 'react-apollo';
 
 class RecipeSearchQuery extends Component {
     render() {

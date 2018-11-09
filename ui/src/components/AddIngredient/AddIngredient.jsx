@@ -1,7 +1,7 @@
-import React from "react";
-import "./AddIngredient.css";
-import Button from "../FormComponents/Button/Button";
-import { Mutation } from "react-apollo";
+import React from 'react';
+import './AddIngredient.css';
+import Button from 'components/FormComponents/Button/Button';
+import { Mutation } from 'react-apollo';
 import { CREATE_INGREDIENT } from '../../graphql';
 
 const CreateIngredient = () => {

@@ -1,11 +1,11 @@
 import React, { Fragment } from 'react';
 import ReactDOM from 'react-dom';
 import registerServiceWorker from './registerServiceWorker';
-import Home from "./views/Home";
-import Recipe from "./views/Recipe";
+import Home from "views/Home";
+import Recipe from "views/Recipe";
 import Auth from './auth';
 import history from './history';
-import Callback from './components/Callback/Callback';
+import Callback from 'components/Callback/Callback';
 import { Router, Route } from 'react-router-dom';
 import { ApolloProvider } from 'react-apollo';
 import { client } from './client';

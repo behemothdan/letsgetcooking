@@ -1,10 +1,10 @@
-import React, { Component } from "react";
-import Input from "../FormComponents/Input/Input";
-import PropTypes from "prop-types";
-import gql from "graphql-tag";
-import { client } from '../../client';
-import { debounce } from "lodash";
-import "./SearchInput.css";
+import React, { Component } from 'react';
+import Input from 'components/FormComponents/Input/Input';
+import PropTypes from 'prop-types';
+import gql from 'graphql-tag';
+import { client } from 'client';
+import { debounce } from 'lodash';
+import './SearchInput.css';
 
 export default class SearchInput extends Component {
     constructor(props) {

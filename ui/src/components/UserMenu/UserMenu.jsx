@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Auth from '../../auth';
+import Auth from 'auth';
 import './UserMenu.css';
 
 const auth = new Auth();

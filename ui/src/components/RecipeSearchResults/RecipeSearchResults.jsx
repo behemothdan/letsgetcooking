@@ -1,10 +1,10 @@
-import React from "react";
-import PropTypes from "prop-types";
-import "./RecipeSearchResults.css";
+import React from 'react';
+import PropTypes from 'prop-types';
+import './RecipeSearchResults.css';
 
 const RecipeSearchResults = ({searchResults}) => {
     return (
-        <div className="RecipeList">
+        <article className="RecipeList">
             {searchResults.map(recipe => (
                 <div key={recipe.name}>
                     <h3>{recipe.name}</h3>
@@ -19,7 +19,7 @@ const RecipeSearchResults = ({searchResults}) => {
                         })}
                     </ul>
                     <ul>
-                        <li>Time: {recipe.time}</li>
+                        <li>Time: <time>{recipe.time}</time></li>
                         <li>Dish Type:
                             {
                                 recipe.mealtype === null || '' ? "None selected" : recipe.mealtype.type
@@ -38,7 +38,7 @@ const RecipeSearchResults = ({searchResults}) => {
                     </ul>
                 </div>
             ))}
-        </div>
+        </article>
     );
 }
 

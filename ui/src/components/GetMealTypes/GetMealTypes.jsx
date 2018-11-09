@@ -1,7 +1,7 @@
-import React from "react";
-import Select from "../FormComponents/Select/Select";
-import PropTypes from "prop-types";
-import { Query } from "react-apollo";
+import React from 'react';
+import Select from 'components/FormComponents/Select/Select';
+import PropTypes from 'prop-types';
+import { Query } from 'react-apollo';
 import { GET_MEALTYPES } from '../../graphql';
 
 const GetMealTypes = ({ onChange, feedback }) => (
