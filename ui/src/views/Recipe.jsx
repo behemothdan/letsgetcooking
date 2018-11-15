@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Header from 'components/Header/Header';
-import RecipeSearchQuery from "components/RecipeSearchQuery/RecipeSearchQuery";
 import UserMenu from 'components/UserMenu/UserMenu';
+import RecipeSingle from 'components/RecipeSingle/RecipeSingle';
 import PropTypes from "prop-types";
 
 class Recipe extends Component {
@@ -12,7 +12,7 @@ class Recipe extends Component {
                     <Header userMenu={<UserMenu />} />
                     <div className="container">
                         <div className="content-area">
-                            <RecipeSearchQuery />
+                            <RecipeSingle recipe={this.props.match.params.recipe} />
                         </div>
                     </div>
                 </div>
@@ -22,7 +22,10 @@ class Recipe extends Component {
 }
 
 Recipe.propTypes = {
-    auth: PropTypes.object
+    auth: PropTypes.object,
+    recipe: PropTypes.string,
+    match: PropTypes.object,
+    params: PropTypes.object,
 }
 
 export default Recipe

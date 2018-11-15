@@ -13,6 +13,9 @@ export default class SearchInput extends Component {
         this.handleChange = this.handleChange.bind(this);
     }
 
+    // This uses Apollo to create an entry in the link state which then can be referenced in other places.
+    // Using the Apollo plugin for Chrome, you can see in the cache the existence of this entry (initialized as 'baked') along with the
+    // inital loading of Difficulties, Mealtypes, and the prepopulated search results using 'baked'
     queryDatabase = debounce((text) => {
         client.writeQuery({
             query: gql`
