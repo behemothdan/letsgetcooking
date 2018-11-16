@@ -8,14 +8,12 @@ class Recipe extends Component {
     render() {
         return (
             <div>
-                <div>
-                    <Header userMenu={<UserMenu />} />
-                    <div className="container">
-                        <div className="content-area">
-                            <RecipeSingle recipe={this.props.match.params.recipe} />
-                        </div>
+                <Header userMenu={<UserMenu />} />
+                <main className="container">
+                    <div className="content-area">
+                        <RecipeSingle recipe={this.props.match.params.recipe} />
                     </div>
-                </div>
+                </main>
             </div>
         );
     }

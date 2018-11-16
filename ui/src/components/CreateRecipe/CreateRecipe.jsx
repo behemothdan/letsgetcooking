@@ -306,11 +306,10 @@ class CreateRecipe extends Component {
                         instructions: tempInstructions
                     }
                 })
-                // These work
+
                 await this.handleCreateMealTypeRelation(recipe)
                 await this.handleCreateDifficultyRelation(recipe)
                 await this.handleCreateIngredientRelation(recipe)
-                // These do not
                 await this.handleCreateUserRecipeRelation(recipe)
             } else {
                 this.setState({ formFeedback: "Please resolve any problems and try adding the recipe again!" });
@@ -361,7 +360,7 @@ class CreateRecipe extends Component {
 
     render() {
         return (
-            <div className="createRecipe">
+            <section className="createRecipe">
                 <h2>Add a new recipe!</h2>
                 <span id="formFeedback" className="formFeedback">{this.state.formFeedback}</span>
                 <form onSubmit={e => { e.preventDefault(); this.handleCreateRecipe() }}>
@@ -442,7 +441,7 @@ class CreateRecipe extends Component {
                     <Button type="button" value="Add Ingredient" buttonClick={this.addIngredient} />
                     <Button type="submit" value="Add that delicious recipe!" />
                 </form>
-            </div>
+            </section>
         )
     }
 }

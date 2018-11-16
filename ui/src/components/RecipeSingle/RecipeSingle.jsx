@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { RECIPE_SLUG } from '../../graphql';
 import { Query } from 'react-apollo';
 import PropTypes from "prop-types";
 
 const RecipeSingle = ({ recipe }) => {
     return (
-        <div>
+        <Fragment>
             <Query query={RECIPE_SLUG} variables={{ slugQuery: recipe }}>
                 {({ loading, error, data }) => {
                     if (loading) return (
@@ -56,7 +56,7 @@ const RecipeSingle = ({ recipe }) => {
                     }
                 }}
             </Query>
-        </div>
+        </Fragment>
     );
 }
 

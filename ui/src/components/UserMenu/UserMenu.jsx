@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import Auth from 'auth';
 import './UserMenu.css';
 
@@ -15,7 +15,7 @@ class UserMenu extends Component {
     render() {
         const { isAuthenticated } = auth;
         return (
-            <div>
+            <Fragment>
                 {
                     isAuthenticated() &&
                     <h5>
@@ -32,7 +32,7 @@ class UserMenu extends Component {
                         {' '}to continue.
                     </h5>
                 }
-            </div>
+            </Fragment>
         )
     }
 }

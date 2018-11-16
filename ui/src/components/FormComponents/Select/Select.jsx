@@ -1,6 +1,5 @@
 import React from "react";
 import PropTypes from "prop-types";
-import "./Select.css";
 
 const Select = ({ name, onChange, defaultText, feedback, optionItems, optionKey }) => {
     return (
