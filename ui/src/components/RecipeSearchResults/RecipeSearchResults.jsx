@@ -1,23 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import './RecipeSearchResults.css';
 
-const RecipeSearchResults = ({searchResults}) => {
+const RecipeSearchResults = ({ searchResults }) => {
     return (
         <article className="RecipeList">
             {searchResults.map(recipe => (
                 <div key={recipe.name}>
-                    <h3>{recipe.name}</h3>
-                    <ul>
-                        {recipe.instructions.map(instruction => {
-                            return <li key={instruction}>{instruction}</li>
-                        })}
-                    </ul>
-                    <ul key={recipe.ingredients}>
-                        {recipe.ingredients.map(i => {
-                            return <li key={recipe.name + "-" + i.Ingredient.name}>{i.Ingredient.quantity} {i.Ingredient.name}</li>
-                        })}
-                    </ul>
+                    <h3>
+                        <Link to={`/recipe/${recipe.slug}`}>{recipe.name}</Link>
+                    </h3>
+
                     <ul>
                         <li>Time: <time>{recipe.time}</time></li>
                         <li>Dish Type:

@@ -7,6 +7,7 @@ export const typeDefs = fs.readFileSync(process.env.GRAPHQL_SCHEMA || path.join(
 export const resolvers = {
   Query: {
     RecipesByExactName: neo4jgraphql,
+    RecipeBySlug: neo4jgraphql,
     RecipesBySubstring: neo4jgraphql,
     IngredientsBySubstring: neo4jgraphql,
     UserById: neo4jgraphql

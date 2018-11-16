@@ -12,7 +12,9 @@ export {
 } from './Ingredient';
 
 export {
-    RECIPE_QUERY, RECIPE_EXACT
+    RECIPE_QUERY,
+    RECIPE_EXACT,
+    RECIPE_SLUG
 } from './RecipeQuery';
 
 export {
@@ -28,5 +30,6 @@ export {
 } from './ReadSearchQuery';
 
 export {
-    CREATE_USER, FIND_USER
+    CREATE_USER,
+    FIND_USER
 } from './User';
