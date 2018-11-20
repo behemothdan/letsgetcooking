@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
+import CreateRecipe from 'components/CreateRecipe/CreateRecipe';
 import Header from 'components/Header/Header';
-import RecipeSearchQuery from "components/RecipeSearchQuery/RecipeSearchQuery";
 import UserMenu from 'components/UserMenu/UserMenu';
 import PropTypes from "prop-types";
 
-class Home extends Component {
+class RecipeAdd extends Component {
     render() {
         return (
             <div>
                 <Header userMenu={<UserMenu />} />
                 <main className="container">
                     <div className="content-area">
-                        <RecipeSearchQuery />
+                        <CreateRecipe />
                     </div>
                 </main>
             </div>
@@ -19,8 +19,8 @@ class Home extends Component {
     }
 }
 
-Home.propTypes = {
+RecipeAdd.propTypes = {
     auth: PropTypes.object
 }
 
-export default Home
+export default RecipeAdd

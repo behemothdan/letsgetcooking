@@ -1,12 +1,13 @@
 import React, { Fragment } from 'react';
 import ReactDOM from 'react-dom';
 import registerServiceWorker from './registerServiceWorker';
-import Home from "views/Home";
-import Recipe from "views/Recipe";
+import Home from 'views/Home';
+import Recipe from 'views/Recipe';
+import RecipeAdd from 'views/RecipeAdd';
 import Auth from './auth';
 import history from './history';
 import Callback from 'components/Callback/Callback';
-import { Router, Route } from 'react-router-dom';
+import { Router, Route, Redirect } from 'react-router-dom';
 import { ApolloProvider } from 'react-apollo';
 import { client } from './client';
 import './style/index.css';
@@ -30,9 +31,21 @@ ReactDOM.render(
                     handleAuthentication(props);
                     return <Callback {...props} />
                 }} />
+                <PrivateRoute path="/add" />
             </Fragment>
         </Router>
     </ApolloProvider>,
     document.getElementById('root')
 );
+
+function PrivateRoute({ ...rest}) {
+    return (
+        <Route {...rest} render={(props => auth.isAuthenticated() ? (
+            <RecipeAdd auth={auth} {...props} />
+            ) : (
+            <Redirect to={{ pathname: "/failed"}} />
+            ))}
+        />
+    )
+}
 registerServiceWorker();

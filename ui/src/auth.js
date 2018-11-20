@@ -22,7 +22,6 @@ export default class Auth {
         this.auth0.authorize();
     }
 
-    // These do not appear to be redirecting properly. Need to see how to get users back to the homepage or wherever.
     handleAuthentication = () => {
         this.auth0.parseHash((err, authResult) => {
             if (authResult && authResult.accessToken && authResult.idToken) {
@@ -67,18 +66,20 @@ export default class Auth {
                         mutation: CREATE_USER
                     }).then(this.setUserInfo(authResult))
                     .catch((error) => {
-                        console.log(error)
+                        console.log('❌', error) // Handle this better
                     })
             }
         })
     }
 
-    // Removes authorization information from localStorage
+    // Removes authorization information from localStorage and redirects to the homepage
     logout = () => {
         localStorage.removeItem('access_token');
         localStorage.removeItem('id_token');
         localStorage.removeItem('expires_at');
         localStorage.removeItem('user_image');
+        localStorage.removeItem('name');
+        localStorage.removeItem('id');
         history.push('/');
     }
 

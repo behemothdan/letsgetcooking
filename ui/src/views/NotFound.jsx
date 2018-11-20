@@ -1,17 +1,16 @@
 import React, { Component } from 'react';
 import Header from 'components/Header/Header';
-import RecipeSearchQuery from "components/RecipeSearchQuery/RecipeSearchQuery";
 import UserMenu from 'components/UserMenu/UserMenu';
 import PropTypes from "prop-types";
 
-class Home extends Component {
+class NotFound extends Component {
     render() {
         return (
             <div>
                 <Header userMenu={<UserMenu />} />
                 <main className="container">
                     <div className="content-area">
-                        <RecipeSearchQuery />
+                        <div>Whoa, how did you get here? Nothing to see here. Move along.</div>
                     </div>
                 </main>
             </div>
@@ -19,8 +18,8 @@ class Home extends Component {
     }
 }
 
-Home.propTypes = {
+NotFound.propTypes = {
     auth: PropTypes.object
 }
 
-export default Home
+export default NotFound

@@ -18,6 +18,12 @@ type User {
     created: Creator
 }
 
+type Cookbook {
+  name: String
+  creator: User
+  recipes: [Recipe] @relation(name:"Has_Recipe", direction:"OUT")
+}
+
 type Creator @relation(name: "Created_By") {
 	from: Recipe
 	to: User
