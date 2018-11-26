@@ -20,7 +20,9 @@ type User {
 
 type Cookbook {
   name: String
+  description: String
   creator: User
+  contributors: [User]
   recipes: [Recipe] @relation(name:"Has_Recipe", direction:"OUT")
 }
 
