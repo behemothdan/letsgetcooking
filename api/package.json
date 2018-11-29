@@ -24,6 +24,7 @@
     "apollo-client": "^2.3.2",
     "apollo-link-http": "^1.5.4",
     "apollo-server": "2.1.0",
+    "apollo-server-lambda": "^2.2.4",
     "dotenv": "^6.0.0",
     "graphql": "^0.13.2",
     "graphql-tag": "^2.9.2",
