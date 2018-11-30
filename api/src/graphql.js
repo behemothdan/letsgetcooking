@@ -15,10 +15,10 @@ const schema = makeExecutableSchema({
 const augmentedSchema = augmentSchema(schema);
 
 const driver = neo4j.driver(
-    process.env.NEO4J_URI || "bolt://localhost:7687",
+    process.env.NEO4J_URI || "bolt://ec2-52-89-41-121.us-west-2.compute.amazonaws.com:7687",
     neo4j.auth.basic(
         process.env.NEO4J_USER || "neo4j",
-        process.env.NEO4J_PASSWORD || "neo4j"
+        process.env.NEO4J_PASSWORD || "i-0f092b6063819fecd"
     )
 );
 
@@ -34,9 +34,10 @@ const server = new ApolloServer({
 });
 
 exports.graphqlHandler = server.createHandler({
-    cors: {
+  cors: {
         origin: '*',
         methods: 'POST',
+        credentials: true,
         allowedHeaders: [
           'Content-Type',
           'Origin',

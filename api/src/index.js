@@ -3,7 +3,6 @@ import { ApolloServer, gql, makeExecutableSchema } from "apollo-server";
 import { v1 as neo4j } from "neo4j-driver";
 import { augmentSchema } from "neo4j-graphql-js";
 import dotenv from "dotenv";
-//const { ApolloServer, gql, makeExecutableSchema } = require('apollo-server-lambda');
 
 dotenv.config();
 
@@ -33,8 +32,6 @@ const server = new ApolloServer({
     // comment out schema and uncomment typeDefs and resolvers above to use original (unaugmented) schema
     schema: augmentedSchema
 });
-
-//exports.graphqlHandler = server.createHandler();
 
 server.listen().then(({
     url
