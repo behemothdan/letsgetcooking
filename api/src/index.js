@@ -1,8 +1,16 @@
-import { typeDefs, resolvers } from "./graphql-schema";
-import { ApolloServer, gql, makeExecutableSchema } from "apollo-server";
-import { v1 as neo4j } from "neo4j-driver";
-import { augmentSchema } from "neo4j-graphql-js";
-import dotenv from "dotenv";
+// Uncomment this section if I want to run locally.
+// import { typeDefs, resolvers } from "./graphql-schema";
+// //import { ApolloServer, gql, makeExecutableSchema } from "apollo-server";
+// import { v1 as neo4j } from "neo4j-driver";
+// import { augmentSchema } from "neo4j-graphql-js";
+// import dotenv from "dotenv";
+
+// This section must be uncommented when using serverless deploy
+const { typeDefs, resolvers } =  require("./graphql-schema");
+const { ApolloServer, gql, makeExecutableSchema } = require("apollo-server-lambda");
+const { v1: neo4j } = require("neo4j-driver");
+const { augmentSchema } = require("neo4j-graphql-js");
+const dotenv = require("dotenv");
 
 dotenv.config();
 
@@ -15,10 +23,10 @@ const schema = makeExecutableSchema({
 const augmentedSchema = augmentSchema(schema);
 
 const driver = neo4j.driver(
-    process.env.NEO4J_URI || "bolt://localhost:7687",
+    process.env.NEO4J_URI_PRODUCTION || process.env.NEO4J_URI_LOCAL,
     neo4j.auth.basic(
-        process.env.NEO4J_USER || "neo4j",
-        process.env.NEO4J_PASSWORD || "neo4j"
+        process.env.NEO4J_USER_PRODUCTION || process.env.NEO4J_USER_LOCAL,
+        process.env.NEO4J_PASSWORD_PRODUCTION || process.env.NEO4J_PASSWORD_LOCAL
     )
 );
 
@@ -33,8 +41,22 @@ const server = new ApolloServer({
     schema: augmentedSchema
 });
 
-server.listen().then(({
-    url
-}) => {
-    console.log(`🚀: GraphQL API ready at ${url}`);
-});
+// This is for local development.
+// server.listen().then(({
+//     url
+// }) => {
+//     console.log(`🚀: GraphQL API ready at ${url}`);
+// });
+
+exports.graphqlHandler = server.createHandler({
+    cors: {
+          origin: '*',
+          methods: 'POST',
+          credentials: true,
+          allowedHeaders: [
+            'Content-Type',
+            'Origin',
+            'Accept'
+          ]
+        }
+    });

@@ -11,8 +11,8 @@ import {
 export default class Auth {
     auth0 = new auth0.WebAuth({
         domain: 'letsgetcooking.auth0.com',
-        clientID: '0gFgBNlFCzqTnBhLrK9b1XISlvb6wGrO', // This will obviously be changed when it comes time to deploy.
-        redirectUri: process.env.NODE_ENV === 'development' ? 'http://localhost:3000/callback' : 'http://localhost:3000/callback',
+        clientID: process.env.REACT_APP_AUTH_CLIENT_ID,
+        redirectUri: process.env.NODE_ENV === 'development' ? 'http://localhost:3000/callback' : 'http://letsget.cooking/callback',
         audience: 'https://letsgetcooking.auth0.com/userinfo',
         responseType: 'token id_token',
         scope: 'openid email profile'
@@ -66,7 +66,8 @@ export default class Auth {
                         mutation: CREATE_USER
                     }).then(this.setUserInfo(authResult))
                     .catch((error) => {
-                        console.log('❌', error) // Handle this better
+                        // Handle this better
+                        console.log('❌', error) //eslint-disable-line
                     })
             }
         })

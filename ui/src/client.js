@@ -2,7 +2,7 @@ import ApolloClient from 'apollo-boost';
 import clientState from './clientState';
 
 const client = new ApolloClient({
-    uri: process.env.REACT_APP_GRAPHQL_URI,
+    uri: (process.env.NODE_ENV === "production") ? process.env.REACT_APP_GRAPHQL_URI_PRODUCTION : process.env.REACT_APP_GRAPHQL_URI_LOCAL,
     clientState,
     onError: ({ graphQLErrors, networkError }) => {
         if (graphQLErrors)
