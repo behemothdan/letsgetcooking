@@ -4,14 +4,13 @@
 }
 
 header {
-
     margin: 0;
     width: 100vw;
     display: flex;
     justify-content: flex-start;
     flex-direction: column;
 
-    .nav-container {
+    .navContainer {
         //background-color: rgba(#000, .3);
         //border-bottom: solid 1px #ffffff55;
         width: 100vw;
@@ -20,11 +19,12 @@ header {
         flex-wrap: nowrap;
         justify-content: center;
         align-items: flex-start;
+        flex-direction: row;
         section {
             flex-grow: 1;
             flex-basis: auto;
             &.title {
-                flex-grow: 8;
+                //flex-grow: 8;
                 text-align: center;
                 h1 {
                     font-family: 'AlegreyaSans';
@@ -34,10 +34,30 @@ header {
                     padding: 0;
                 }
             }
-            &.headerlogo {
+            &.headerLogo {
                 img {
                     max-height: 40px;
                 }
+                width: 15vw;
+            }
+            &.userMenu {
+                width: 15vw;
+            }
+        }
+    }
+
+    @media all and (max-width: 425px) {
+        .navContainer {
+            flex-direction: column;
+
+            &.headerLogo {
+                order: 1;
+            }
+            &.userMenu {
+                order: 2;
+            }
+            &.title {
+                order: 3;
             }
         }
     }

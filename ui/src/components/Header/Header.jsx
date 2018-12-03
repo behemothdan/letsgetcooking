@@ -6,8 +6,8 @@ import './Header.css';
 
 const Header = (props) => (
     <header className="header">
-        <div className="nav-container">
-            <section className="headerlogo">
+        <div className="navContainer">
+            <section className="headerLogo">
                 <img src={logo} alt="Let's Get Cooking!" />
             </section>
             <section className="title">
