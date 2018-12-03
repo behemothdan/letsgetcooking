@@ -1,27 +1,32 @@
 import React from "react";
 import PropTypes from "prop-types";
+import './Input.css';
 
-const Input = ({ name, labelValue, required, placeholder, value, className, feedback, onChange = () => { } }) => {
+const Input = ({ name, labelValue, required, placeholder, value, className, feedback, onChange = () => { }}) => {
     return (
-        <span className={className}>
-            <label htmlFor={name}>{labelValue}</label>
+        <div className="input">
+            {labelValue &&
+                <label htmlFor={name}>{labelValue}</label>
+            }
+
             <input
                 name={name}
                 type="text"
                 required={required}
                 placeholder={placeholder}
                 value={value}
+                {...className && {'className' : className}}
                 onChange={onChange}
                 aria-describedby={name + '_error'}
             />
             <span id={name + '_error'} className="error" role="alert">{feedback}</span>
-        </span>
+        </div>
     )
 }
 
 Input.propTypes = {
     name: PropTypes.string.isRequired,
-    labelValue: PropTypes.string.isRequired,
+    labelValue: PropTypes.string,
     required: PropTypes.oneOf(['true']),
     placeholder: PropTypes.string,
     value: PropTypes.string,

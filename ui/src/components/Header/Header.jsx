@@ -17,7 +17,7 @@ const Header = (props) => (
                 {props.userMenu}
             </section>
         </div>
-        <SearchInput searchitem="recipes" name="searchInput" labelValue="What are we searching for?" placeholder="Let's get cooking!" />
+        <SearchInput searchitem="recipes" name="searchInput" placeholder="I want some..." />
     </header>
 )
 

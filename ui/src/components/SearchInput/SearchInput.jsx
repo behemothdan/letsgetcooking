@@ -41,7 +41,7 @@ export default class SearchInput extends Component {
 
     render() {
         return (
-            <div>
+            <div className="searchInput">
                 <form>
                     <Input
                         name={this.props.name}

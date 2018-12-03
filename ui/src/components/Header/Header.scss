@@ -3,18 +3,23 @@
     src: url(../../fonts/AlegreyaSans-Regular.ttf);
 }
 
-.header {
-    height: 300px;
+header {
+
     margin: 0;
+    width: 100vw;
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
 
     .nav-container {
-        background-color: rgba(#000, .3);
-        border-bottom: solid 1px #ffffff55;
+        //background-color: rgba(#000, .3);
+        //border-bottom: solid 1px #ffffff55;
+        width: 100vw;
         padding: 10px;
         display: flex;
         flex-wrap: nowrap;
         justify-content: center;
-        align-items: flex-end;
+        align-items: flex-start;
         section {
             flex-grow: 1;
             flex-basis: auto;
