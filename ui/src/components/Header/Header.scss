@@ -11,24 +11,21 @@ header {
     flex-direction: column;
 
     .navContainer {
-        //background-color: rgba(#000, .3);
-        //border-bottom: solid 1px #ffffff55;
         width: 100vw;
         padding: 10px;
         display: flex;
+        flex-direction: row;
         flex-wrap: nowrap;
         justify-content: center;
         align-items: flex-start;
-        flex-direction: row;
         section {
             flex-grow: 1;
             flex-basis: auto;
             &.title {
-                //flex-grow: 8;
                 text-align: center;
                 h1 {
                     font-family: 'AlegreyaSans';
-                    font-size: 3.2em;
+                    font-size: 8.2em;
                     color: #ffffff;
                     margin:0;
                     padding: 0;
@@ -38,10 +35,24 @@ header {
                 img {
                     max-height: 40px;
                 }
-                width: 15vw;
+                width: 12vw;
             }
             &.userMenu {
-                width: 15vw;
+                width: 12vw;
+                align-self: flex-start;
+                text-align: right;
+            }
+        }
+    }
+
+    @media all and (max-width: 1440px) {
+        .navContainer {
+            section {
+                &.title {
+                    h1 {
+                        font-size: 5.2em;
+                    }
+                }
             }
         }
     }
@@ -49,15 +60,21 @@ header {
     @media all and (max-width: 425px) {
         .navContainer {
             flex-direction: column;
-
-            &.headerLogo {
-                order: 1;
-            }
-            &.userMenu {
-                order: 2;
-            }
-            &.title {
-                order: 3;
+            section {
+                &.headerLogo {
+                    display: none;
+                    order: 1;
+                }
+                &.userMenu {
+                    align-self: flex-end;
+                    order: 1;
+                }
+                &.title {
+                    order: 2;
+                    h1 {
+                        font-size: 4.2em;
+                    }
+                }
             }
         }
     }

@@ -1,4 +1,6 @@
 import React, { Component, Fragment } from 'react';
+import { IconContext } from 'react-icons';
+import { IoMdContact } from 'react-icons/io';
 import Auth from 'auth';
 import './UserMenu.css';
 
@@ -26,11 +28,13 @@ class UserMenu extends Component {
                 }
                 {
                     !isAuthenticated() &&
-                    <h5>
-                        You are not logged in! Please{' '}
-                        <a style={{ cursor: 'pointer' }} onClick={this.login}>Log In</a>
-                        {' '}to continue.
-                    </h5>
+                    <span>
+                        <a style={{ cursor: 'pointer' }} onClick={this.login}>
+                            <IconContext.Provider value={{ className: "userImage" }}>
+                                <IoMdContact />
+                            </IconContext.Provider>
+                        </a>
+                    </span>
                 }
             </Fragment>
         )
