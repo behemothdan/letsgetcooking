@@ -1,19 +1,16 @@
-import React, { Component } from 'react';
-import Header from 'components/Header/Header';
-import UserMenu from 'components/UserMenu/UserMenu';
+import React, { Component, Fragment } from 'react';
 import PropTypes from "prop-types";
 
 class NotFound extends Component {
     render() {
         return (
-            <div>
-                <Header userMenu={<UserMenu />} />
+            <Fragment>
                 <main className="container">
                     <div className="content-area">
                         <div>Whoa, how did you get here? Nothing to see here. Move along.</div>
                     </div>
                 </main>
-            </div>
+            </Fragment>
         );
     }
 }

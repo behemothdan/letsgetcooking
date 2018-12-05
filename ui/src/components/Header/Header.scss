@@ -1,8 +1,3 @@
-@font-face {
-    font-family: 'AlegreyaSans';
-    src: url(../../fonts/AlegreyaSans-Regular.ttf);
-}
-
 header {
     margin: 0;
     width: 100vw;
@@ -17,16 +12,17 @@ header {
         flex-direction: row;
         flex-wrap: nowrap;
         justify-content: center;
-        align-items: flex-start;
+        align-items: center;
         section {
             flex-grow: 1;
             flex-basis: auto;
             &.title {
                 text-align: center;
                 h1 {
-                    font-family: 'AlegreyaSans';
+                    font-family: 'Raleway', sans-serif;
                     font-size: 8.2em;
                     color: #ffffff;
+                    text-shadow: 2px 2px #000000;
                     margin:0;
                     padding: 0;
                 }
@@ -38,7 +34,7 @@ header {
                 width: 12vw;
             }
             &.userMenu {
-                width: 12vw;
+                width: 15vw;
                 align-self: flex-start;
                 text-align: right;
             }
@@ -57,9 +53,21 @@ header {
         }
     }
 
+    @media all and (max-width: 768px) {
+        .navContainer {
+            section {
+                &.title {
+                    h1 {
+                        font-size: 4em;
+                    }
+                }
+            }
+        }
+    }
+
     @media all and (max-width: 425px) {
         .navContainer {
-            flex-direction: column;
+            flex-direction: row;
             section {
                 &.headerLogo {
                     display: none;
@@ -67,12 +75,12 @@ header {
                 }
                 &.userMenu {
                     align-self: flex-end;
-                    order: 1;
+                    order: 2;
                 }
                 &.title {
-                    order: 2;
+                    order: 1;
                     h1 {
-                        font-size: 4.2em;
+                        font-size: 1.9em;
                     }
                 }
             }

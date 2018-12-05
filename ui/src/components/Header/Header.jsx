@@ -1,6 +1,6 @@
 import React from 'react';
 import logo from 'images/letsgetcooking-logo-white.png';
-import SearchInput from 'components/SearchInput/SearchInput'
+import SearchInput from 'components/SearchInput/SearchInput';
 import PropTypes from 'prop-types';
 import './Header.css';
 

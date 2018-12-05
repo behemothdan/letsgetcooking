@@ -1,6 +1,51 @@
-.userImage {
-    height: 30px;
-    width: 30px;
-    border-radius:50%;
-    color: #ffffff;
+.userMenu {
+    .userDropdown {
+        .userImageButton {
+            background: none;
+            border: none;
+            cursor: pointer;
+            &:focus {
+                outline: none;
+            }
+        }
+        .menu {
+            position: absolute;
+            right: 10px;
+            box-shadow: #212930 2px 2px 4px;
+            button {
+                float: right;
+                clear: right;
+                width: 15vw;
+                border: none;
+                background-color: #67717a;
+                padding: 7px 8px 7px 0;
+                color: #ffffff;
+                text-align: right;
+                cursor: pointer;
+                &:hover {
+                    background-color: #454d53;
+                }
+            }
+        }
+        @media all and (max-width: 768px) {
+            .menu {
+                button {
+                    width: 25vw;
+                }
+            }
+        }
+        @media all and (max-width: 425px) {
+            .menu {
+                button {
+                    width: 40vw;
+                }
+            }
+        }
+    }
+    .userImage {
+        height: 30px;
+        width: 30px;
+        border-radius:50%;
+        color: #ffffff;
+    }
 }

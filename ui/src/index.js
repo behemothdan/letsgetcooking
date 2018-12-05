@@ -4,6 +4,8 @@ import registerServiceWorker from './registerServiceWorker';
 import Home from 'views/Home';
 import Recipe from 'views/Recipe';
 import RecipeAdd from 'views/RecipeAdd';
+import Header from 'components/Header/Header';
+import UserMenu from 'components/UserMenu/UserMenu';
 import Auth from './auth';
 import history from './history';
 import Callback from 'components/Callback/Callback';
@@ -24,6 +26,7 @@ ReactDOM.render(
     <ApolloProvider client={client}>
         <Router component={Home} history={history}>
             <Fragment>
+                <Header userMenu={<UserMenu />} />
                 <Route exact path="/" render={(props) => <Home auth={auth} {...props} />} />
                 <Route path="/home" render={(props) => <Home auth={auth} {...props} />} />
                 <Route path="/recipe/:recipe" render={(props) => <Recipe auth={auth} {...props} />} />
