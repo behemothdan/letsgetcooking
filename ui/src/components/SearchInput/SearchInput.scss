@@ -7,5 +7,57 @@
         display: flex;
         justify-content: center;
         width: 100vw;
+
+        .input {
+            width: 100vw;
+            display: flex;
+            justify-content: center;
+                width: 100vw;
+
+            input {
+                width: 50vw;
+                height: 100px;
+                font-size: 48px;
+                padding: 7px 7px 7px 40px;
+                border: none;
+                border-radius: 50px;
+                margin:30px 0 55px 0;
+                border: solid 1px #e8eaec;
+                color: #b58966;
+                background: url('../../images/_ionicons_svg_md-search.svg') no-repeat scroll 5px 11px;
+                background-size: 28px 28px;
+                background-color: rgba(#e8eaec, .7);
+                box-shadow: 1px 1px 8px #cecccc;
+                &::placeholder {
+                    color: #8299a7;
+                }
+                &:focus {
+                    outline: none;
+                }
+            }
+
+            @media all and (max-width: 1024px) {
+                input {
+                    width: 70vw;
+                }
+            }
+
+            @media all and (max-width: 768px) {
+                input {
+                    border-radius: 25px;
+                    width: 75vw;
+                    height: 50px;
+                    font-size: 30px;
+                    margin: 15px 0 35px 0;
+                }
+            }
+
+            @media all and (max-width: 452px) {
+                input {
+                    border-radius: 25px;
+                    width: 95vw;
+                }
+            }
+        }
     }
 }

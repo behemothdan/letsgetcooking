@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react';
 import { RECIPE_SLUG } from '../../graphql';
 import { Query } from 'react-apollo';
+import { feedbackMessages } from '../../utilities';
 import PropTypes from "prop-types";
 
 const RecipeSingle = ({ recipe }) => {
@@ -9,12 +10,13 @@ const RecipeSingle = ({ recipe }) => {
             <Query query={RECIPE_SLUG} variables={{ slugQuery: recipe }}>
                 {({ loading, error, data }) => {
                     if (loading) return (
-                        <p>Finding something delicious...</p>
+                        <p>{ feedbackMessages.loading }</p>
                     );
 
                     if (error) return (
-                        <p>Oops! We had a hard time finding this recipe!</p>
+                        <p>{ feedbackMessages.loadingFailed }</p>
                     );
+
                     if (data.RecipeBySlug !== null && data.RecipeBySlug.length !== 0) {
                         return (
                             <div>
@@ -51,7 +53,7 @@ const RecipeSingle = ({ recipe }) => {
                         );
                     } else {
                         return (
-                            <p>This recipe doesn&apos;t exist! Maybe create it for us?</p>
+                            <p>{ feedbackMessages.recipeNotFound }</p>
                         )
                     }
                 }}

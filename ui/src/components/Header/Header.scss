@@ -21,10 +21,13 @@ header {
                 h1 {
                     font-family: 'Raleway', sans-serif;
                     font-size: 8.2em;
-                    color: #ffffff;
                     text-shadow: 2px 2px #000000;
                     margin:0;
                     padding: 0;
+                    a, &:visited {
+                        text-decoration: none;
+                        color: #ffffff;
+                    }
                 }
             }
             &.headerLogo {

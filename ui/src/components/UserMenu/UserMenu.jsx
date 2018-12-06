@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { IconContext } from 'react-icons';
 import { IoMdContact } from 'react-icons/io';
+import { Link } from 'react-router-dom';
 import Auth from 'auth';
 import './UserMenu.css';
 
@@ -16,6 +17,7 @@ class UserMenu extends Component {
         this.showMenu = this.showMenu.bind(this);
         this.closeMenu = this.closeMenu.bind(this);
     }
+
     showMenu(event) {
         event.preventDefault();
         this.setState({ showMenu: true }, () => {
@@ -49,7 +51,7 @@ class UserMenu extends Component {
                             {this.state.showMenu ? (
                                 <div className="menu">
                                     <button>
-                                        Add Recipe
+                                        <Link to="/add">Add Recipe</Link>
                                     </button>
                                     <button>
                                         My Recipes

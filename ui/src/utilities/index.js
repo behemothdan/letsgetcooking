@@ -9,3 +9,7 @@ export {
 export {
     GenerateSlug
 } from './GenerateSlug'
+
+export {
+    feedbackMessages
+} from './feedbackMessages'

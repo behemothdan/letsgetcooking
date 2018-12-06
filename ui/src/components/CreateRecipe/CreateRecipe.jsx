@@ -361,11 +361,12 @@ class CreateRecipe extends Component {
     render() {
         return (
             <section className="createRecipe">
-                <h2>Add a new recipe!</h2>
+                <h2>Adding a new recipe!</h2>
                 <span id="formFeedback" className="formFeedback">{this.state.formFeedback}</span>
                 <form onSubmit={e => { e.preventDefault(); this.handleCreateRecipe() }}>
                     <Input
                         name="name"
+                        className="recipeName"
                         labelValue="Recipe Name"
                         placeholder="Recipe Name"
                         value={this.state.name}
@@ -374,6 +375,7 @@ class CreateRecipe extends Component {
                     />
                     <Input
                         name="time"
+                        className="timeInput"
                         labelValue="Time"
                         placeholder="How long till eating?"
                         value={this.state.time}

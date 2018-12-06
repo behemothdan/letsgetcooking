@@ -47,7 +47,7 @@ export default class SearchInput extends Component {
                         name={this.props.name}
                         labelValue={this.props.labelValue}
                         required="true"
-                        placeholder={this.props.placeholder}
+                        //placeholder="Temp"
                         value={this.state[this.props.searchitem]}
                         onChange={event => this.handleChange(event.target.value)}
                     />
@@ -59,7 +59,7 @@ export default class SearchInput extends Component {
 
 SearchInput.propTypes = {
     name: PropTypes.string.isRequired,
-    searchitem: PropTypes.string, // Used to say what item it's being used to search (ie recipes, ingredients, etc)
+    searchitem: PropTypes.string, // Say what item it's being used to search (ie recipes, ingredients, etc)
     labelValue: PropTypes.string,
     placeholder: PropTypes.string
 }

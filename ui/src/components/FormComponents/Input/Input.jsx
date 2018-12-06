@@ -8,7 +8,6 @@ const Input = ({ name, labelValue, required, placeholder, value, className, feed
             {labelValue &&
                 <label htmlFor={name}>{labelValue}</label>
             }
-
             <input
                 name={name}
                 type="text"
@@ -32,7 +31,8 @@ Input.propTypes = {
     value: PropTypes.string,
     className: PropTypes.string,
     feedback: PropTypes.string,
-    onChange: PropTypes.func
+    onChange: PropTypes.func,
+    icon: PropTypes.object
 };
 
 Input.defaultProps = {
