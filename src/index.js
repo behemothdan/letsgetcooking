@@ -12,7 +12,7 @@ import Callback from 'components/Callback/Callback';
 import { Router, Route, Redirect } from 'react-router-dom';
 import { ApolloProvider } from 'react-apollo';
 import { client } from './client';
-import './style/index.css';
+import './style/Index.css';
 
 const auth = new Auth();
 
