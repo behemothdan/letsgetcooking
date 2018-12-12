@@ -1,6 +1,5 @@
 import React from "react";
 import PropTypes from "prop-types";
-import "./Textbox.css";
 
 const Textbox = ({ name, labelValue, required, placeholder, value, className, feedback, rows, onChange = () => { } }) => {
     return (
