@@ -1,3 +1,5 @@
+@import '../../style/_variables';
+
 header {
     margin: 0;
     width: 100vw;
@@ -19,14 +21,15 @@ header {
             &.title {
                 text-align: center;
                 h1 {
-                    font-family: 'Raleway', sans-serif;
-                    font-size: 8.2em;
-                    text-shadow: 2px 2px #000000;
+                    font-weight: inherit;
+                    font-family: 'Briberra';
+                    font-size: 12.2em;
+                    text-shadow: 2px 2px 4px $dropshadow;
                     margin:0;
                     padding: 0;
                     a, &:visited {
                         text-decoration: none;
-                        color: #ffffff;
+                        color: $pancakebrown;
                     }
                 }
             }
@@ -49,7 +52,7 @@ header {
             section {
                 &.title {
                     h1 {
-                        font-size: 5.2em;
+                        font-size: 7.2em;
                     }
                 }
             }
@@ -61,6 +64,7 @@ header {
             section {
                 &.title {
                     h1 {
+                        text-shadow: 1px 1px 2px $dropshadow;
                         font-size: 4em;
                     }
                 }
@@ -83,7 +87,8 @@ header {
                 &.title {
                     order: 1;
                     h1 {
-                        font-size: 1.9em;
+                        text-shadow: 1px 1px 0.5px $dropshadow;
+                        font-size: 3em;
                     }
                 }
             }
