@@ -1,3 +1,4 @@
+@import '../../style/_variables';
 .RecipeList {
     text-align: left;
     h3 {
@@ -5,12 +6,12 @@
         font-size: 24px;
         a {
             text-decoration: none;
-            color: #b58966;
+            color: $pancakebrown;
         }
         &::after {
             content: '';
             display: block;
-            border-bottom: solid 3px #ff0000;
+            border-bottom: solid 3px $burntred;
             width: 50%;
             padding-top: 10px;
         }

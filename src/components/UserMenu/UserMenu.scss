@@ -1,3 +1,4 @@
+@import '../../style/_variables';
 .userMenu {
     .userDropdown {
         .userImageButton {
@@ -11,37 +12,68 @@
         .menu {
             position: absolute;
             right: 10px;
-            box-shadow: #212930 2px 2px 4px;
+            background: none;
+            box-shadow: $dropshadow 0.5px 0.5px 2px;
+            border-radius: 4px;
+            display: flex;
+            flex-direction: column;
+
             button {
-                float: right;
-                clear: right;
                 width: 15vw;
                 border: none;
-                background-color: #67717a;
+                background-color: $pancakebrown;
                 padding: 7px 8px 7px 0;
                 color: #ffffff;
                 text-align: right;
                 cursor: pointer;
-                &:hover {
-                    background-color: #454d53;
+                display: flex;
+                justify-content: flex-end;
+                align-items: center;
+
+                &:first-of-type {
+                    border-radius: 4px 4px 0 0;
+                }
+                &:last-of-type {
+                    border-radius: 0 0 4px 4px;
+                }
+
+                a {
+                    text-decoration: none;
+                    &:visited {
+                        color: #fff;
+                    }
                 }
             }
+            .menuImage {
+                color: #ffffff;
+                width: 45px;
+                padding: 0 5px 0 0;
+            }
         }
+
         @media all and (max-width: 768px) {
             .menu {
                 button {
                     width: 25vw;
                 }
+
+                .menuImage {
+                    color: #ffffff;
+                    width: 20px;
+                    padding: 0 8px 0 0;
+                }
             }
         }
+
         @media all and (max-width: 425px) {
             .menu {
                 button {
-                    width: 40vw;
+                    width: 50vw;
                 }
             }
         }
     }
+
     .userImage {
         height: 30px;
         width: 30px;

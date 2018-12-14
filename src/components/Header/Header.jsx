@@ -12,7 +12,7 @@ const Header = (props) => (
                 <img src={logo} alt="Let's Get Cooking!" />
             </section>
             <section className="title">
-                <h1><Link to="/">Let&apos;s get cooking!</Link></h1>
+                <h1><Link to="/">Let&apos;s get_2 cooking!</Link></h1>
             </section>
             <section className="userMenu">
                 {props.userMenu}
