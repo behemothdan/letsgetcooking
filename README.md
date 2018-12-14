@@ -3,10 +3,10 @@
 This project is a starter for building a [GRANDstack](https://grandstack.io) (GraphQL, React, Apollo, Neo4j Database) application. There are two components to the starter, the UI application (a React app) and the API app (GraphQL server).
 
 ## [`/api`](./api)
-![](api/img/graphql-playground-with-recipes.png)
+![](img/graphql-playground-with-recipes.png)
 
 ## [`/ui`](./ui)
-![](ui/img/default-app-with-recipes.png)
+![](img/default-app-with-recipes.png)
 
 # Useful Neo4j Queries
 
