@@ -1,8 +1,10 @@
 import React, { Component, Fragment } from 'react';
-import { IconContext } from 'react-icons';
-import { IoMdContact } from 'react-icons/io';
 import { Link } from 'react-router-dom';
 import Auth from 'auth';
+import PlateUtensils from '../../images/svg-icons/PlateUtensils';
+import RecipeBook from '../../images/svg-icons/RecipeBook';
+import Bookstack from '../../images/svg-icons/Bookstack';
+import User from '../../images/svg-icons/User';
 import './UserMenu.css';
 
 const auth = new Auth();
@@ -54,16 +56,19 @@ class UserMenu extends Component {
                                         <Link to="/add">Add Recipe</Link>
                                     </button>
                                     <button>
+                                        <PlateUtensils className={'menuImage'} />
                                         My Recipes
                                     </button>
                                     <button>
+                                        <RecipeBook className={'menuImage'} />
                                         Add Cookbook
                                     </button>
                                     <button>
+                                        <Bookstack className={'menuImage'} />
                                         My Cookbooks
                                     </button>
                                     <button>
-                                        <a style={{ cursor: 'pointer' }} onClick={this.logout}>Log Out</a>.
+                                        <a style={{ cursor: 'pointer' }} onClick={this.logout}>Log Out</a>
                                     </button>
                                 </div>
                             ) : (
@@ -77,9 +82,7 @@ class UserMenu extends Component {
                     !isAuthenticated() &&
                     <div className="userMenu">
                         <a style={{ cursor: 'pointer' }} onClick={this.login}>
-                            <IconContext.Provider value={{ className: "userImage" }}>
-                                <IoMdContact />
-                            </IconContext.Provider>
+                            <User className={'userImage'} />
                         </a>
                     </div>
                 }

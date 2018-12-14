@@ -1,3 +1,4 @@
+@import '../../style/_variables';
 .searchInput {
     display: flex;
     justify-content: center;
@@ -16,18 +17,18 @@
 
             input {
                 width: 50vw;
-                height: 100px;
+                height: 75px;
                 font-size: 48px;
                 padding: 7px 7px 7px 78px;
                 border: none;
                 border-radius: 50px;
                 margin:30px 0 55px 0;
-                border: solid 1px #e8eaec;
-                color: #b58966;
+                border: solid 1px $inputbackground;
+                color: $pancakebrown;
                 box-shadow: 1px 1px 8px #cecccc;
                 background: url('../../images/_ionicons_svg_md-search.svg') no-repeat scroll 8px 16px;
-                background-size: 72px 72px;
-                background-color: rgba(#e8eaec, .7);
+                background-size: 48px 48px;
+                background-color: rgba($inputbackground, .7);
                 &::placeholder {
                     color: #8299a7;
                 }
@@ -52,7 +53,7 @@
                     margin: 15px 0 35px 0;
                     background: url('../../images/_ionicons_svg_md-search.svg') no-repeat scroll 8px 10px;
                     background-size: 32px 32px;
-                    background-color: rgba(#e8eaec, .7);
+                    background-color: rgba($inputbackground, .7);
                 }
             }
 
@@ -63,7 +64,7 @@
                     padding-left: 36px;
                     background: url('../../images/_ionicons_svg_md-search.svg') no-repeat scroll 8px 12px;
                     background-size: 24px 24px;
-                    background-color: rgba(#e8eaec, .7);
+                    background-color: rgba($inputbackground, .7);
                 }
             }
         }
