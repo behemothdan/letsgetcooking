@@ -4,6 +4,7 @@ import Auth from 'auth';
 import PlateUtensils from '../../images/svg-icons/PlateUtensils';
 import RecipeBook from '../../images/svg-icons/RecipeBook';
 import Bookstack from '../../images/svg-icons/Bookstack';
+import CookingPot from '../../images/svg-icons/CookingPot';
 import User from '../../images/svg-icons/User';
 import './UserMenu.css';
 
@@ -53,7 +54,7 @@ class UserMenu extends Component {
                             {this.state.showMenu ? (
                                 <div className="menu">
                                     <button>
-                                        <Link to="/add">Add Recipe</Link>
+                                        <Link to="/add"><CookingPot className={'menuImage'} /> Add Recipe</Link>
                                     </button>
                                     <button>
                                         <PlateUtensils className={'menuImage'} />

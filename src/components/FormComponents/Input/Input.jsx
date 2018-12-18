@@ -5,9 +5,6 @@ import './Input.css';
 const Input = ({ name, labelValue, required, placeholder, value, className, feedback, onChange = () => { }}) => {
     return (
         <div className="input">
-            {labelValue &&
-                <label htmlFor={name}>{labelValue}</label>
-            }
             <input
                 name={name}
                 type="text"
@@ -18,6 +15,9 @@ const Input = ({ name, labelValue, required, placeholder, value, className, feed
                 onChange={onChange}
                 aria-describedby={name + '_error'}
             />
+            {labelValue &&
+                <label htmlFor={name}>{labelValue}</label>
+            }
             <span id={name + '_error'} className="error" role="alert">{feedback}</span>
         </div>
     )
