@@ -93,7 +93,7 @@ class CreateRecipe extends Component {
                 return this.setState({ difficultyFeedback: "How skilled do we have to be to cook this food?" })
             } else if (this.state.difficulties.filter(e => e.value === this.state.difficulty).length === 0) {
                 recipeFailedValidation = true;
-                return this.setState({ difficultyFeedback: "Naughty! Don'try to mess with the form data!" })
+                return this.setState({ difficultyFeedback: "Naughty! Don't try to mess with the form data!" })
             } else {
                 return this.setState({ difficultyFeedback: '' })
             }

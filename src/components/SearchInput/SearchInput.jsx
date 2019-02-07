@@ -46,8 +46,7 @@ export default class SearchInput extends Component {
                     <Input
                         name={this.props.name}
                         labelValue={this.props.labelValue}
-                        required="true"
-                        //placeholder="Temp"
+                        required={true}
                         value={this.state[this.props.searchitem]}
                         onChange={event => this.handleChange(event.target.value)}
                     />

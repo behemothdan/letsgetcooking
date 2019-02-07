@@ -1,21 +1,13 @@
 @import '../../../style/_variables';
 
 .input {
-    display: flex;
-    flex-flow: column-reverse;
-
     label,
     input {
         transition: all 0.2s;
         touch-action: manipulation;
     }
 
-    label {
-        letter-spacing: 0.05em;
-    }
-
     input {
-        width: 100%;
         cursor: text;
         -webkit-appearance: none;
         padding: 7px;
@@ -30,27 +22,10 @@
 
         &::placeholder {
             color: #cbd2d6;
-            opacity: 0;
         }
 
         &:focus::placeholder {
             opacity: 1;
         }
-
-        &::placeholder-shown+label {
-            max-width: 66.66%;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            cursor: text;
-            transform-origin: left bottom;
-            transform: translate(0, 7.125rem) scale(2.5);
-        }
-    }
-
-    input:not(:placeholder-shown)+label,
-    input:focus+label {
-        transform: translate(0, 0) scale(1);
-        cursor: pointer;
     }
 }

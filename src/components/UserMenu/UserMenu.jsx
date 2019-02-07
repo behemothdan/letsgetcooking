@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Fragment, useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import Auth from 'auth';
 import PlateUtensils from '../../images/svg-icons/PlateUtensils';
@@ -10,86 +10,71 @@ import './UserMenu.css';
 
 const auth = new Auth();
 
-class UserMenu extends Component {
-    constructor() {
-        super();
+function UserMenu() {
+    const [showMenu, toggleMenu] = useState(false);
 
-        this.state = {
-            showMenu: false
-        }
-        this.showMenu = this.showMenu.bind(this);
-        this.closeMenu = this.closeMenu.bind(this);
-    }
-
-    showMenu(event) {
+    const openMenu = useCallback((event) => {
         event.preventDefault();
-        this.setState({ showMenu: true }, () => {
-            document.addEventListener('click', this.closeMenu);
-        });
-    }
-    closeMenu() {
-        this.setState({ showMenu: false }, () => {
-            document.removeEventListener('click', this.closeMenu);
-        });
-    }
+        toggleMenu(true);
+        document.addEventListener('click', closeMenu)
+    })
 
-    login = () => {
-        auth.login();
-    }
-    logout = () => {
-        auth.logout();
-    }
+    const closeMenu = useCallback(() => {
+        toggleMenu(false);
+        document.removeEventListener('click', closeMenu)
+    })
 
-    render() {
-        const { isAuthenticated } = auth;
-        return (
-            <Fragment>
-                {
-                    isAuthenticated() &&
-                    <div className="userMenu">
-                        <div className="userDropdown">
-                            <button onClick={this.showMenu} className="userImageButton">
-                                <img className="userImage" src={localStorage.getItem('user_image')} alt={localStorage.getItem('name')} />
-                            </button>
-                            {this.state.showMenu ? (
-                                <div className="menu">
-                                    <button>
-                                        <Link to="/add"><CookingPot className={'menuImage'} /> Add Recipe</Link>
+    const login = () => {auth.login()}
+    const logout = () => {auth.logout()}
+    const { isAuthenticated } = auth;
+
+    return (
+        <Fragment>
+            {
+                isAuthenticated() &&
+                <div className="userMenu">
+                    <div className="userDropdown">
+                        <button onClick={openMenu} className="userImageButton">
+                            <img className="userImage" src={localStorage.getItem('user_image')} alt={localStorage.getItem('name')} />
+                        </button>
+                        {showMenu ? (
+                            <div className="menu">
+                                <button>
+                                    <Link to="/add"><CookingPot className={'menuImage'} /> Add Recipe</Link>
+                                </button>
+                                <button>
+                                    <PlateUtensils className={'menuImage'} />
+                                    My Recipes
                                     </button>
-                                    <button>
-                                        <PlateUtensils className={'menuImage'} />
-                                        My Recipes
+                                <button>
+                                    <RecipeBook className={'menuImage'} />
+                                    Add Cookbook
                                     </button>
-                                    <button>
-                                        <RecipeBook className={'menuImage'} />
-                                        Add Cookbook
+                                <button>
+                                    <Bookstack className={'menuImage'} />
+                                    My Cookbooks
                                     </button>
-                                    <button>
-                                        <Bookstack className={'menuImage'} />
-                                        My Cookbooks
-                                    </button>
-                                    <button>
-                                        <a style={{ cursor: 'pointer' }} onClick={this.logout}>Log Out</a>
-                                    </button>
-                                </div>
-                            ) : (
-                                    null
-                                )
-                            }
-                        </div>
+                                <button>
+                                    <a style={{ cursor: 'pointer' }} onClick={logout}>Log Out</a>
+                                </button>
+                            </div>
+                        ) : (
+                                null
+                            )
+                        }
                     </div>
-                }
-                {
-                    !isAuthenticated() &&
-                    <div className="userMenu">
-                        <a style={{ cursor: 'pointer' }} onClick={this.login}>
-                            <User className={'userImage'} />
-                        </a>
-                    </div>
-                }
-            </Fragment>
-        )
-    }
+                </div>
+            }
+            {
+                !isAuthenticated() &&
+                <div className="userMenu">
+                    <a style={{ cursor: 'pointer' }} onClick={login}>
+                        <User className={'userImage'} />
+                    </a>
+                </div>
+            }
+        </Fragment>
+    )
 }
 
 export default UserMenu
